@@ -1,8 +1,9 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
+# Another object orientation system in R
 Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Allows to write a lot of small (lines of code) functions as part of the class definition without cluttering the object.
 
-This example is adapted from the [R6](https://github.com/wch/R6) package to have a direct comparison.
+This example is adapted from the [R6](https://github.com/wch/R6) package from the [private members example](http://rpubs.com/wch/24456) to have a direct comparison.
 
 
 ```r
@@ -10,7 +11,7 @@ library(aoos)
 
 Queue <- defineClass("Queue", {
   
-  queue = list()
+  queue <- list()
   
   add <- publicFunction(function(x) {
       queue <<- c(queue, list(x))
@@ -65,5 +66,12 @@ q$remove()
 
 ```
 ## [1] 17
+```
+
+# Installation
+
+```r
+library(devtools)
+install_github("wahani/aoos")
 ```
 
