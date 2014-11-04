@@ -1,6 +1,6 @@
 #' Class oom
 #' 
-#' This is an environment with some methods for access restriction.
+#' This is an environment with some methods for access restriction. Don't use it.
 #' 
 #' @import methods
 #' @exportClass oom
@@ -27,7 +27,7 @@ setMethod("$", signature = c(x = "oom"),
           })
 
 #' @rdname oom
-#' @param value value to assign to (don't do this)
+#' @param value value to assign to. Will throw an error.
 setMethod("$<-", signature = c(x = "oom"),
           function(x, name, value) {
             stop("If you want to add public fields use 'publicValue' in the class definition.")

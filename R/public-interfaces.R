@@ -1,19 +1,17 @@
 setClass("publicFunction", contains = "function")
 
-#' Make members public
-#' 
 #' @param x a default value
 #' @param validity an optional validity function for the set method. Returns TRUE or FALSE.
 #' @param fun function definition
 #' 
-#' @rdname publicInterface
+#' @rdname defineClass
 #' @export publicFunction
 publicFunction <- function(fun) {
   new("publicFunction", .Data = fun)
 }
 
 #' @export
-#' @rdname publicInterface
+#' @rdname defineClass
 publicValue <- function(x = NULL, validity = function(x) TRUE) {
   force(x); force(validity)
   publicFunction(function(value) {

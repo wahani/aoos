@@ -15,9 +15,9 @@
 
 \item{name}{member name}
 
-\item{value}{value to assign to (don't do this)}
+\item{value}{value to assign to. Will throw an error.}
 }
 \description{
-This is an environment with some methods for access restriction.
+This is an environment with some methods for access restriction. Don't use it.
 }
 
