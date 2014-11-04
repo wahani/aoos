@@ -5,6 +5,7 @@ Version: 0.0.1
 Date: 2014-11-03
 Author: Sebastian Warnholz
 Maintainer: Sebastian Warnholz <wahani@gmail.com>
+BugReports: https://github.com/wahani/aoos/issues
 Description: Another implementation of object-orientation in R. Private and
     public methods are part of the class-definition. Allows to write a lot of
     small methods as part of the class definition without cluttering the
