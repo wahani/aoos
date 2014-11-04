@@ -18,13 +18,13 @@ Queue <- defineClass("Queue", {
     })
   
   remove <- publicFunction(function() {
-      if (queueHasElements()) return(NULL)
+      if (queueIsEmpty()) return(NULL)
       head <- queue[[1]]
       queue <<- queue[-1]
       head
     })
   
-  queueHasElements <- function() length(queue) == 0
+  queueIsEmpty <- function() length(queue) == 0
 })
 
 q <- Queue()
