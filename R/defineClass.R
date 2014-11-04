@@ -16,7 +16,9 @@ defineClass <- function(name, expr = NULL, contains = NULL) {
   }
   
   const <- function() {
-    do.call("new", c(list(Class = name), .xData = getMember()))
+    object <- do.call("new", c(list(Class = name), .xData = getMember()))
+    parent.env(object)$self <- object
+    object
   }
   
   setClass(name, where = parentEnv, contains = if(is.null(contains)) "oom" else contains)
@@ -52,5 +54,6 @@ arrangeEnvironment <- function(e) {
     
   f <- as.environment(publicMember)
   parent.env(f) <- e
+#   e$self <- e
   f
 }

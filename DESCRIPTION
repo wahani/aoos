@@ -8,7 +8,7 @@ Maintainer: Sebastian Warnholz <wahani@gmail.com>
 Description: Another implementation of object-orientation in R. Private and
     public methods are part of the class-definition. Allows to write a lot of
     small methods as part of the class definition without cluttering the
-    object. Campatible with S4Methods.
+    object.
 Depends:
     methods
 License: GPL-3 | file LICENSE

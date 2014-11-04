@@ -4,8 +4,7 @@ Another implementation of object-orientation in R. Private and public methods ar
 
 This example is adapted from the [R6](https://github.com/wch/R6) package to have a direct comparison.
 
-
-```r
+```{r}
 library(aoos)
 
 Queue <- defineClass("Queue", {
@@ -32,38 +31,14 @@ q <- Queue()
 q
 ```
 
-```
-## public member:
-##   add 
-##   remove
-```
-
-
-```r
+```{r}
 q$add(5)
 q$add("something")
 q$add(17)
 q$remove()
-```
-
-```
-## [1] 5
-```
-
-```r
 q$remove()
-```
 
-```
-## [1] "something"
-```
-
-```r
 q$add(1)$add(2)
 q$remove()
-```
-
-```
-## [1] 17
 ```
 
