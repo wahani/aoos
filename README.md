@@ -20,7 +20,6 @@ Queue <- defineClass("Queue", {
   
   remove <- publicFunction(function() {
       if (queueHasElements()) return(NULL)
-      # Can use private$queue for explicit access
       head <- queue[[1]]
       queue <<- queue[-1]
       head
