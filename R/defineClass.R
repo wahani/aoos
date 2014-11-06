@@ -33,9 +33,10 @@
 #' instance$x(2)
 #' instance$x()
 defineClass <- function(name, expr, contains = NULL) {
-  
+
   mc <- processMarkup(match.call())
   parentEnv <- parent.frame()
+  
   getMember <- function() {
     e <- setEnvironment(contains, parentEnv) # name e is needed in eval(mc)
     eval(mc)
@@ -68,9 +69,8 @@ setEnvironment <- function(contains, parentEnv) {
   if(is.null(contains)) {
     new.env(parent = parentEnv)
   } else {
-    # This is inheritance:
-    object <- get(contains, envir = parentEnv)()
-    as.environment(object)
+    object <- get(contains, envir = parentEnv, inherits = TRUE)()
+    parent.env(object)
   }
 }
 

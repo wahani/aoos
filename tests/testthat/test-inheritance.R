@@ -39,7 +39,7 @@ test_that("Replacing fields I", {
   })
     
   tmp <- child()
-  expect_is(tmp$get(), "NULL")
+  expect_equal(tmp$get(), "value")
 })
 
 test_that("Replacing fields II", {
@@ -57,6 +57,5 @@ test_that("Replacing fields II", {
     
   tmp <- child()
   expect_equal(tmp$foo(), 2)
-  expect_equal(tmp$get(), 1)
+  expect_equal(tmp$get(), 2)
 })
-
