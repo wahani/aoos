@@ -1,5 +1,19 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
+# Installation
+To install from CRAN:
+
+```r
+install.packages("aoos")
+```
+
+To install from this repo:
+
+```r
+library(devtools)
+install_github("wahani/aoos")
+```
+
 # Another object orientation system in R
 Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Allows to write a lot of small (lines of code) functions as part of the class definition without cluttering the object.
 
@@ -67,10 +81,4 @@ q$remove()
 ## [1] 17
 ```
 
-# Installation
-
-```r
-library(devtools)
-install_github("wahani/aoos")
-```
 
