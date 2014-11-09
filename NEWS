@@ -1,3 +1,4 @@
 Version 0.0.2
 
 - Inheritance: Replacing members of parent is possible.
+- Fix in package-tests, as there are some problems on CRAN.
