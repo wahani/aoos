@@ -55,4 +55,30 @@ q$add(matrix("", ncol = 1000, nrow = 1000))
 summary(q)
 ```
 
+# The use of the self
+
+If it is desirable you can access all (public and private) members using `self` inside the class definition. If you think `self$privateMember <- 1` is better writing style than `privateMember <<- 1` you can do that...
+
+```{r}
+Person <- defineClass("Person", {
+    name <- NA
+    hair <- NA
+    
+    set <- publicFunction(function(name, hair) {
+      if(!missing(name)) self$name <- name
+      if(!missing(hair)) self$hair <- hair
+      self$greet()
+      invisible(self)
+    })
+    
+    greet = function() {
+      cat(paste0("Hello, my name is ", self$name, ".\n"))
+    }
+})
+
+ann <- Person()
+ann$set("Ann", "")
+
+```
+
 
