@@ -47,6 +47,7 @@ q
 ```
 
 ```
+## Approximated memory size: 0 (Mib)
 ## public member:
 ##   add 
 ##   remove
@@ -79,6 +80,20 @@ q$remove()
 
 ```
 ## [1] 17
+```
+
+```r
+q$add(matrix("", ncol = 1000, nrow = 1000))
+summary(q)
+```
+
+```
+##                        Type Size.Mib
+## add          publicFunction      0.0
+## queue                  list      7.6
+## queueIsEmpty       function      0.0
+## remove       publicFunction      0.0
+## self                  Queue      0.0
 ```
 
 

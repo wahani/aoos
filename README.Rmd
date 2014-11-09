@@ -49,9 +49,10 @@ q$add("something")
 q$add(17)
 q$remove()
 q$remove()
-
 q$add(1)$add(2)
 q$remove()
+q$add(matrix("", ncol = 1000, nrow = 1000))
+summary(q)
 ```
 
 
