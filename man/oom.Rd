@@ -4,20 +4,30 @@
 \alias{$,oom-method}
 \alias{$<-,oom-method}
 \alias{oom-class}
+\alias{show,oom-method}
+\alias{summary,oom-method}
 \title{Class oom}
 \usage{
+\S4method{show}{oom}(object)
+
 \S4method{$}{oom}(x, name)
 
 \S4method{$}{oom}(x, name) <- value
+
+\S4method{summary}{oom}(object, ...)
 }
 \arguments{
+\item{object}{object}
+
 \item{x}{object}
 
 \item{name}{member name}
 
 \item{value}{value to assign to. Will throw an error.}
+
+\item{...}{arguments passed to method (not used).}
 }
 \description{
-This is an environment with some methods for access restriction. Don't use it.
+This is an environment with some methods. Every class defined by \code{defineClass} will inherit from oom.
 }
 

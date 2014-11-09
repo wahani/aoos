@@ -2,3 +2,6 @@ Version 0.0.2
 
 - Inheritance: Replacing members of parent is possible.
 - Fix in package-tests, as there are some problems on CRAN.
+- class oom is now VIRTUAL
+- summary method for oom
+- modified show method
