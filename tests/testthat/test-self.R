@@ -24,4 +24,26 @@ test_that("self awareness", {
     expect_is(tmp$doSomething(), "test")
   }
   
+  removeClass("test")
+})
+
+test_that("self can be accessed", {
+  suppressWarnings({
+    test <- defineClass("test", {
+      y <- 2
+      doSomething <- publicFunction(function() {
+        self$y <- self$y + 1
+        invisible(self)
+      })
+      get <- publicFunction(function() {
+        self$y
+      })
+    })
+  })
+    
+  instance <- test()
+  expect_is(instance$doSomething(), "test")
+  expect_equal(instance$get(), 3)
+  
+  removeClass("test")
 })

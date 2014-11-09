@@ -32,6 +32,8 @@ test_that("class-markup", {
   suppressWarnings(tmp2 <- test())
   expect_is(tmp2$get(), "NULL")
   expect_equal(tmp2$publicObject(), "BAM!")
+  
+  removeClass("test")
 })
 
 test_that("default-call", {
@@ -52,4 +54,6 @@ test_that("privacy works", {
   expect_equal(tmp$get(), 1)
   expect_error(tmp$private)
   expect_error(tmp$something <- 1)
+  
+  removeClass("class")
 })

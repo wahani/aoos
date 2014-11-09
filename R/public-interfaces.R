@@ -1,4 +1,5 @@
 setClass("publicFunction", contains = "function")
+setClass("publicValue", contains = "publicFunction")
 
 #' @param x a default value
 #' @param validity an optional validity function for the set method. Returns TRUE or FALSE.
@@ -14,7 +15,7 @@ publicFunction <- function(fun) {
 #' @rdname defineClass
 publicValue <- function(x = NULL, validity = function(x) TRUE) {
   force(x); force(validity)
-  publicFunction(function(value) {
+  new("publicValue", .Data = function(value) {
     if(missing(value)) {
       return(x)
     } else {

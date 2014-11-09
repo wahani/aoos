@@ -1,7 +1,7 @@
 Package: aoos
 Type: Package
 Title: Another Object Orientation System
-Version: 0.0.2
+Version: 0.0.3
 Date: 2014-11-09
 Author: Sebastian Warnholz
 Maintainer: Sebastian Warnholz <wahani@gmail.com>

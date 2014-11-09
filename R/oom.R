@@ -25,19 +25,61 @@ setMethod("show", signature = c(object = "oom"),
 #' @param name member name
 setMethod("$", signature = c(x = "oom"),
           function(x, name) {
-            if(exists(name, envir = x, inherits = FALSE)) {
-              get(name, envir = x)
-            } else {
-              stop(paste(name, "is not a public member."))
-            }
+            
+            privacy <- !any(sapply(envirSearch(list(parent.frame())), 
+                                   identical, y = parent.env(x)))
+            
+            getMember(name, x, privacy)
+            
+#             if(inherits(member, "publicValue")) {
+#               member()
+#             } else {
+#               member
+#             }
           })
+
+envirSearch <- function(envList = list(environment())) {
+  if(any(sapply(envList, identical, y = emptyenv()))) {
+    envList
+  } else {
+    envirSearch(c(envList, list(parent.env(envList[[length(envList)]]))))
+  }
+}
+
+getMember <- function(name, object, privacy = FALSE) {
+  if(!privacy) {
+    get(name, envir = parent.env(object))
+  } else {
+    if(exists(name, envir = object, inherits = FALSE)) {
+      get(name, envir = parent.env(object))
+    } else {
+      stop(paste(name, "is not a public member."))
+    }
+  }
+}
+
 
 #' @rdname oom
 #' @export
 #' @param value value to assign to. Will throw an error.
 setMethod("$<-", signature = c(x = "oom"),
           function(x, name, value) {
-            stop("If you want to add public fields use 'publicValue' in the class definition.")
+            
+            privacy <- !any(sapply(envirSearch(list(parent.frame())), 
+                                   identical, y = parent.env(x)))
+            
+            #             member <- getMember(name, x, privacy)
+            
+            #             if(inherits(member, "publicValue")) {
+            #               member(value)
+            #             } else {
+            if(privacy) {
+              stop("If you need to extend object, modify class definition.")
+            } else {
+              assign(name, value = value, envir = parent.env(x))
+            }
+            #             }
+            x
           })
 
 #' @rdname oom

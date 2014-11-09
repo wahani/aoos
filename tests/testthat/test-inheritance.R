@@ -23,6 +23,9 @@ test_that("Inheritance", {
   expect_equal(tmp$get(), "?!: ")
   expect_equal(tmp$set("s"), "s")
   expect_equal(tmp$get(), "?!: s")
+  
+  removeClass("parent")
+  removeClass("child")
 })
 
 test_that("Replacing fields I", {
@@ -40,6 +43,9 @@ test_that("Replacing fields I", {
     
   tmp <- child()
   expect_equal(tmp$get(), "value")
+  
+  removeClass("parent")
+  removeClass("child")
 })
 
 test_that("Replacing fields II", {
@@ -58,4 +64,7 @@ test_that("Replacing fields II", {
   tmp <- child()
   expect_equal(tmp$foo(), 2)
   expect_equal(tmp$get(), 2)
+  
+  removeClass("parent")
+  removeClass("child")
 })
