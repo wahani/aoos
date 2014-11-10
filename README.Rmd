@@ -12,6 +12,22 @@ library(devtools)
 install_github("wahani/aoos")
 ```
 
+```{r, echo=FALSE}
+getLocalPackageUpdates <- function(package) {
+  ps <- summary(packageStatus())
+  cranVersion <- ps$avail[rownames(ps$avail) == package, "Version"]
+  localVersion <- ps$inst[rownames(ps$inst) == package, "Version"]
+  cat("Version on CRAN:", cranVersion, "\n")
+  cat("Development Version:", localVersion, "\n\n")
+  cat("Updates in package NEWS-file since last release to CRAN:\n\n")
+  print(news(Version > cranVersion, package = package))
+  invisible(NULL)
+}
+
+getLocalPackageUpdates("aoos")
+```
+
+
 # Another object orientation system in R
 Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Allows to write a lot of small (lines of code) functions as part of the class definition without cluttering the object.
 

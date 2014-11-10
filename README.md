@@ -14,6 +14,31 @@ library(devtools)
 install_github("wahani/aoos")
 ```
 
+
+```
+## Version on CRAN: 0.0.1 
+## Development Version: 0.0.3 
+## 
+## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.0.3:
+## 
+##     o   Access self inside class definitions also for private objects.
+## 
+## Changes in version 0.0.2:
+## 
+##     o   Inheritance: Replacing members of parent is possible.
+## 
+##     o   Fix in package-tests, as there are some problems on CRAN.
+## 
+##     o   class oom is now VIRTUAL.
+## 
+##     o   summary method for oom.
+## 
+##     o   modified show method.
+```
+
+
 # Another object orientation system in R
 Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Allows to write a lot of small (lines of code) functions as part of the class definition without cluttering the object.
 
