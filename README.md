@@ -46,7 +46,7 @@ This example is adapted from the [R6](https://github.com/wch/R6) package from th
 
 
 ```r
-library(aoos)
+suppressPackageStartupMessages(library(aoos))
 
 Queue <- defineClass("Queue", {
   
@@ -151,4 +151,22 @@ ann$set("Ann", "")
 ## Hello, my name is Ann.
 ```
 
+If you return `self` as in the `set` function, you can (for whatever reason) replace the object by the call to `set`:
+
+
+```r
+ann <- ann$set("not Ann")
+```
+
+```
+## Hello, my name is not Ann.
+```
+
+```r
+ann$set()
+```
+
+```
+## Hello, my name is not Ann.
+```
 

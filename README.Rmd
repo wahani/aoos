@@ -34,7 +34,7 @@ Another implementation of object-orientation in R. Private and public methods ar
 This example is adapted from the [R6](https://github.com/wch/R6) package from the [private members example](http://rpubs.com/wch/24456) to have a direct comparison.
 
 ```{r}
-library(aoos)
+suppressPackageStartupMessages(library(aoos))
 
 Queue <- defineClass("Queue", {
   
@@ -97,4 +97,10 @@ ann$set("Ann", "")
 
 ```
 
+If you return `self` as in the `set` function, you can (for whatever reason) replace the object by the call to `set`:
+
+```{r}
+ann <- ann$set("not Ann")
+ann$set()
+```
 
