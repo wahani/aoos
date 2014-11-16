@@ -1,3 +1,6 @@
+Version 0.0.4
+- Can define function 'init' which will be called if arguments are supplied to the constructor.
+
 Version 0.0.3
 
 - Access self inside class definitions also for private objects.

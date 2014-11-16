@@ -16,26 +16,14 @@ install_github("wahani/aoos")
 
 
 ```
-## Version on CRAN: 0.0.1 
-## Development Version: 0.0.3 
+## Version on CRAN: 0.0.3 
+## Development Version: 0.0.4 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
 ## 
-## Changes in version 0.0.3:
+## Changes in version 0.0.4:
 ## 
-##     o   Access self inside class definitions also for private objects.
-## 
-## Changes in version 0.0.2:
-## 
-##     o   Inheritance: Replacing members of parent is possible.
-## 
-##     o   Fix in package-tests, as there are some problems on CRAN.
-## 
-##     o   class oom is now VIRTUAL.
-## 
-##     o   summary method for oom.
-## 
-##     o   modified show method.
+##     o   Can define function 'init' which will be called if arguments are supplied to the constructor.
 ```
 
 

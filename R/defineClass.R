@@ -43,10 +43,10 @@ defineClass <- function(name, expr, contains = NULL) {
     arrangeEnvironment(e)
   }
   
-  const <- function() {
+  const <- function(...) {
     object <- do.call("new", c(list(Class = name), .xData = getMember()))
     parent.env(object)$self <- object
-    object
+    init(object, ...)
   }
   
   setClass(name, where = parentEnv, contains = if(is.null(contains)) "oom" else contains)
@@ -83,4 +83,15 @@ arrangeEnvironment <- function(e) {
   parent.env(f) <- e
 #   e$self <- e
   f
+}
+
+init <- function(object, ...) {
+  if(length(list(...))) {
+    if(exists("init", envir = parent.env(object), inherits = FALSE)) {
+      parent.env(object)$init(...)
+    } else {
+      stop("Found no function 'init'.")
+    }
+  }
+  object
 }

@@ -57,3 +57,21 @@ test_that("privacy works", {
   
   removeClass("class")
 })
+
+
+test_that("'init' function is executed", {
+  suppressWarnings({
+    defineClass("test", {
+      
+      name <- publicValue("")
+      
+      init <- function(name) {
+        self$name(name)
+      } 
+      
+    })})
+  
+  expect_equal(test("jaj")$name(), "jaj")
+  
+  removeClass("test")
+})
