@@ -1,6 +1,6 @@
 #' Class oom
 #' 
-#' This is an environment with some methods. Every class defined by \code{defineClass} will inherit from oom.
+#' This is an environment with some methods. Every class defined by \code{defineClass} will inherit from oom. Summary will show a list of public and private members with approximated memory usage.
 #' 
 #' @import methods
 #' @exportClass oom

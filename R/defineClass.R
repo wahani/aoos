@@ -1,26 +1,27 @@
 #' Define a new class
 #' 
-#' \code{defineClass} has two side effects. First it creates an S4-Class and second it creates a constructor function named \code{name}. Use \code{publicFunction} and \code{publicValue} to make things public; everything else will be private.
+#' \code{defineClass} has side effects. It creates a S4-Class which can be used for writing S4-methods. The constructor is the return value of \code{defineClass} and need to be assigned to a varaible named \code{name}. Use \code{publicFunction} and \code{publicValue} to make things public; everything else will be private.
 #'  
 #' @param name character name of the class
 #' @param expr expression
 #' @param contains character name of class from which to inherit
 #' 
 #' @details 
-#' All classes inherit from class "oom" which is a S4-class containing an environment. Inheritance is basically just setting the parent environment and at the same time making public functions available. The constructor function needs to be available and should not be changed. 
+#' All classes inherit from class "oom" which is a S4-class containing an environment. In that environment \code{expr} is evaluated; for inheritance, all \code{expr} from all parents will be evaluated first. The constructor function is the return value of \code{defineClass} and needs to be named \code{name}. 
 #' 
 #' Everything in \code{expr} will be part of the new class definition. If you want to make objects public use \code{publicFunction} and \code{publicValue}. 
 #' 
-#' \code{publicValue} will create a function, if called without argument it will get the value, if called with argument it will set the value. You can set an optional validity function.
+#' \code{publicValue} will create a function, if called without argument it will get the value, if called with argument it will set the value. You can set a validity function.
 #' 
 #' @rdname defineClass
 #' @export
 #' @examples
 #' test <- defineClass("test", {
-#'   x <- publicValue(1)
-#'   y <- NULL
+#'   x <- publicValue("Working ...")
+#'   y <- 0
 #'   doSomething <- publicFunction(function() {
-#'     y <<- y + 1
+#'     self$y <- y + 1
+#'     cat(x(), "\n")
 #'     invisible(self)
 #'   })
 #' })
@@ -45,12 +46,11 @@ defineClass <- function(name, expr, contains = NULL) {
   
   const <- function(...) {
     object <- do.call("new", c(list(Class = name), .xData = getMember()))
-    parent.env(object)$self <- object
     init(object, ...)
   }
   
-  setClass(name, where = parentEnv, contains = if(is.null(contains)) "oom" else contains)
-  assign(name, const, envir = parentEnv)
+  setClass(name, where = parentEnv, 
+           contains = if(is.null(contains)) "oom" else contains)
   
   invisible(const)
 }
@@ -86,6 +86,9 @@ arrangeEnvironment <- function(e) {
 }
 
 init <- function(object, ...) {
+  
+  parent.env(object)$self <- object
+  
   if(length(list(...))) {
     if(exists("init", envir = parent.env(object), inherits = FALSE)) {
       parent.env(object)$init(...)
@@ -93,5 +96,6 @@ init <- function(object, ...) {
       stop("Found no function 'init'.")
     }
   }
+  
   object
 }

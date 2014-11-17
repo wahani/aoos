@@ -25,21 +25,22 @@ publicValue(x = NULL, validity = function(x) TRUE)
 \item{validity}{an optional validity function for the set method. Returns TRUE or FALSE.}
 }
 \description{
-\code{defineClass} has two side effects. First it creates an S4-Class and second it creates a constructor function named \code{name}. Use \code{publicFunction} and \code{publicValue} to make things public; everything else will be private.
+\code{defineClass} has side effects. It creates a S4-Class which can be used for writing S4-methods. The constructor is the return value of \code{defineClass} and need to be assigned to a varaible named \code{name}. Use \code{publicFunction} and \code{publicValue} to make things public; everything else will be private.
 }
 \details{
-All classes inherit from class "oom" which is a S4-class containing an environment. Inheritance is basically just setting the parent environment and at the same time making public functions available. The constructor function needs to be available and should not be changed.
+All classes inherit from class "oom" which is a S4-class containing an environment. In that environment \code{expr} is evaluated; for inheritance, all \code{expr} from all parents will be evaluated first. The constructor function is the return value of \code{defineClass} and needs to be named \code{name}.
 
 Everything in \code{expr} will be part of the new class definition. If you want to make objects public use \code{publicFunction} and \code{publicValue}.
 
-\code{publicValue} will create a function, if called without argument it will get the value, if called with argument it will set the value. You can set an optional validity function.
+\code{publicValue} will create a function, if called without argument it will get the value, if called with argument it will set the value. You can set a validity function.
 }
 \examples{
 test <- defineClass("test", {
-  x <- publicValue(1)
-  y <- NULL
+  x <- publicValue("Working ...")
+  y <- 0
   doSomething <- publicFunction(function() {
-    y <<- y + 1
+    self$y <- y + 1
+    cat(x(), "\\n")
     invisible(self)
   })
 })

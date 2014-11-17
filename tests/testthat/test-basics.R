@@ -38,11 +38,12 @@ test_that("class-markup", {
 
 test_that("default-call", {
   expect_is(suppressWarnings(defineClass("tmp")), "function")
-  expect_true(exists("tmp"))
+  expect_true(isClass("tmp"))
+  removeClass("tmp")
 })
 
 test_that("privacy works", {
-  suppressWarnings({
+  class <- suppressWarnings({
     defineClass("class", {
       private <- 2
       get <- publicFunction(function() 1)
@@ -60,7 +61,7 @@ test_that("privacy works", {
 
 
 test_that("'init' function is executed", {
-  suppressWarnings({
+  test <- suppressWarnings({
     defineClass("test", {
       
       name <- publicValue("")

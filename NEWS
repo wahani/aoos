@@ -1,5 +1,6 @@
 Version 0.0.4
 - Can define function 'init' which will be called if arguments are supplied to the constructor.
+- Constructor is not assigned as a side effect of defineClass.
 
 Version 0.0.3
 

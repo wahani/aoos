@@ -24,6 +24,8 @@ install_github("wahani/aoos")
 ## Changes in version 0.0.4:
 ## 
 ##     o   Can define function 'init' which will be called if arguments are supplied to the constructor.
+## 
+##     o   Constructor is not assigned as a side effect of defineClass.
 ```
 
 

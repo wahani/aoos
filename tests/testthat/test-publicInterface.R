@@ -1,7 +1,7 @@
 context("Public interface")
 test_that("Validity function for set", {
   
-  suppressWarnings({
+  test <- suppressWarnings({
     test <- defineClass("test", {
       x <- publicValue(5, function(x) inherits(x, what = "numeric"))
     })
