@@ -1,17 +1,17 @@
 #' Define a new class
 #' 
-#' \code{defineClass} has side effects. It creates a S4-Class which can be used for writing S4-methods. The constructor is the return value of \code{defineClass} and need to be assigned to a varaible named \code{name}. Use \code{publicFunction} and \code{publicValue} to make things public; everything else will be private.
+#' \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}. Use \code{publicFunction} and \code{publicValue} to make things public; everything else will be private.
 #'  
 #' @param name character name of the class
 #' @param expr expression
 #' @param contains character name of class from which to inherit
 #' 
 #' @details 
-#' All classes inherit from class "oom" which is a S4-class containing an environment. In that environment \code{expr} is evaluated; for inheritance, all \code{expr} from all parents will be evaluated first. The constructor function is the return value of \code{defineClass} and needs to be named \code{name}. 
+#' \code{defineClass} creates a S4-Class which can be used for standard S4 method dispatch. It will also set the method 'initialize' which need not to be changed. If you want to have some operations carried out on initialization use a function definition named \code{init} as part of \code{expr}. The return value from \code{defineClass} is the constructor function. It has the argument \code{...} which will be passed to \code{init}.
 #' 
-#' Everything in \code{expr} will be part of the new class definition. If you want to make objects public use \code{publicFunction} and \code{publicValue}. 
+#' All classes defined with \code{defineClass} inherit from class "oom" which is a S4-class containing an environment. In that environment \code{expr} is evaluated; for inheritance, all \code{expr} from all parents will be evaluated first. The constructor function is the return value of \code{defineClass} and when called with arguments they are passed to a function named \code{init} you can define. 
 #' 
-#' \code{publicValue} will create a function, if called without argument it will get the value, if called with argument it will set the value. You can set a validity function.
+#' Everything in \code{expr} will be part of the new class definition. If you want to make objects public use \code{publicFunction} and \code{publicValue}. \code{publicValue} will create a function, if called without argument it will get the value, if called with argument it will set the value.
 #' 
 #' @rdname defineClass
 #' @export
@@ -45,12 +45,18 @@ defineClass <- function(name, expr, contains = NULL) {
   }
   
   const <- function(...) {
-    object <- do.call("new", c(list(Class = name), .xData = getMember()))
+    object <- do.call("new", c(list(Class = name)))
     init(object, ...)
   }
   
   setClass(name, where = parentEnv, 
            contains = if(is.null(contains)) "oom" else contains)
+  
+  setMethod("initialize", name,
+            function(.Object, ...) {
+              .Object@.xData <- getMember()
+              parent.env(.Object)$self <- .Object
+            }, where = parentEnv)
   
   invisible(const)
 }
@@ -69,7 +75,7 @@ setEnvironment <- function(contains, parentEnv) {
   if(is.null(contains)) {
     new.env(parent = parentEnv)
   } else {
-    object <- get(contains, envir = parentEnv, inherits = TRUE)()
+    object <- new(contains)
     parent.env(object)
   }
 }
@@ -86,8 +92,6 @@ arrangeEnvironment <- function(e) {
 }
 
 init <- function(object, ...) {
-  
-  parent.env(object)$self <- object
   
   if(length(list(...))) {
     if(exists("init", envir = parent.env(object), inherits = FALSE)) {

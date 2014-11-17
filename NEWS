@@ -1,6 +1,10 @@
 Version 0.0.4
 - Can define function 'init' which will be called if arguments are supplied to the constructor.
 - Constructor is not assigned as a side effect of defineClass.
+- defineClass has new side effect: S4 method for 'initialize'
+- defineClass lost side effect: constructor is not assigned to the class-name
+- Constructor functions can be named differnet from the class-name
+- S4-constructor 'new' can be used to create a new object
 
 Version 0.0.3
 

@@ -26,6 +26,14 @@ install_github("wahani/aoos")
 ##     o   Can define function 'init' which will be called if arguments are supplied to the constructor.
 ## 
 ##     o   Constructor is not assigned as a side effect of defineClass.
+## 
+##     o   defineClass has new side effect: S4 method for 'initialize'
+## 
+##     o   defineClass lost side effect: constructor is not assigned to the class-name
+## 
+##     o   Constructor functions can be named differnet from the class-name
+## 
+##     o   S4-constructor 'new' can be used to create a new object
 ```
 
 

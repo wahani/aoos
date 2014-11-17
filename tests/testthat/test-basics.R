@@ -76,3 +76,24 @@ test_that("'init' function is executed", {
   
   removeClass("test")
 })
+
+test_that("Naming of constructor functions", {
+  constTest <- suppressWarnings({
+    defineClass("test", {
+      x <- publicValue()
+      })
+  })
+  
+  tmp <- constTest()
+  tmp1 <- new("test")
+  
+  tmp$x(2)
+  
+  expect_is(tmp, "test")
+  expect_is(tmp1, "test")
+  expect_is(tmp1$x(), "NULL")
+  expect_equal(tmp$x(), 2)
+  
+  removeClass("test")
+})
+
