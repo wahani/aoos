@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Index. aoos 0.0.4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Sebastian Warnholz">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">aoos 0.0.4</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <div class="row">
+  <div class="span8">
+    <p><a href="https://travis-ci.org/wahani/aoos"><img src="https://travis-ci.org/wahani/aoos.png?branch=master" alt="Build Status"/></a></p>
+
+<h1>Installation</h1>
+
+<p>To install from CRAN:</p>
+
+<pre><code class="r">install.packages(&quot;aoos&quot;)
+</code></pre>
+
+<p>To install from this repo:</p>
+
+<pre><code class="r">library(devtools)
+install_github(&quot;wahani/aoos&quot;)
+</code></pre>
+
+<pre><code>## Version on CRAN: 0.0.3 
+## Development Version: 0.0.4 
+## 
+## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.0.4:
+## 
+##     o   Can define function &#39;init&#39; which will be called if arguments are supplied to the constructor.
+## 
+##     o   Constructor is not assigned as a side effect of defineClass.
+## 
+##     o   defineClass has new side effect: S4 method for &#39;initialize&#39;
+## 
+##     o   defineClass lost side effect: constructor is not assigned to the class-name
+## 
+##     o   Constructor functions can be named differnet from the class-name
+## 
+##     o   S4-constructor &#39;new&#39; can be used to create a new object
+</code></pre>
+
+<h1>Another object orientation system in R</h1>
+
+<p>Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Allows to write a lot of small (lines of code) functions as part of the class definition without cluttering the object.</p>
+
+<p>This example is adapted from the <a href="https://github.com/wch/R6">R6</a> package from the <a href="http://rpubs.com/wch/24456">private members example</a> to have a direct comparison.</p>
+
+<pre><code class="r">suppressPackageStartupMessages(library(aoos))
+
+Queue &lt;- defineClass(&quot;Queue&quot;, {
+
+  queue &lt;- list()
+
+  add &lt;- publicFunction(function(x) {
+      queue &lt;&lt;- c(queue, list(x))
+      invisible(self)
+    })
+
+  remove &lt;- publicFunction(function() {
+      if (queueIsEmpty()) return(NULL)
+      head &lt;- queue[[1]]
+      queue &lt;&lt;- queue[-1]
+      head
+    })
+
+  queueIsEmpty &lt;- function() length(queue) == 0
+})
+
+q &lt;- Queue()
+q
+</code></pre>
+
+<pre><code>## Approximated memory size: 0 (Mib)
+## public member:
+##   add 
+##   remove
+</code></pre>
+
+<pre><code class="r">q$add(5)
+q$add(&quot;something&quot;)
+q$add(17)
+q$remove()
+</code></pre>
+
+<pre><code>## [1] 5
+</code></pre>
+
+<pre><code class="r">q$remove()
+</code></pre>
+
+<pre><code>## [1] &quot;something&quot;
+</code></pre>
+
+<pre><code class="r">q$add(1)$add(2)
+q$remove()
+</code></pre>
+
+<pre><code>## [1] 17
+</code></pre>
+
+<pre><code class="r">q$add(matrix(&quot;&quot;, ncol = 1000, nrow = 1000))
+summary(q)
+</code></pre>
+
+<pre><code>##                        Type Size.Mib
+## add          publicFunction      0.0
+## queue                  list      7.6
+## queueIsEmpty       function      0.0
+## remove       publicFunction      0.0
+## self                  Queue      0.0
+</code></pre>
+
+<h1>The use of the self</h1>
+
+<p>If it is desirable you can access all (public and private) members using <code>self</code> inside the class definition. If you think <code>self$privateMember &lt;- 1</code> is better writing style than <code>privateMember &lt;&lt;- 1</code> you can do that&hellip;</p>
+
+<pre><code class="r">Person &lt;- defineClass(&quot;Person&quot;, {
+    name &lt;- NA
+    hair &lt;- NA
+
+    set &lt;- publicFunction(function(name, hair) {
+      if(!missing(name)) self$name &lt;- name
+      if(!missing(hair)) self$hair &lt;- hair
+      self$greet()
+      invisible(self)
+    })
+
+    greet = function() {
+      cat(paste0(&quot;Hello, my name is &quot;, self$name, &quot;.\n&quot;))
+    }
+})
+
+ann &lt;- Person()
+ann$set(&quot;Ann&quot;, &quot;&quot;)
+</code></pre>
+
+<pre><code>## Hello, my name is Ann.
+</code></pre>
+
+<p>If you return <code>self</code> as in the <code>set</code> function, you can (for whatever reason) replace the object by the call to <code>set</code>:</p>
+
+<pre><code class="r">ann &lt;- ann$set(&quot;not Ann&quot;)
+</code></pre>
+
+<pre><code>## Hello, my name is not Ann.
+</code></pre>
+
+<pre><code class="r">ann$set()
+</code></pre>
+
+<pre><code>## Hello, my name is not Ann.
+</code></pre>
+
+
+    <h2>Help topics</h2>
+
+    <h3></h3>
+    
+    
+    <ul class="index">
+        
+      <li>
+        <code><a href="defineClass.html">defineClass</a></code>(publicFunction, publicValue)<br />Define a new class</li>
+            
+      <li>
+        <code><a href="oom.html">oom-class</a></code>($,oom-method, $&lt;-,oom-method, show,oom-method, summary,oom-method)<br />Class oom</li>
+    
+    </ul>
+  </div>
+  
+  <div class="span3 offset1">
+        
+    <h2>Dependencies</h2>
+    <ul>
+      <li><strong>Depends</strong>: methods</li>
+      <li><strong>Imports</strong>: </li>
+      <li><strong>Suggests</strong>: testthat</li>
+      <li><strong>Extends</strong>: </li>
+    </ul>
+     
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
