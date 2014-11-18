@@ -1,5 +1,10 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
+# Another object orientation system in R
+```{r, results='asis', echo=FALSE}
+cat(gsub("\\n   ", "", packageDescription("aoos", fields = "Description")))
+```
+
 # Installation
 To install from CRAN:
 ```{r, eval=FALSE}
@@ -27,10 +32,7 @@ getLocalPackageUpdates <- function(package) {
 getLocalPackageUpdates("aoos")
 ```
 
-
-# Another object orientation system in R
-Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Allows to write a lot of small (lines of code) functions as part of the class definition without cluttering the object.
-
+# Example I
 This example is adapted from the [R6](https://github.com/wch/R6) package from the [private members example](http://rpubs.com/wch/24456) to have a direct comparison.
 
 ```{r}
@@ -73,7 +75,9 @@ summary(q)
 
 # The use of the self
 
-If it is desirable you can access all (public and private) members using `self` inside the class definition. If you think `self$privateMember <- 1` is better writing style than `privateMember <<- 1` you can do that...
+This example is also adapted from the [R6](https://github.com/wch/R6) package from the [basics example](http://rpubs.com/wch/24456).
+
+If it is desirable you can access all (public and private) members using `self` inside the class definition. Maybe you want to write `self$privateMember <- 1` instead of `privateMember <<- 1`...
 
 ```{r}
 Person <- defineClass("Person", {
@@ -97,10 +101,10 @@ ann$set("Ann", "")
 
 ```
 
-If you return `self` as in the `set` function, you can (for whatever reason) replace the object by the call to `set`:
+If you return `self` as in the `set` function -- `self` and the `ann` are both pointing to the same object -- you can chain method calls.
 
 ```{r}
-ann <- ann$set("not Ann")
-ann$set()
+identical(ann, ann$set("not Ann"))
+ann$set()$set()
 ```
 

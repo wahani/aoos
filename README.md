@@ -1,5 +1,8 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
+# Another object orientation system in R
+Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Has reference semantics and is build around S4. Hopefully improves readability of your code has auto-complete in RStudio for public member functions.
+
 # Installation
 To install from CRAN:
 
@@ -25,8 +28,6 @@ install_github("wahani/aoos")
 ## 
 ##     o   Can define function 'init' which will be called if arguments are supplied to the constructor.
 ## 
-##     o   Constructor is not assigned as a side effect of defineClass.
-## 
 ##     o   defineClass has new side effect: S4 method for 'initialize'
 ## 
 ##     o   defineClass lost side effect: constructor is not assigned to the class-name
@@ -36,10 +37,7 @@ install_github("wahani/aoos")
 ##     o   S4-constructor 'new' can be used to create a new object
 ```
 
-
-# Another object orientation system in R
-Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Allows to write a lot of small (lines of code) functions as part of the class definition without cluttering the object.
-
+# Example I
 This example is adapted from the [R6](https://github.com/wch/R6) package from the [private members example](http://rpubs.com/wch/24456) to have a direct comparison.
 
 
@@ -121,7 +119,9 @@ summary(q)
 
 # The use of the self
 
-If it is desirable you can access all (public and private) members using `self` inside the class definition. If you think `self$privateMember <- 1` is better writing style than `privateMember <<- 1` you can do that...
+This example is also adapted from the [R6](https://github.com/wch/R6) package from the [basics example](http://rpubs.com/wch/24456).
+
+If it is desirable you can access all (public and private) members using `self` inside the class definition. Maybe you want to write `self$privateMember <- 1` instead of `privateMember <<- 1`...
 
 
 ```r
@@ -149,22 +149,27 @@ ann$set("Ann", "")
 ## Hello, my name is Ann.
 ```
 
-If you return `self` as in the `set` function, you can (for whatever reason) replace the object by the call to `set`:
+If you return `self` as in the `set` function -- `self` and the `ann` are both pointing to the same object -- you can chain method calls.
 
 
 ```r
-ann <- ann$set("not Ann")
+identical(ann, ann$set("not Ann"))
 ```
 
 ```
 ## Hello, my name is not Ann.
 ```
 
+```
+## [1] TRUE
+```
+
 ```r
-ann$set()
+ann$set()$set()
 ```
 
 ```
+## Hello, my name is not Ann.
 ## Hello, my name is not Ann.
 ```
 
