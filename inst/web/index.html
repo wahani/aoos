@@ -39,6 +39,10 @@
   <div class="span8">
     <p><a href="https://travis-ci.org/wahani/aoos"><img src="https://travis-ci.org/wahani/aoos.png?branch=master" alt="Build Status"/></a></p>
 
+<h1>Another object orientation system in R</h1>
+
+<p>Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Has reference semantics and is build around S4. Hopefully improves readability of your code has auto-complete in RStudio for public member functions.</p>
+
 <h1>Installation</h1>
 
 <p>To install from CRAN:</p>
@@ -61,8 +65,6 @@ install_github(&quot;wahani/aoos&quot;)
 ## 
 ##     o   Can define function &#39;init&#39; which will be called if arguments are supplied to the constructor.
 ## 
-##     o   Constructor is not assigned as a side effect of defineClass.
-## 
 ##     o   defineClass has new side effect: S4 method for &#39;initialize&#39;
 ## 
 ##     o   defineClass lost side effect: constructor is not assigned to the class-name
@@ -72,9 +74,7 @@ install_github(&quot;wahani/aoos&quot;)
 ##     o   S4-constructor &#39;new&#39; can be used to create a new object
 </code></pre>
 
-<h1>Another object orientation system in R</h1>
-
-<p>Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Allows to write a lot of small (lines of code) functions as part of the class definition without cluttering the object.</p>
+<h1>Example I</h1>
 
 <p>This example is adapted from the <a href="https://github.com/wch/R6">R6</a> package from the <a href="http://rpubs.com/wch/24456">private members example</a> to have a direct comparison.</p>
 
@@ -145,7 +145,9 @@ summary(q)
 
 <h1>The use of the self</h1>
 
-<p>If it is desirable you can access all (public and private) members using <code>self</code> inside the class definition. If you think <code>self$privateMember &lt;- 1</code> is better writing style than <code>privateMember &lt;&lt;- 1</code> you can do that&hellip;</p>
+<p>This example is also adapted from the <a href="https://github.com/wch/R6">R6</a> package from the <a href="http://rpubs.com/wch/24456">basics example</a>.</p>
+
+<p>If it is desirable you can access all (public and private) members using <code>self</code> inside the class definition. Maybe you want to write <code>self$privateMember &lt;- 1</code> instead of <code>privateMember &lt;&lt;- 1</code>&hellip;</p>
 
 <pre><code class="r">Person &lt;- defineClass(&quot;Person&quot;, {
     name &lt;- NA
@@ -170,18 +172,22 @@ ann$set(&quot;Ann&quot;, &quot;&quot;)
 <pre><code>## Hello, my name is Ann.
 </code></pre>
 
-<p>If you return <code>self</code> as in the <code>set</code> function, you can (for whatever reason) replace the object by the call to <code>set</code>:</p>
+<p>If you return <code>self</code> as in the <code>set</code> function &ndash; <code>self</code> and the <code>ann</code> are both pointing to the same object &ndash; you can chain method calls.</p>
 
-<pre><code class="r">ann &lt;- ann$set(&quot;not Ann&quot;)
+<pre><code class="r">identical(ann, ann$set(&quot;not Ann&quot;))
 </code></pre>
 
 <pre><code>## Hello, my name is not Ann.
 </code></pre>
 
-<pre><code class="r">ann$set()
+<pre><code>## [1] TRUE
+</code></pre>
+
+<pre><code class="r">ann$set()$set()
 </code></pre>
 
 <pre><code>## Hello, my name is not Ann.
+## Hello, my name is not Ann.
 </code></pre>
 
 
