@@ -1,15 +1,15 @@
-#' Class oom
+#' Class aoos
 #' 
-#' This is an environment with some methods. Every class defined by \code{defineClass} will inherit from oom. Summary will show a list of public and private members with approximated memory usage.
+#' This is an environment with some methods. Every class defined by \code{defineClass} will inherit from aoos. Summary will show a list of public and private members with approximated memory usage.
 #' 
 #' @import methods
-#' @exportClass oom
-#' @rdname oom
-setClass("oom", contains = c("environment", "VIRTUAL"))
+#' @exportClass aoos
+#' @rdname aoos
+setClass("aoos", contains = c("environment", "VIRTUAL"))
 
-#' @rdname oom
+#' @rdname aoos
 #' @export
-setMethod("show", signature = c(object = "oom"), 
+setMethod("show", signature = c(object = "aoos"), 
           function(object) {
             cat("Approximated memory size:", 
                 sum(envSize(parent.env(object))$Size), 
@@ -19,11 +19,11 @@ setMethod("show", signature = c(object = "oom"),
             #             print(env.profile(as.environment(object)))
           })
 
-#' @rdname oom
+#' @rdname aoos
 #' @export
 #' @param x object
 #' @param name member name
-setMethod("$", signature = c(x = "oom"),
+setMethod("$", signature = c(x = "aoos"),
           function(x, name) {
             
             privacy <- !any(sapply(envirSearch(list(parent.frame())), 
@@ -59,10 +59,10 @@ getMember <- function(name, object, privacy = FALSE) {
 }
 
 
-#' @rdname oom
+#' @rdname aoos
 #' @export
 #' @param value value to assign to. Will throw an error.
-setMethod("$<-", signature = c(x = "oom"),
+setMethod("$<-", signature = c(x = "aoos"),
           function(x, name, value) {
             
             privacy <- !any(sapply(envirSearch(list(parent.frame())), 
@@ -82,11 +82,11 @@ setMethod("$<-", signature = c(x = "oom"),
             x
           })
 
-#' @rdname oom
+#' @rdname aoos
 #' @param object object
 #' @param ... arguments passed to method (not used).
 #' @export
-setMethod("summary", signature = c(object = "oom"),
+setMethod("summary", signature = c(object = "aoos"),
           function(object, ...) {
             envSize(parent.env(object))
           })

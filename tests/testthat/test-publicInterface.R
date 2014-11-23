@@ -3,7 +3,7 @@ test_that("Validity function for set", {
   
   test <- suppressWarnings({
     test <- defineClass("test", {
-      x <- publicValue(5, function(x) inherits(x, what = "numeric"))
+      x <- public(5, function(x) inherits(x, what = "numeric"))
     })
   })
   
@@ -14,4 +14,13 @@ test_that("Validity function for set", {
   expect_error(tmp$x("s"))
   
   removeClass("test")
+})
+
+test_that("publicValue", {
+  x <- publicValue()
+  expect_is(x(), "NULL")
+  expect_equal(x(1), 1)
+  expect_equal(x(), 1)
+  expect_is(public(function() 1), "publicFunction")
+  expect_is(public(1), "publicValue")
 })

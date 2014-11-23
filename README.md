@@ -24,6 +24,12 @@ install_github("wahani/aoos")
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
 ## 
+## Changes in version 0.0.5:
+## 
+##     o   Use the method public instead of publicFunction and publicValue
+## 
+##     o   Renaming of class oom to aoos
+## 
 ## Changes in version 0.0.4:
 ## 
 ##     o   Can define function 'init' which will be called if arguments are supplied to the constructor.
@@ -42,18 +48,18 @@ This example is adapted from the [R6](https://github.com/wch/R6) package from th
 
 
 ```r
-suppressPackageStartupMessages(library(aoos))
+library(aoos)
 
 Queue <- defineClass("Queue", {
   
   queue <- list()
   
-  add <- publicFunction(function(x) {
+  add <- public(function(x) {
       queue <<- c(queue, list(x))
       invisible(self)
     })
   
-  remove <- publicFunction(function() {
+  remove <- public(function() {
       if (queueIsEmpty()) return(NULL)
       head <- queue[[1]]
       queue <<- queue[-1]
@@ -129,14 +135,14 @@ Person <- defineClass("Person", {
     name <- NA
     hair <- NA
     
-    set <- publicFunction(function(name, hair) {
+    set <- public(function(name, hair) {
       if(!missing(name)) self$name <- name
       if(!missing(hair)) self$hair <- hair
       self$greet()
       invisible(self)
     })
     
-    greet = function() {
+    greet <- function() {
       cat(paste0("Hello, my name is ", self$name, ".\n"))
     }
 })

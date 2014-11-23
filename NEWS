@@ -1,3 +1,8 @@
+Version 0.0.5
+
+- Use the method public instead of publicFunction and publicValue
+- Renaming of class oom to aoos
+
 Version 0.0.4
 
 - Can define function 'init' which will be called if arguments are supplied to the constructor.

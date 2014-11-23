@@ -1,20 +1,14 @@
 context("Basics:")
-test_that("publicValue", {
-  x <- publicValue()
-  expect_is(x(), "NULL")
-  expect_equal(x(1), 1)
-  expect_equal(x(), 1)
-})
 
 test_that("class-markup", {
   
   suppressWarnings(
     test <- defineClass("test", {
       .privateObject <- NULL
-      publicObject <- publicValue("BAM!")
-      get <- publicFunction(function() .privateObject)
-      set <- publicFunction(function(value) .privateObject <<- value)
-      doSomethingWithPublicObject <- publicFunction(function() publicObject())
+      publicObject <- public("BAM!")
+      get <- public(function() .privateObject)
+      set <- public(function(value) .privateObject <<- value)
+      doSomethingWithPublicObject <- public(function() publicObject())
     })
     )
   
@@ -46,7 +40,7 @@ test_that("privacy works", {
   class <- suppressWarnings({
     defineClass("class", {
       private <- 2
-      get <- publicFunction(function() 1)
+      get <- public(function() 1)
     })
   })
   
@@ -64,7 +58,7 @@ test_that("'init' function is executed", {
   test <- suppressWarnings({
     defineClass("test", {
       
-      name <- publicValue("")
+      name <- public("")
       
       init <- function(name) {
         self$name(name)
@@ -80,7 +74,7 @@ test_that("'init' function is executed", {
 test_that("Naming of constructor functions", {
   constTest <- suppressWarnings({
     defineClass("test", {
-      x <- publicValue()
+      x <- public()
       })
   })
   

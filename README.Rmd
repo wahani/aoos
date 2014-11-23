@@ -36,18 +36,18 @@ getLocalPackageUpdates("aoos")
 This example is adapted from the [R6](https://github.com/wch/R6) package from the [private members example](http://rpubs.com/wch/24456) to have a direct comparison.
 
 ```{r}
-suppressPackageStartupMessages(library(aoos))
+library(aoos)
 
 Queue <- defineClass("Queue", {
   
   queue <- list()
   
-  add <- publicFunction(function(x) {
+  add <- public(function(x) {
       queue <<- c(queue, list(x))
       invisible(self)
     })
   
-  remove <- publicFunction(function() {
+  remove <- public(function() {
       if (queueIsEmpty()) return(NULL)
       head <- queue[[1]]
       queue <<- queue[-1]
@@ -84,14 +84,14 @@ Person <- defineClass("Person", {
     name <- NA
     hair <- NA
     
-    set <- publicFunction(function(name, hair) {
+    set <- public(function(name, hair) {
       if(!missing(name)) self$name <- name
       if(!missing(hair)) self$hair <- hair
       self$greet()
       invisible(self)
     })
     
-    greet = function() {
+    greet <- function() {
       cat(paste0("Hello, my name is ", self$name, ".\n"))
     }
 })

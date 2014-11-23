@@ -1,0 +1,131 @@
+---
+title: "Introduction"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+# aoos classes
+
+Disclaimer: Most of what this package can do is inspired by the r-package R6. Unlike R6, aoos relies on the mothods package and the S4 class system. It was not written to be superior with respect to efficiency nor will it provide features you can not find in R6 (or R.oo, proto, ...). Use aoos if you want to use object oriented programming as a means to organise your source code and write clean-code. It's all about the appearance.
+
+- An aoos class definition is a R expression. You can just write code and decide which objects are public. This is the strength and weakness of aoos as there is no formal class definition.
+- You can use autocomplete to see public member functions.
+- You can use (and must endure) almost all features of S4.
+
+All examples in the following are addapted from the R6-package.
+
+# Basics
+
+There are three functions you have to remember: 
+- `defineClass`: To define a class...
+- `publicFunction`: To create a public member function. 
+- `publicValue`: To create a get and set method.
+
+Everything you define inside the class definition is private unless you make it public explicitly. Every public meber will inherit from class function. A "public value" is the get/set method for an object hidden behind a closure.
+
+Here is a simple class definition. 
+
+```{r}
+library(aoos)
+
+Person <- defineClass("Person", {
+  
+  personName <- public("")
+  
+  init <- function(name) {
+    self$personName(name)
+    self$greet()
+    }
+  
+  greet <- public(function() {
+    cat(paste0("Hello, my name is ", self$personName(), ".\n"))
+    })
+  })
+```
+
+The return value of defineClass is the constructor function which is assigned to the name `Person`. All arguments to the constructor will be passed on to `init` if you defined it. In the above definition `init` will be private as it is not made public by `publicFuction`.
+
+```{r}
+ann <- Person("Ann")
+ann
+```
+
+Inside the class definition you can use `self` but you do not have to. It just might be more explicit. If you do not use `self` you have to use the super-assignment operator `<<-`. The following illustrates the difference:
+
+```{r}
+Person <- defineClass("Person", {
+  
+  personName <- "" # personName is private
+  
+  init <- function(name) {
+    self$personName <- name # option 1
+    personName <<- name # option 2
+    greet()
+    }
+  
+  greet <- public(function() {
+    cat(paste0("Hello, my name is ", personName, ".\n"))
+    })
+  })
+```
+
+```{r}
+ann <- Person("Ann")
+ann
+# ann$personName # error
+```
+
+```{r}
+Directory <- defineClass("Directory", {
+
+  dirName <- ""
+
+  init <- function(name) {
+    if(missing(name)) {
+      self$dirName <- getwd()
+      } else {
+        if(!file.exists(name)) dir.create(name)
+        self$dirName <- normalizePath(name)
+      }
+  }
+
+  name <- publicFunction(function() {
+    dirName
+  })
+
+  remove <- publicFunction(function(...) {
+    filesInDir <- list.files(path = dirName, ...)
+    if(length(filesInDir)) self - filesInDir else message("No files in directory!")
+  })
+
+  removeAndDestruct <- publicFunction(function(...) {
+    on.exit(gc())
+    self$remove(...)
+    file.remove(dirName)
+    mc <- match.call()
+    objectName <- as.character(mc[[1]])[2]
+    rm(list = objectName, envir = parent.frame())
+  })
+
+})
+
+setMethod("show", signature = c(object = "Directory"),
+          function(object) {
+            print(file.info(list.files(object$name())))
+            })
+
+setMethod("/", signature = c(e1 = "Directory", e2 = "character"),
+          function(e1, e2) paste(e1$name(), "/", e2, sep = ""))
+
+setMethod("-", signature = c(e1 = "Directory", e2 = "character"),
+          function(e1, e2) file.remove(e1/e2))
+
+```
+
+
+
+
