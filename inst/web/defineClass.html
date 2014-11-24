@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>defineClass. aoos 0.0.4</title>
+<title>defineClass. aoos 0.0.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">aoos 0.0.4</a>
+      <a class="brand" href="#">aoos 0.0.5</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -41,8 +41,8 @@
   <div class="span8">
     <h2>Usage</h2>
     <pre><div>defineClass(name, expr, contains&nbsp;=&nbsp;NULL)</div>
-<div>publicFunction(fun)</div>
-<div>publicValue(x&nbsp;=&nbsp;NULL, validity&nbsp;=&nbsp;function(x) TRUE)</div></pre>
+<div>public(x&nbsp;=&nbsp;NULL, validity&nbsp;=&nbsp;function(x) TRUE)</div>
+<div>"public"(x&nbsp;=&nbsp;NULL, validity&nbsp;=&nbsp;function(x) TRUE)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -52,12 +52,10 @@
       <dd>expression</dd>
       <dt>contains</dt>
       <dd>character name of class from which to inherit</dd>
-      <dt>fun</dt>
-      <dd>function definition</dd>
       <dt>x</dt>
-      <dd>a default value</dd>
+      <dd>an object made public</dd>
       <dt>validity</dt>
-      <dd>an optional validity function for the set method. Returns TRUE or FALSE.</dd>
+      <dd>function to check the validity of an object</dd>
     </dl>
     
     <div class="Define a new class">
@@ -68,7 +66,7 @@
     <div class="Description">
       <h2>Description</h2>
       
-      <p><code>defineClass</code> has side effects. The constructor is the return value of <code>defineClass</code>. Use <code>publicFunction</code> and <code>publicValue</code> to make things public; everything else will be private.</p>
+      <p><code>defineClass</code> has side effects. The constructor is the return value of <code>defineClass</code>. Use <code>public</code> to make things public; everything else will be private.</p>
   
     </div>
 
@@ -77,17 +75,17 @@
       
       <p><code>defineClass</code> creates a S4-Class which can be used for standard S4 method dispatch. It will also set the method 'initialize' which need not to be changed. If you want to have some operations carried out on initialization use a function definition named <code>init</code> as part of <code>expr</code>. The return value from <code>defineClass</code> is the constructor function. It has the argument <code>...</code> which will be passed to <code>init</code>.</p>
   
-      <p>All classes defined with <code>defineClass</code> inherit from class "oom" which is a S4-class containing an environment. In that environment <code>expr</code> is evaluated; for inheritance, all <code>expr</code> from all parents will be evaluated first. The constructor function is the return value of <code>defineClass</code> and when called with arguments they are passed to a function named <code>init</code> you can define.</p>
+      <p>All classes defined with <code>defineClass</code> inherit from class "aoos" which is a S4-class containing an environment. In that environment <code>expr</code> is evaluated; for inheritance, all <code>expr</code> from all parents will be evaluated first.</p>
   
-      <p>Everything in <code>expr</code> will be part of the new class definition. If you want to make objects public use <code>publicFunction</code> and <code>publicValue</code>. <code>publicValue</code> will create a function, if called without argument it will get the value, if called with argument it will set the value.</p>
+      <p>Everything in <code>expr</code> will be part of the new class definition. If you want to make objects public use <code>public</code>. If <code>x</code> in a call to <code>public</code> is a function it will be a public member function (method). For any other class the return value of <code>public</code> is a get and set method. If called without argument it will get the value, if called with argument it will set the value. You can define a validity function which will be called whenever the set method is called.</p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'>test &lt;- defineClass(&quot;test&quot;, {
-  x &lt;- publicValue(&quot;Working ...&quot;)
+  x &lt;- public(&quot;Working ...&quot;)
   y &lt;- 0
-  doSomething &lt;- publicFunction(function() {
+  doSomething &lt;- public(function() {
     self$y &lt;- y + 1
     cat(x(), &quot;\n&quot;)
     invisible(self)
@@ -95,7 +93,7 @@
 })
 </div>
 <strong class='warning'>Warning message:
-Created a package name, â€˜2014-11-18 09:00:58â€™, when none found</strong>
+Created a package name, ‘2014-11-24 16:06:56’, when none found</strong>
 <div class='input'>instance &lt;- test()
 ## &lt;strong&gt;Not run&lt;/strong&gt;: 
 # instance$y # error
@@ -117,7 +115,7 @@ instance$x()
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>defineClass</li><li>publicFunction</li><li>publicValue</li>
+      <li>defineClass</li><li>public</li><li>public,function-method</li>
     </ul>
     <ul>
       

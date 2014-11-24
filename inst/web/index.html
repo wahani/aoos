@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Index. aoos 0.0.4</title>
+<title>Index. aoos 0.0.5</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Sebastian Warnholz">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">aoos 0.0.4</a>
+      <a class="brand" href="#">aoos 0.0.5</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -41,7 +41,7 @@
 
 <h1>Another object orientation system in R</h1>
 
-<p>Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Has reference semantics and is build around S4. Hopefully improves readability of your code has auto-complete in RStudio for public member functions.</p>
+<p>Another implementation of object-orientation in R. Has reference semantics and is build around S4. Hopefully improves readability of your code has auto-complete in RStudio for public methods.</p>
 
 <h1>Installation</h1>
 
@@ -57,9 +57,17 @@ install_github(&quot;wahani/aoos&quot;)
 </code></pre>
 
 <pre><code>## Version on CRAN: 0.0.3 
-## Development Version: 0.0.4 
+## Development Version: 0.0.5 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.0.5:
+## 
+##     o   Use the method public instead of publicFunction and publicValue
+## 
+##     o   Renaming of class oom to aoos
+## 
+##     o   Vignette: Introduction
 ## 
 ## Changes in version 0.0.4:
 ## 
@@ -78,18 +86,18 @@ install_github(&quot;wahani/aoos&quot;)
 
 <p>This example is adapted from the <a href="https://github.com/wch/R6">R6</a> package from the <a href="http://rpubs.com/wch/24456">private members example</a> to have a direct comparison.</p>
 
-<pre><code class="r">suppressPackageStartupMessages(library(aoos))
+<pre><code class="r">library(aoos)
 
 Queue &lt;- defineClass(&quot;Queue&quot;, {
 
   queue &lt;- list()
 
-  add &lt;- publicFunction(function(x) {
+  add &lt;- public(function(x) {
       queue &lt;&lt;- c(queue, list(x))
       invisible(self)
     })
 
-  remove &lt;- publicFunction(function() {
+  remove &lt;- public(function() {
       if (queueIsEmpty()) return(NULL)
       head &lt;- queue[[1]]
       queue &lt;&lt;- queue[-1]
@@ -103,7 +111,7 @@ q &lt;- Queue()
 q
 </code></pre>
 
-<pre><code>## Approximated memory size: 0 (Mib)
+<pre><code>## Class: Queue
 ## public member:
 ##   add 
 ##   remove
@@ -153,14 +161,14 @@ summary(q)
     name &lt;- NA
     hair &lt;- NA
 
-    set &lt;- publicFunction(function(name, hair) {
+    set &lt;- public(function(name, hair) {
       if(!missing(name)) self$name &lt;- name
       if(!missing(hair)) self$hair &lt;- hair
       self$greet()
       invisible(self)
     })
 
-    greet = function() {
+    greet &lt;- function() {
       cat(paste0(&quot;Hello, my name is &quot;, self$name, &quot;.\n&quot;))
     }
 })
@@ -199,21 +207,28 @@ ann$set(&quot;Ann&quot;, &quot;&quot;)
     <ul class="index">
         
       <li>
-        <code><a href="defineClass.html">defineClass</a></code>(publicFunction, publicValue)<br />Define a new class</li>
+        <code><a href="aoos.html">aoos-class</a></code>($,aoos-method, $&lt;-,aoos-method, show,aoos-method, summary,aoos-method)<br />Class aoos</li>
             
       <li>
-        <code><a href="oom.html">oom-class</a></code>($,oom-method, $&lt;-,oom-method, show,oom-method, summary,oom-method)<br />Class oom</li>
+        <code><a href="defineClass.html">defineClass</a></code>(public, public,function-method)<br />Define a new class</li>
+            
+      <li>
+        <code><a href="publicInterface.html">publicFunction</a></code>(publicValue)<br />Constructors for public members</li>
     
     </ul>
   </div>
   
   <div class="span3 offset1">
+    <h2>Vignettes</h2>
+    <ul>
+      <li><a href="vignettes/Introduction.html">Introduction</a></li>
+    </ul>
         
     <h2>Dependencies</h2>
     <ul>
       <li><strong>Depends</strong>: methods</li>
       <li><strong>Imports</strong>: </li>
-      <li><strong>Suggests</strong>: testthat</li>
+      <li><strong>Suggests</strong>: testthat, knitr</li>
       <li><strong>Extends</strong>: </li>
     </ul>
      
