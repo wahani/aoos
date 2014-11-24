@@ -8,26 +8,26 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-# aoos classes
+## aoos classes
 
-Disclaimer: Most of what this package can do is inspired by the r-package R6. Unlike R6, aoos relies on the mothods package and the S4 class system. It was not written to be superior with respect to efficiency nor will it provide features you can not find in R6 (or R.oo, proto, ...). Use aoos if you want to use object oriented programming as a means to organise your source code and write clean-code. It's all about the appearance.
+Most of what this package can do is inspired by the r-package R6. Unlike R6, aoos relies on the methods package and the S4 class system. It was not written to be superior with respect to efficiency nor will it provide features you can not find in R6 (or R.oo, proto, ...). Use aoos if you want to use object oriented programming as a means to organise your source code.
 
-- An aoos class definition is a R expression. You can just write code and decide which objects are public. This is the strength and weakness of aoos as there is no formal class definition.
-- You can use autocomplete to see public member functions.
-- You can use (and must endure) almost all features of S4.
+- An aoos class definition is a R expression. You can write code and decide which objects are public. 
+- You can use auto-complete to see public member functions.
+- You can use (and must endure) features of S4.
 
-All examples in the following are addapted from the R6-package.
+All examples in the following are adapted from the R6-package.
 
-# Basics
+## Basics
 
-There are three functions you have to remember: 
+There are two functions you have to remember:
+
 - `defineClass`: To define a class...
-- `publicFunction`: To create a public member function. 
-- `publicValue`: To create a get and set method.
+- `public`: To make something public
 
-Everything you define inside the class definition is private unless you make it public explicitly. Every public meber will inherit from class function. A "public value" is the get/set method for an object hidden behind a closure.
+Everything you define inside the class definition is private unless you declare it public explicitly. Every public member will inherit from class function. A "public field" is the get/set method for an object hidden behind a closure.
 
-Here is a simple class definition. 
+Here is a simple class definition: 
 
 ```{r}
 library(aoos)
@@ -44,19 +44,23 @@ Person <- defineClass("Person", {
   greet <- public(function() {
     cat(paste0("Hello, my name is ", self$personName(), ".\n"))
     })
+  
   })
 ```
 
-The return value of defineClass is the constructor function which is assigned to the name `Person`. All arguments to the constructor will be passed on to `init` if you defined it. In the above definition `init` will be private as it is not made public by `publicFuction`.
+The return value of `defineClass` is the constructor function which is assigned to the name `Person`. All arguments to the constructor will be passed on to `init` if you defined it. In the above definition `init` will be private.
 
 ```{r}
 ann <- Person("Ann")
 ann
+ann$personName()
+ann$personName("not Ann")
+ann$greet()
 ```
 
-Inside the class definition you can use `self` but you do not have to. It just might be more explicit. If you do not use `self` you have to use the super-assignment operator `<<-`. The following illustrates the difference:
+Inside the class definition you can use `self` but you do not have to; It just might be more explicit. You can also use the super-assignment operator `<<-` to replace private fields. The following illustrates the difference:
 
-```{r}
+```{r, eval=FALSE}
 Person <- defineClass("Person", {
   
   personName <- "" # personName is private
@@ -68,64 +72,100 @@ Person <- defineClass("Person", {
     }
   
   greet <- public(function() {
-    cat(paste0("Hello, my name is ", personName, ".\n"))
+    cat(paste0("Hello, my name is ", personName, ".\n")) # before: personName()
     })
   })
 ```
 
+What you have to keep in mind is, that a public field is always hidden behind a get/set method and needs to be treated as a function. Private fields are just R objects and follow copy-on-modify semantics. Besides that the above class definition will work just as expected.
+
+## Predefined methods
+
+aoos classes inherit from class 'aoos'. For that class some S4-methods are defined you can use:
+
+- `show` which prints the public members of an object to the console
+- `summary` which tries to give a clue how much memory is used by an object
+
+For every class you define with `defineClass` the S4 method `initialize` is set. Do not change it. You can also use the S4 constructor `new`, however you cannot pass anything to `init`.
+
 ```{r}
-ann <- Person("Ann")
-ann
-# ann$personName # error
+ann <- new("Person")
+ann$personName("Ann")
+ann$greet()
 ```
 
+
+## Inheritance
+
+A class defined by `defineClass` can inherit from other aoos classes. The expression (`expr` in `defineClass`) is first evaluated for the parent and then for the child in the same environment. So you can override methods and fields. 
+
 ```{r}
-Directory <- defineClass("Directory", {
+Queue <- defineClass("Queue", {
 
-  dirName <- ""
+  queue <- list()
+  
+  init <- function(...) {
+      for (item in list(...)) self$add(item)
+    }
+  
+  add <- public(function(x) {
+      queue <<- c(queue, list(x))
+      invisible(self)
+    })
 
-  init <- function(name) {
-    if(missing(name)) {
-      self$dirName <- getwd()
-      } else {
-        if(!file.exists(name)) dir.create(name)
-        self$dirName <- normalizePath(name)
-      }
-  }
+  remove <- public(function() {
+      if (queueIsEmpty()) return(NULL)
+      head <- queue[[1]]
+      queue <<- queue[-1]
+      head
+    })
 
-  name <- publicFunction(function() {
-    dirName
-  })
-
-  remove <- publicFunction(function(...) {
-    filesInDir <- list.files(path = dirName, ...)
-    if(length(filesInDir)) self - filesInDir else message("No files in directory!")
-  })
-
-  removeAndDestruct <- publicFunction(function(...) {
-    on.exit(gc())
-    self$remove(...)
-    file.remove(dirName)
-    mc <- match.call()
-    objectName <- as.character(mc[[1]])[2]
-    rm(list = objectName, envir = parent.frame())
-  })
-
+  queueIsEmpty <- function() length(queue) == 0
+  
 })
 
-setMethod("show", signature = c(object = "Directory"),
-          function(object) {
-            print(file.info(list.files(object$name())))
-            })
+HistoryQueue <- defineClass("HistoryQueue", contains = "Queue", {
+  
+  head_idx <- 0
+  
+  remove <- public(function() {
+    if ((length(queue) - head_idx) == 0) return(NULL)
+    self$head_idx <- head_idx + 1
+    queue[[head_idx]]
+    })
+  
+  show <- public(function() {
+      cat("Next item is at index", head_idx + 1, "\n")
+      for (i in seq_along(queue)) {
+        cat(i, ": ", queue[[i]], "\n", sep = "")
+      }
+    })
+  
+  })
 
-setMethod("/", signature = c(e1 = "Directory", e2 = "character"),
-          function(e1, e2) paste(e1$name(), "/", e2, sep = ""))
+q <- Queue(5, 6, "foo")
+q$remove()
+q
 
-setMethod("-", signature = c(e1 = "Directory", e2 = "character"),
-          function(e1, e2) file.remove(e1/e2))
-
+hq <- HistoryQueue(5, 6, "foo")
+hq
+hq$show()
+hq$remove()
+hq$show()
+hq$remove()
 ```
 
+Since these classes use the S4 system you can use `setMethod` to define additional methods like `show`. Define S4-methods always outside the `defineClass` function as `expr` will be evaluated every time a new instance is created.
 
+```{r}
+setMethod("show", "HistoryQueue", function(object) {
+  object$show()
+})
 
+hq
+```
+
+## Inheritance across packages
+
+This is a little tricky. `expr` is evaluated in a new environment whenever you create a new instance. If one class inherits from another the same environment is used for the evaluation. Thus, objects of the parent can be replaced; functions defined for the parent and the child share the same environment. The parent environment of an aoos class is the environment in which `defineClass` (for the parent) is called. This will typically be a package namespace. If you define class B in package pkgB which inherits from a class A from package pkgA class B will have the same scoping as a class in pkgA. Whenever you want to use functions from pkgB in class B you have to define them as part of the class definition or refer to them with `pkgB::"functionName"` or `pkgB:::"functionName"`.
 

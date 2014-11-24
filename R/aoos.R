@@ -11,9 +11,7 @@ setClass("aoos", contains = c("environment", "VIRTUAL"))
 #' @export
 setMethod("show", signature = c(object = "aoos"), 
           function(object) {
-            cat("Approximated memory size:", 
-                sum(envSize(parent.env(object))$Size), 
-                "(Mib)\n")
+            cat("Class: ", class(object), "\n", sep = "")
             cat("public member:\n")
             lapply(ls(object), function(n) cat(" ", n, "\n"))
             #             print(env.profile(as.environment(object)))

@@ -32,79 +32,8 @@ getLocalPackageUpdates <- function(package) {
 getLocalPackageUpdates("aoos")
 ```
 
-# Example I
-This example is adapted from the [R6](https://github.com/wch/R6) package from the [private members example](http://rpubs.com/wch/24456) to have a direct comparison.
+# Material
 
-```{r}
-library(aoos)
-
-Queue <- defineClass("Queue", {
-  
-  queue <- list()
-  
-  add <- public(function(x) {
-      queue <<- c(queue, list(x))
-      invisible(self)
-    })
-  
-  remove <- public(function() {
-      if (queueIsEmpty()) return(NULL)
-      head <- queue[[1]]
-      queue <<- queue[-1]
-      head
-    })
-  
-  queueIsEmpty <- function() length(queue) == 0
-})
-
-q <- Queue()
-q
-```
-
-```{r}
-q$add(5)
-q$add("something")
-q$add(17)
-q$remove()
-q$remove()
-q$add(1)$add(2)
-q$remove()
-q$add(matrix("", ncol = 1000, nrow = 1000))
-summary(q)
-```
-
-# The use of the self
-
-This example is also adapted from the [R6](https://github.com/wch/R6) package from the [basics example](http://rpubs.com/wch/24456).
-
-If it is desirable you can access all (public and private) members using `self` inside the class definition. Maybe you want to write `self$privateMember <- 1` instead of `privateMember <<- 1`...
-
-```{r}
-Person <- defineClass("Person", {
-    name <- NA
-    hair <- NA
-    
-    set <- public(function(name, hair) {
-      if(!missing(name)) self$name <- name
-      if(!missing(hair)) self$hair <- hair
-      self$greet()
-      invisible(self)
-    })
-    
-    greet <- function() {
-      cat(paste0("Hello, my name is ", self$name, ".\n"))
-    }
-})
-
-ann <- Person()
-ann$set("Ann", "")
-
-```
-
-If you return `self` as in the `set` function -- `self` and the `ann` are both pointing to the same object -- you can chain method calls.
-
-```{r}
-identical(ann, ann$set("not Ann"))
-ann$set()$set()
-```
-
+- [Introduction Vignette](https://wahani.github.io/aoos/vignettes/Introduction.html)
+- [Homepage](https://wahani.github.io/aoos)
+- [GitHub](https://github.com/wahani/aoos)

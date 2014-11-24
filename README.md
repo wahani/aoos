@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. Private and public methods are part of the class-definition. Has reference semantics and is build around S4. Hopefully improves readability of your code has auto-complete in RStudio for public member functions.
+Another implementation of object-orientation in R. Has reference semantics and is build around S4. Hopefully improves readability of your code has auto-complete in RStudio for public methods.
 
 # Installation
 To install from CRAN:
@@ -20,7 +20,7 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.0.3 
-## Development Version: 0.0.4 
+## Development Version: 0.0.5 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
 ## 
@@ -29,6 +29,8 @@ install_github("wahani/aoos")
 ##     o   Use the method public instead of publicFunction and publicValue
 ## 
 ##     o   Renaming of class oom to aoos
+## 
+##     o   Vignette: Introduction
 ## 
 ## Changes in version 0.0.4:
 ## 
@@ -43,139 +45,8 @@ install_github("wahani/aoos")
 ##     o   S4-constructor 'new' can be used to create a new object
 ```
 
-# Example I
-This example is adapted from the [R6](https://github.com/wch/R6) package from the [private members example](http://rpubs.com/wch/24456) to have a direct comparison.
+# Material
 
-
-```r
-library(aoos)
-
-Queue <- defineClass("Queue", {
-  
-  queue <- list()
-  
-  add <- public(function(x) {
-      queue <<- c(queue, list(x))
-      invisible(self)
-    })
-  
-  remove <- public(function() {
-      if (queueIsEmpty()) return(NULL)
-      head <- queue[[1]]
-      queue <<- queue[-1]
-      head
-    })
-  
-  queueIsEmpty <- function() length(queue) == 0
-})
-
-q <- Queue()
-q
-```
-
-```
-## Approximated memory size: 0 (Mib)
-## public member:
-##   add 
-##   remove
-```
-
-
-```r
-q$add(5)
-q$add("something")
-q$add(17)
-q$remove()
-```
-
-```
-## [1] 5
-```
-
-```r
-q$remove()
-```
-
-```
-## [1] "something"
-```
-
-```r
-q$add(1)$add(2)
-q$remove()
-```
-
-```
-## [1] 17
-```
-
-```r
-q$add(matrix("", ncol = 1000, nrow = 1000))
-summary(q)
-```
-
-```
-##                        Type Size.Mib
-## add          publicFunction      0.0
-## queue                  list      7.6
-## queueIsEmpty       function      0.0
-## remove       publicFunction      0.0
-## self                  Queue      0.0
-```
-
-# The use of the self
-
-This example is also adapted from the [R6](https://github.com/wch/R6) package from the [basics example](http://rpubs.com/wch/24456).
-
-If it is desirable you can access all (public and private) members using `self` inside the class definition. Maybe you want to write `self$privateMember <- 1` instead of `privateMember <<- 1`...
-
-
-```r
-Person <- defineClass("Person", {
-    name <- NA
-    hair <- NA
-    
-    set <- public(function(name, hair) {
-      if(!missing(name)) self$name <- name
-      if(!missing(hair)) self$hair <- hair
-      self$greet()
-      invisible(self)
-    })
-    
-    greet <- function() {
-      cat(paste0("Hello, my name is ", self$name, ".\n"))
-    }
-})
-
-ann <- Person()
-ann$set("Ann", "")
-```
-
-```
-## Hello, my name is Ann.
-```
-
-If you return `self` as in the `set` function -- `self` and the `ann` are both pointing to the same object -- you can chain method calls.
-
-
-```r
-identical(ann, ann$set("not Ann"))
-```
-
-```
-## Hello, my name is not Ann.
-```
-
-```
-## [1] TRUE
-```
-
-```r
-ann$set()$set()
-```
-
-```
-## Hello, my name is not Ann.
-## Hello, my name is not Ann.
-```
-
+- [Introduction Vignette](https://wahani.github.io/aoos/vignettes/Introduction.html)
+- [Homepage](https://wahani.github.io/aoos)
+- [GitHub](https://github.com/wahani/aoos)
