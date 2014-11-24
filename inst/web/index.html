@@ -82,121 +82,13 @@ install_github(&quot;wahani/aoos&quot;)
 ##     o   S4-constructor &#39;new&#39; can be used to create a new object
 </code></pre>
 
-<h1>Example I</h1>
+<h1>Material</h1>
 
-<p>This example is adapted from the <a href="https://github.com/wch/R6">R6</a> package from the <a href="http://rpubs.com/wch/24456">private members example</a> to have a direct comparison.</p>
-
-<pre><code class="r">library(aoos)
-
-Queue &lt;- defineClass(&quot;Queue&quot;, {
-
-  queue &lt;- list()
-
-  add &lt;- public(function(x) {
-      queue &lt;&lt;- c(queue, list(x))
-      invisible(self)
-    })
-
-  remove &lt;- public(function() {
-      if (queueIsEmpty()) return(NULL)
-      head &lt;- queue[[1]]
-      queue &lt;&lt;- queue[-1]
-      head
-    })
-
-  queueIsEmpty &lt;- function() length(queue) == 0
-})
-
-q &lt;- Queue()
-q
-</code></pre>
-
-<pre><code>## Class: Queue
-## public member:
-##   add 
-##   remove
-</code></pre>
-
-<pre><code class="r">q$add(5)
-q$add(&quot;something&quot;)
-q$add(17)
-q$remove()
-</code></pre>
-
-<pre><code>## [1] 5
-</code></pre>
-
-<pre><code class="r">q$remove()
-</code></pre>
-
-<pre><code>## [1] &quot;something&quot;
-</code></pre>
-
-<pre><code class="r">q$add(1)$add(2)
-q$remove()
-</code></pre>
-
-<pre><code>## [1] 17
-</code></pre>
-
-<pre><code class="r">q$add(matrix(&quot;&quot;, ncol = 1000, nrow = 1000))
-summary(q)
-</code></pre>
-
-<pre><code>##                        Type Size.Mib
-## add          publicFunction      0.0
-## queue                  list      7.6
-## queueIsEmpty       function      0.0
-## remove       publicFunction      0.0
-## self                  Queue      0.0
-</code></pre>
-
-<h1>The use of the self</h1>
-
-<p>This example is also adapted from the <a href="https://github.com/wch/R6">R6</a> package from the <a href="http://rpubs.com/wch/24456">basics example</a>.</p>
-
-<p>If it is desirable you can access all (public and private) members using <code>self</code> inside the class definition. Maybe you want to write <code>self$privateMember &lt;- 1</code> instead of <code>privateMember &lt;&lt;- 1</code>&hellip;</p>
-
-<pre><code class="r">Person &lt;- defineClass(&quot;Person&quot;, {
-    name &lt;- NA
-    hair &lt;- NA
-
-    set &lt;- public(function(name, hair) {
-      if(!missing(name)) self$name &lt;- name
-      if(!missing(hair)) self$hair &lt;- hair
-      self$greet()
-      invisible(self)
-    })
-
-    greet &lt;- function() {
-      cat(paste0(&quot;Hello, my name is &quot;, self$name, &quot;.\n&quot;))
-    }
-})
-
-ann &lt;- Person()
-ann$set(&quot;Ann&quot;, &quot;&quot;)
-</code></pre>
-
-<pre><code>## Hello, my name is Ann.
-</code></pre>
-
-<p>If you return <code>self</code> as in the <code>set</code> function &ndash; <code>self</code> and the <code>ann</code> are both pointing to the same object &ndash; you can chain method calls.</p>
-
-<pre><code class="r">identical(ann, ann$set(&quot;not Ann&quot;))
-</code></pre>
-
-<pre><code>## Hello, my name is not Ann.
-</code></pre>
-
-<pre><code>## [1] TRUE
-</code></pre>
-
-<pre><code class="r">ann$set()$set()
-</code></pre>
-
-<pre><code>## Hello, my name is not Ann.
-## Hello, my name is not Ann.
-</code></pre>
+<ul>
+<li>[Introduction Vignette](wahani.github.io/aoos/vignettes/Introduction.html)</li>
+<li>[Homepage](wahani.github.io/aoos)</li>
+<li>[GitHub](github.com/wahani/aoos)</li>
+</ul>
 
 
     <h2>Help topics</h2>
