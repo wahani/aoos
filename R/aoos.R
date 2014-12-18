@@ -46,10 +46,10 @@ envirSearch <- function(envList = list(environment())) {
 
 getMember <- function(name, object, privacy = FALSE) {
   if(!privacy) {
-    get(name, envir = parent.env(object))
+    getPublicRepresentation(get(name, envir = parent.env(object)))
   } else {
     if(exists(name, envir = object, inherits = FALSE)) {
-      get(name, envir = parent.env(object))
+      getPublicRepresentation(get(name, envir = parent.env(object)))
     } else {
       stop(paste(name, "is not a public member."))
     }

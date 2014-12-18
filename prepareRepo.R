@@ -6,15 +6,9 @@ devtools::document()
 devtools::build_vignettes()
 staticdocs::build_site()
 
-file.remove(
-  list.files(path = "vignettes", pattern = "*.html", full.names = TRUE)
-)
-
-# Fix for vignettes -- not correctly build by staticdocs
-# Seems to be OK if template from devtools is used
-# file.copy(list.files(path = "inst/doc/", pattern = "*.html", full.names = TRUE),
-#           list.files(path = "inst/web/vignettes/", pattern = "*.html", full.names = TRUE),
-#           overwrite = TRUE)
+# file.remove(
+#   list.files(path = "vignettes", pattern = "*.html", full.names = TRUE)
+# )
 
 #system('git push origin --delete gh-pages')
 # Windows is strange, you have to copy-paste this:

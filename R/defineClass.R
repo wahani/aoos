@@ -11,7 +11,7 @@
 #' 
 #' All classes defined with \code{defineClass} inherit from class "aoos" which is a S4-class containing an environment. In that environment \code{expr} is evaluated; for inheritance, all \code{expr} from all parents will be evaluated first.
 #' 
-#' Everything in \code{expr} will be part of the new class definition. If you want to make objects public use \code{public}. If \code{x} in a call to \code{public} is a function it will be a public member function (method). For any other class the return value of \code{public} is a get and set method. If called without argument it will get the value, if called with argument it will set the value. You can define a validity function which will be called whenever the set method is called.
+#' Everything in \code{expr} will be part of the new class definition. If you want to make objects public use \code{public}. If \code{x} in a call to \code{public} is a function it will be a public member function (method). For any other class the return value of \code{public} is a get and set method. If called without argument it will get the value, if called with argument it will set the value. You can define a validity function which will be called whenever the set method is called. Objects which inherit from class \code{environment} can be accessed directly, i.e. not via get/set methods.
 #' 
 #' @rdname defineClass
 #' @export
@@ -33,6 +33,13 @@
 #' instance$x()
 #' instance$x(2)
 #' instance$x()
+#'
+#' # Example for reference classes as field
+#' MoreTesting <- defineClass("MoreTesting", {
+#'   refObj <- public(test())
+#' })
+#' instance <- MoreTesting()
+#' instance$refObj$x()
 defineClass <- function(name, expr, contains = NULL) {
 
   mc <- processMarkup(match.call())
@@ -82,12 +89,10 @@ setEnvironment <- function(contains, parentEnv) {
 
 arrangeEnvironment <- function(e) {
   allMember <- as.list(e, all.names = TRUE)
-  publicMemberInd <- sapply(allMember, function(obj) inherits(obj, "publicFunction"))
-  publicMember <- allMember[publicMemberInd]
-    
-  f <- as.environment(publicMember)
+  publicMemberInd <- sapply(allMember, function(obj) inherits(obj, "public"))
+  publicMember <- lapply(allMember[publicMemberInd], getPublicRepresentation)
+  f <- list2env(publicMember)
   parent.env(f) <- e
-#   e$self <- e
   f
 }
 

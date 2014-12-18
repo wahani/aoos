@@ -20,9 +20,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.0.3 
-## Development Version: 0.0.5 
+## Development Version: 0.0.6 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.0.6:
+## 
+##     o   Handling of fields inheriting from 'environment'
 ## 
 ## Changes in version 0.0.5:
 ## 

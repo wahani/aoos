@@ -24,3 +24,31 @@ test_that("publicValue", {
   expect_is(public(function() 1), "publicFunction")
   expect_is(public(1), "publicValue")
 })
+
+test_that("Handling of reference classes as public member", {
+  
+  refObj <- suppressWarnings({
+    defineClass("refObj", {
+      method <- public(function() cat("...\n"))
+      value <- public(1)
+    })
+  })
+  
+  refObj2 <- suppressWarnings({
+    defineClass("refObj2", {
+      refObj <- public(refObj())
+    })
+  })
+  
+  ro <- refObj2()
+  
+  ro$refObj$method()
+  ro$refObj$value()
+  ro$refObj$value(2)
+  ro$refObj$value()
+  is(ro$refObj, "refObj")
+  
+  
+  removeClass("refObj")
+  removeClass("refObj2")
+})

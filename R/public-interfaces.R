@@ -1,5 +1,12 @@
-setClass("publicFunction", contains = "function")
+setClass("public", contains = "VIRTUAL")
+setClass("publicFunction", contains = c("public", "function"))
 setClass("publicValue", contains = "publicFunction")
+setClass("publicEnv", contains = c("public", "list"))
+
+setGeneric("getPublicRepresentation", function(obj) obj)
+setMethod("getPublicRepresentation", "publicEnv", function(obj) {
+  obj@.Data[[1]]
+})
 
 #' Constructors for public members
 #' 
@@ -39,7 +46,13 @@ publicValue <- function(x = NULL, validity = function(x) TRUE) {
 #' @rdname defineClass
 #' @export
 setGeneric("public", function(x = NULL, validity = function(x) TRUE) {
-  publicValue(x, validity)
+  # A method for class 'environment' will coerce it's argument to an environment
+  # The original class will be lost. I don't see why. Hence the if-statement.
+  if(inherits(x, "environment")) {
+    new("publicEnv", list(x))
+  } else {
+    publicValue(x, validity)
+  }
 })
 
 #' @rdname defineClass

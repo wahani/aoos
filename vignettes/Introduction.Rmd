@@ -25,7 +25,7 @@ There are two functions you have to remember:
 - `defineClass`: To define a class...
 - `public`: To make something public
 
-Everything you define inside the class definition is private unless you declare it public explicitly. Every public member will inherit from class function. A "public field" is the get/set method for an object hidden behind a closure.
+Everything you define inside the class definition is private unless you declare it public explicitly. Every public member will inherit from class function. A "public field" is the get/set method for an object hidden behind a closure. An exception are objects which inherit from class 'environment' so basically all reference classes in R. Those you can access without get/set methods.
 
 Here is a simple class definition: 
 

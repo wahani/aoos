@@ -1,3 +1,7 @@
+Version 0.0.6
+
+- Handling of fields inheriting from 'environment'
+
 Version 0.0.5
 
 - Use the method public instead of publicFunction and publicValue
