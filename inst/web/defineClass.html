@@ -63,6 +63,11 @@
       
     </div>
 
+    <div class="Define a new class">
+      <h2>Define a new class</h2>
+      
+    </div>
+
     <div class="Description">
       <h2>Description</h2>
       
@@ -77,7 +82,7 @@
   
       <p>All classes defined with <code>defineClass</code> inherit from class "aoos" which is a S4-class containing an environment. In that environment <code>expr</code> is evaluated; for inheritance, all <code>expr</code> from all parents will be evaluated first.</p>
   
-      <p>Everything in <code>expr</code> will be part of the new class definition. If you want to make objects public use <code>public</code>. If <code>x</code> in a call to <code>public</code> is a function it will be a public member function (method). For any other class the return value of <code>public</code> is a get and set method. If called without argument it will get the value, if called with argument it will set the value. You can define a validity function which will be called whenever the set method is called.</p>
+      <p>Everything in <code>expr</code> will be part of the new class definition. If you want to make objects public use <code>public</code>. If <code>x</code> in a call to <code>public</code> is a function it will be a public member function (method). For any other class the return value of <code>public</code> is a get and set method. If called without argument it will get the value, if called with argument it will set the value. You can define a validity function which will be called whenever the set method is called. Objects which inherit from class <code>environment</code> can be accessed directly, i.e. not via get/set methods.</p>
   
     </div>
     
@@ -93,7 +98,7 @@
 })
 </div>
 <strong class='warning'>Warning message:
-Created a package name, ‘2014-11-24 16:34:12’, when none found</strong>
+Created a package name, ‘2014-12-18 16:42:57’, when none found</strong>
 <div class='input'>instance &lt;- test()
 ## &lt;strong&gt;Not run&lt;/strong&gt;: 
 # instance$y # error
@@ -111,6 +116,16 @@ Working ...
 instance$x()
 </div>
 <div class='output'>[1] 2
+</div>
+<div class='input'>
+# Example for reference classes as field
+MoreTesting &lt;- defineClass(&quot;MoreTesting&quot;, {
+  refObj &lt;- public(test())
+})
+instance &lt;- MoreTesting()
+instance$refObj$x()
+</div>
+<div class='output'>[1] &quot;Working ...&quot;
 </div></pre>
   </div>
   <div class="span4">
