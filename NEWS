@@ -1,3 +1,7 @@
+Version 0.1.0
+
+- CRAN release
+
 Version 0.0.6
 
 - Handling of fields inheriting from 'environment'
