@@ -2,8 +2,10 @@
 ^\.Rproj\.user$
 README.md
 README.Rmd
+README.R
 ^\.travis\.yml$
 cran-comments.md
 ^prepareRepo.R$
 inst/web
 inst/staticsdocs
+travis-tool.sh
