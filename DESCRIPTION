@@ -8,7 +8,7 @@ Maintainer: Sebastian Warnholz <wahani@gmail.com>
 URL: https://wahani.github.com/aoos
 BugReports: https://github.com/wahani/aoos/issues
 Description: Another implementation of object-orientation in R. Has reference
-    semantics and is build around S4.
+    semantics and is built around S4.
 Depends:
     methods,
     R(>= 3.0)
