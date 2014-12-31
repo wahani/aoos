@@ -18,8 +18,3 @@ Suggests:
     knitr
 Encoding: UTF-8
 VignetteBuilder: knitr
-Collate:
-    'aoos.R'
-    'public-interfaces.R'
-    'defineClass.R'
-    'packageStartupMessage.R'
