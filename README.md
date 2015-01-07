@@ -20,9 +20,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.1.0 
-## Development Version: 0.1.0 
+## Development Version: 0.1.1 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.1.1:
+## 
+##     o   Bugfix when accessing reference objects.
 ```
 
 # Material

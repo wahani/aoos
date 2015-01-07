@@ -1,3 +1,7 @@
+Version 0.1.1
+
+- Bugfix when accessing reference objects.
+
 Version 0.1.0
 
 - CRAN release

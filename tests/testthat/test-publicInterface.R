@@ -51,4 +51,46 @@ test_that("Handling of reference classes as public member", {
   
   removeClass("refObj")
   removeClass("refObj2")
+  
+})
+
+test_that("", {
+  
+  suppressWarnings(
+    test <- defineClass("test", {
+      method <- public(function() {
+        "..."
+      })
+    })
+  )
+  
+  suppressWarnings(
+    test1 <- defineClass("test1", {
+      refObj <- public(test())
+      method <- public(function() {
+        refObj$method()
+      })
+    })
+  )
+  
+  suppressWarnings(
+    test2 <- defineClass("test2", {
+      refObj <- public(test1())
+      method <- public(function() {
+        refObj$method()
+      })
+    })
+  )
+  
+  expect_equal(test()$method(), test1()$method())
+  
+  instance <- test2()  
+  expect_equal(instance$refObj$refObj$method(), test()$method())
+  expect_equal(instance$refObj$method(), test()$method())
+  expect_equal(instance$method(), test()$method())
+  
+  removeClass("test")
+  removeClass("test1")
+  removeClass("test2")
+  
 })

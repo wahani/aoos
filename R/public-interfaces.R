@@ -4,6 +4,7 @@ setClass("publicValue", contains = "publicFunction")
 setClass("publicEnv", contains = c("public", "list"))
 
 setGeneric("getPublicRepresentation", function(obj) obj)
+
 setMethod("getPublicRepresentation", "publicEnv", function(obj) {
   obj@.Data[[1]]
 })
@@ -15,6 +16,7 @@ setMethod("getPublicRepresentation", "publicEnv", function(obj) {
 #' @param x a default value
 #' @param validity an optional validity function for the set method. Returns TRUE or FALSE.
 #' @param fun function definition
+#' @param name name of member in refernece object
 #' 
 #' @rdname publicInterface
 #' @export publicFunction
@@ -39,6 +41,13 @@ publicValue <- function(x = NULL, validity = function(x) TRUE) {
     }
   })
 }
+
+#' @rdname publicInterface
+setMethod("$", "publicEnv", function(x, name) {
+  mc <- match.call()
+  mc[[2]] <- quote(x@.Data[[1]])
+  eval(mc)
+})
 
 #' @param x an object made public
 #' @param validity function to check the validity of an object
