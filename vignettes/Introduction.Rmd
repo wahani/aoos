@@ -97,7 +97,7 @@ ann$greet()
 
 ## Inheritance
 
-A class defined by `defineClass` can inherit from other aoos classes. The expression (`expr` in `defineClass`) is first evaluated for the parent and then for the child in the same environment. So you can override methods and fields. 
+A class defined by `defineClass` can inherit from other aoos classes. The expression (`expr` in `defineClass`) is first evaluated for the parent and then for the child in the same environment. So you can overwrite methods and fields. 
 
 ```{r}
 Queue <- defineClass("Queue", {
