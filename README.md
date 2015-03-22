@@ -20,9 +20,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.1.0 
-## Development Version: 0.1.1 
+## Development Version: 0.1.2 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.1.2:
+## 
+##     o   New function Class, which is a wrapper around setRefClass
 ## 
 ## Changes in version 0.1.1:
 ## 

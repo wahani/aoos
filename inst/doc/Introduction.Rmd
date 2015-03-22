@@ -5,7 +5,7 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\usepackage[utf8]{inputenc}
 ---
 
 This package implements two ways to define reference classes inside the R language. The original implementation was the function `defineClass` and an introduction to this implementation can be found here:
@@ -14,7 +14,7 @@ This package implements two ways to define reference classes inside the R langua
 vignette("aoosClasses", "aoos")
 ```
 
-`defineClass` is an own implementation of `setRefClass` and can be considered experimental, although it has been reliable in my own work. The current recomendation, however, is to use the function `Class`, which does not implement a new logic of object orientation but fixes my major issue with `setRefClass`: defining methods inside lists. It is simply a wrapper which allows to define classes inside an R-expression, very much like in `defineClass`, and passes the arguments to `setRefClass`. The following example is taken from the documentation file of `setRefClass` so you can decide if this is an actual improvement:
+`defineClass` is an own implementation of object orientation, like `setRefClass` it uses S4, and can be considered experimental, although it has been reliable in my own work. My current recommendation, however, is to use the function `Class`, which does not implement a new logic of object orientation but fixes my major critique of `setRefClass`: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression, very much like in `defineClass`, the results are then passed as arguments to `setRefClass`. The following example is taken from the documentation file of `setRefClass` to have a direct comparison so you can decide if this is an actual improvement in readability. To the best of my knowledge using `Class` instead of `setRefClass` only changes the appearance, all features are preserved and the outcome is identical to using `setRefClass`.
 
 ```{r}
 mEdit <- Class({

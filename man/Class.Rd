@@ -10,7 +10,7 @@ Class(expr)
 \item{expr}{an expression}
 }
 \description{
-This is a wrapper around \code{\link{setRefClass}}. All arguments to \code{setRefClass} are defined in an expression which supports readability of the source. Besides that, no additional features are added.
+This is a wrapper around \code{\link{setRefClass}}. All arguments to \code{setRefClass} are defined in an expression which improves readability of the code. Besides that, no additional features are added.
 }
 \examples{
 \dontrun{
