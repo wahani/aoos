@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>publicFunction. aoos 0.1.2</title>
+<title>Class. aoos 0.1.2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -35,47 +35,45 @@
         
       </header>
       
-      <h1>Constructors for public members</h1>
+      <h1>Define a Reference Class</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>publicFunction(fun)</div>
-<div>publicValue(x&nbsp;=&nbsp;NULL, validity&nbsp;=&nbsp;function(x) TRUE)</div>
-<div>"$"(x, name)</div></pre>
+    <pre><div>Class(expr)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>fun</dt>
-      <dd>function definition</dd>
-      <dt>x</dt>
-      <dd>a default value</dd>
-      <dt>validity</dt>
-      <dd>an optional validity function for the set method. Returns TRUE or FALSE.</dd>
-      <dt>name</dt>
-      <dd>name of member in refernece object</dd>
+      <dt>expr</dt>
+      <dd>an expression</dd>
     </dl>
     
-    <div class="Constructors for public members">
-      <h2>Constructors for public members</h2>
+    <div class="Define a Reference Class">
+      <h2>Define a Reference Class</h2>
       
     </div>
 
-    <div class="Constructors for public members">
-      <h2>Constructors for public members</h2>
+    <div class="Define a Reference Class">
+      <h2>Define a Reference Class</h2>
       
     </div>
 
     <div class="Description">
       <h2>Description</h2>
       
-      <p>These functions are used internally. You should not rely on them. Use <code><a href='defineClass.html'>public</a></code> instead.</p>
+      <p>This is a wrapper around <code><a href='http://www.inside-r.org/packages/cran/methods/docs/refClass'>setRefClass</a></code>. All arguments to <code>setRefClass</code> are defined in an expression which improves readability of the code. Besides that, no additional features are added.</p>
   
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## &lt;strong&gt;Not run&lt;/strong&gt;: 
+#   vignette(&quot;Introduction&quot;, &quot;aoos&quot;)
+# ## &lt;strong&gt;End(Not run)&lt;/strong&gt;
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
-      <li>$,publicEnv-method</li><li>publicFunction</li><li>publicValue</li>
+      <li>Class</li>
     </ul>
     <ul>
       

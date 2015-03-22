@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2014-12-18" />
+<meta name="date" content="2015-03-22" />
 
 <title>Introduction</title>
 
@@ -52,178 +52,118 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Introduction</h1>
-<h4 class="date"><em>2014-12-18</em></h4>
+<h4 class="date"><em>2015-03-22</em></h4>
 </div>
 
 
-<div id="aoos-classes" class="section level2">
-<h2>aoos classes</h2>
-<p>Most of what this package can do is inspired by the r-package R6. Unlike R6, aoos relies on the methods package and the S4 class system. It was not written to be superior with respect to efficiency nor will it provide features you can not find in R6 (or R.oo, proto, …). Use aoos if you want to use object oriented programming as a means to organise your source code.</p>
-<ul>
-<li>An aoos class definition is a R expression. You can write code and decide which objects are public.</li>
-<li>You can use auto-complete to see public member functions.</li>
-<li>You can use (and must endure) features of S4.</li>
-</ul>
-<p>All examples in the following are adapted from the R6-package.</p>
-</div>
-<div id="basics" class="section level2">
-<h2>Basics</h2>
-<p>There are two functions you have to remember:</p>
-<ul>
-<li><code>defineClass</code>: To define a class…</li>
-<li><code>public</code>: To make something public</li>
-</ul>
-<p>Everything you define inside the class definition is private unless you declare it public explicitly. Every public member will inherit from class function. A “public field” is the get/set method for an object hidden behind a closure. An exception are objects which inherit from class ‘environment’ so basically all reference classes in R. Those you can access without get/set methods.</p>
-<p>Here is a simple class definition:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(aoos)
+<p>This package implements two ways to define reference classes inside the R language. The original implementation was the function <code>defineClass</code> and an introduction to this implementation can be found here:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;aoosClasses&quot;</span>, <span class="st">&quot;aoos&quot;</span>)</code></pre>
+<p><code>defineClass</code> is an own implementation of object orientation, like <code>setRefClass</code> it uses S4, and can be considered experimental, although it has been reliable in my own work. My current recommendation, however, is to use the function <code>Class</code>, which does not implement a new logic of object orientation but fixes my major critique of <code>setRefClass</code>: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression, very much like in <code>defineClass</code>, the results are then passed as arguments to <code>setRefClass</code>. The following example is taken from the documentation file of <code>setRefClass</code> to have a direct comparison so you can decide if this is an actual improvement in readability. To the best of my knowledge using <code>Class</code> instead of <code>setRefClass</code> only changes the appearance, all features are preserved and the outcome is identical to using <code>setRefClass</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mEdit &lt;-<span class="st"> </span><span class="kw">Class</span>({
+  Class &lt;-<span class="st"> &quot;mEdit&quot;</span>
+  
+  data &lt;-<span class="st"> &quot;matrix&quot;</span>
+  edits &lt;-<span class="st"> &quot;list&quot;</span>
 
-Person &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span class="st">&quot;Person&quot;</span>, {
-  
-  personName &lt;-<span class="st"> </span><span class="kw">public</span>(<span class="st">&quot;&quot;</span>)
-  
-  init &lt;-<span class="st"> </span>function(name) {
-    self$<span class="kw">personName</span>(name)
-    self$<span class="kw">greet</span>()
-    }
-  
-  greet &lt;-<span class="st"> </span><span class="kw">public</span>(function() {
-    <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, self$<span class="kw">personName</span>(), <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>))
-    })
-  
-  })</code></pre>
-<p>The return value of <code>defineClass</code> is the constructor function which is assigned to the name <code>Person</code>. All arguments to the constructor will be passed on to <code>init</code> if you defined it. In the above definition <code>init</code> will be private.</p>
-<pre class="sourceCode r"><code class="sourceCode r">ann &lt;-<span class="st"> </span><span class="kw">Person</span>(<span class="st">&quot;Ann&quot;</span>)</code></pre>
-<pre><code>## Hello, my name is Ann.</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">ann</code></pre>
-<pre><code>## Class: Person
-## public member:
-##   greet 
-##   personName</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">ann$<span class="kw">personName</span>()</code></pre>
-<pre><code>## [1] &quot;Ann&quot;</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">ann$<span class="kw">personName</span>(<span class="st">&quot;not Ann&quot;</span>)
-ann$<span class="kw">greet</span>()</code></pre>
-<pre><code>## Hello, my name is not Ann.</code></pre>
-<p>Inside the class definition you can use <code>self</code> but you do not have to; It just might be more explicit. You can also use the super-assignment operator <code>&lt;&lt;-</code> to replace private fields. The following illustrates the difference:</p>
-<pre class="sourceCode r"><code class="sourceCode r">Person &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span class="st">&quot;Person&quot;</span>, {
-  
-  personName &lt;-<span class="st"> &quot;&quot;</span> <span class="co"># personName is private</span>
-  
-  init &lt;-<span class="st"> </span>function(name) {
-    self$personName &lt;-<span class="st"> </span>name <span class="co"># option 1</span>
-    personName &lt;&lt;-<span class="st"> </span>name <span class="co"># option 2</span>
-    <span class="kw">greet</span>()
-    }
-  
-  greet &lt;-<span class="st"> </span><span class="kw">public</span>(function() {
-    <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, personName, <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>)) <span class="co"># before: personName()</span>
-    })
-  })</code></pre>
-<p>What you have to keep in mind is, that a public field is always hidden behind a get/set method and needs to be treated as a function. Private fields are just R objects and follow copy-on-modify semantics. Besides that the above class definition will work just as expected.</p>
-</div>
-<div id="predefined-methods" class="section level2">
-<h2>Predefined methods</h2>
-<p>aoos classes inherit from class ‘aoos’. For that class some S4-methods are defined you can use:</p>
-<ul>
-<li><code>show</code> which prints the public members of an object to the console</li>
-<li><code>summary</code> which tries to give a clue how much memory is used by an object</li>
-</ul>
-<p>For every class you define with <code>defineClass</code> the S4 method <code>initialize</code> is set. Do not change it. You can also use the S4 constructor <code>new</code>, however you cannot pass anything to <code>init</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">ann &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;Person&quot;</span>)
-ann$<span class="kw">personName</span>(<span class="st">&quot;Ann&quot;</span>)
-ann$<span class="kw">greet</span>()</code></pre>
-<pre><code>## Hello, my name is Ann.</code></pre>
-</div>
-<div id="inheritance" class="section level2">
-<h2>Inheritance</h2>
-<p>A class defined by <code>defineClass</code> can inherit from other aoos classes. The expression (<code>expr</code> in <code>defineClass</code>) is first evaluated for the parent and then for the child in the same environment. So you can override methods and fields.</p>
-<pre class="sourceCode r"><code class="sourceCode r">Queue &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span class="st">&quot;Queue&quot;</span>, {
+  edit &lt;-<span class="st"> </span>function(i, j, value) {
+    ## the following string documents the edit method
+    <span class="st">'Replaces the range [i, j] of the object by value.'</span>
+    backup &lt;-<span class="st"> </span><span class="kw">list</span>(i, j, data[i,j])
+    data[i,j] &lt;&lt;-<span class="st"> </span>value
+    edits &lt;&lt;-<span class="st"> </span><span class="kw">c</span>(edits, <span class="kw">list</span>(backup))
+    <span class="kw">invisible</span>(value)
+  }
 
-  queue &lt;-<span class="st"> </span><span class="kw">list</span>()
+  undo &lt;-<span class="st"> </span>function() {
+    <span class="st">'Undoes the last edit() operation and update the edits field accordingly.'</span>
+    prev &lt;-<span class="st"> </span>edits
+    if(<span class="kw">length</span>(prev)) prev &lt;-<span class="st"> </span>prev[[<span class="kw">length</span>(prev)]]
+    else <span class="kw">stop</span>(<span class="st">&quot;No more edits to undo&quot;</span>)
+    <span class="kw">edit</span>(prev[[<span class="dv">1</span>]], prev[[<span class="dv">2</span>]], prev[[<span class="dv">3</span>]])
+    ## trim the edits list
+    <span class="kw">length</span>(edits) &lt;&lt;-<span class="st"> </span><span class="kw">length</span>(edits) -<span class="st"> </span><span class="dv">2</span>
+    <span class="kw">invisible</span>(prev)
+  }
   
-  init &lt;-<span class="st"> </span>function(...) {
-      for (item in <span class="kw">list</span>(...)) self$<span class="kw">add</span>(item)
-    }
-  
-  add &lt;-<span class="st"> </span><span class="kw">public</span>(function(x) {
-      queue &lt;&lt;-<span class="st"> </span><span class="kw">c</span>(queue, <span class="kw">list</span>(x))
-      <span class="kw">invisible</span>(self)
-    })
-
-  remove &lt;-<span class="st"> </span><span class="kw">public</span>(function() {
-      if (<span class="kw">queueIsEmpty</span>()) <span class="kw">return</span>(<span class="ot">NULL</span>)
-      head &lt;-<span class="st"> </span>queue[[<span class="dv">1</span>]]
-      queue &lt;&lt;-<span class="st"> </span>queue[-<span class="dv">1</span>]
-      head
-    })
-
-  queueIsEmpty &lt;-<span class="st"> </span>function() <span class="kw">length</span>(queue) ==<span class="st"> </span><span class="dv">0</span>
-  
+  show &lt;-<span class="st"> </span>function() {
+    <span class="st">'Method for automatically printing matrix editors'</span> 
+    <span class="kw">cat</span>(<span class="st">&quot;Reference matrix editor object of class&quot;</span>, 
+        <span class="kw">classLabel</span>(<span class="kw">class</span>(.self)), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+    <span class="kw">cat</span>(<span class="st">&quot;Data: </span><span class="ch">\n</span><span class="st">&quot;</span>)
+    methods::<span class="kw">show</span>(data)
+    <span class="kw">cat</span>(<span class="st">&quot;Undo list is of length&quot;</span>, <span class="kw">length</span>(edits), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+  }
 })
 
-HistoryQueue &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span class="st">&quot;HistoryQueue&quot;</span>, <span class="dt">contains =</span> <span class="st">&quot;Queue&quot;</span>, {
-  
-  head_idx &lt;-<span class="st"> </span><span class="dv">0</span>
-  
-  remove &lt;-<span class="st"> </span><span class="kw">public</span>(function() {
-    if ((<span class="kw">length</span>(queue) -<span class="st"> </span>head_idx) ==<span class="st"> </span><span class="dv">0</span>) <span class="kw">return</span>(<span class="ot">NULL</span>)
-    self$head_idx &lt;-<span class="st"> </span>head_idx +<span class="st"> </span><span class="dv">1</span>
-    queue[[head_idx]]
-    })
-  
-  show &lt;-<span class="st"> </span><span class="kw">public</span>(function() {
-      <span class="kw">cat</span>(<span class="st">&quot;Next item is at index&quot;</span>, head_idx +<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
-      for (i in <span class="kw">seq_along</span>(queue)) {
-        <span class="kw">cat</span>(i, <span class="st">&quot;: &quot;</span>, queue[[i]], <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)
-      }
-    })
-  
-  })
+xMat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">12</span>,<span class="dv">4</span>,<span class="dv">3</span>)
+xx &lt;-<span class="st"> </span><span class="kw">mEdit</span>(<span class="dt">data =</span> xMat)
+xx$<span class="kw">edit</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>)
+xx</code></pre>
+<pre><code>## Reference matrix editor object of class &quot;mEdit&quot; 
+## Data: 
+##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    0   10
+## [3,]    3    7   11
+## [4,]    4    8   12
+## Undo list is of length 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">xx$<span class="kw">undo</span>()
+mEdit$<span class="kw">help</span>(<span class="st">&quot;undo&quot;</span>)</code></pre>
+<pre><code>## Call:
+## $undo()
+## 
+## 
+## Undoes the last edit() operation and update the edits field accordingly.</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">all.equal</span>(xx$data, xMat))
 
-q &lt;-<span class="st"> </span><span class="kw">Queue</span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="st">&quot;foo&quot;</span>)
-q$<span class="kw">remove</span>()</code></pre>
-<pre><code>## [1] 5</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">q</code></pre>
-<pre><code>## Class: Queue
-## public member:
-##   add 
-##   remove</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">hq &lt;-<span class="st"> </span><span class="kw">HistoryQueue</span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="st">&quot;foo&quot;</span>)
-hq</code></pre>
-<pre><code>## Class: HistoryQueue
-## public member:
-##   add 
-##   remove 
-##   show</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">hq$<span class="kw">show</span>()</code></pre>
-<pre><code>## Next item is at index 1 
-## 1: 5
-## 2: 6
-## 3: foo</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">hq$<span class="kw">remove</span>()</code></pre>
-<pre><code>## [1] 5</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">hq$<span class="kw">show</span>()</code></pre>
-<pre><code>## Next item is at index 2 
-## 1: 5
-## 2: 6
-## 3: foo</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">hq$<span class="kw">remove</span>()</code></pre>
-<pre><code>## [1] 6</code></pre>
-<p>Since these classes use the S4 system you can use <code>setMethod</code> to define additional methods like <code>show</code>. Define S4-methods always outside the <code>defineClass</code> function as <code>expr</code> will be evaluated every time a new instance is created.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setMethod</span>(<span class="st">&quot;show&quot;</span>, <span class="st">&quot;HistoryQueue&quot;</span>, function(object) {
-  object$<span class="kw">show</span>()
-})</code></pre>
-<pre><code>## [1] &quot;show&quot;</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">hq</code></pre>
-<pre><code>## Next item is at index 3 
-## 1: 5
-## 2: 6
-## 3: foo</code></pre>
-</div>
-<div id="inheritance-across-packages" class="section level2">
-<h2>Inheritance across packages</h2>
-<p>This is a little tricky. <code>expr</code> is evaluated in a new environment whenever you create a new instance. If one class inherits from another the same environment is used for the evaluation. Thus, objects of the parent can be replaced; functions defined for the parent and the child share the same environment. The parent environment of an aoos class is the environment in which <code>defineClass</code> (for the parent) is called. This will typically be a package namespace. If you define class B in package pkgB which inherits from a class A from package pkgA class B will have the same scoping as a class in pkgA. Whenever you want to use functions from pkgB in class B you have to define them as part of the class definition or refer to them with <code>pkgB::&quot;functionName&quot;</code> or <code>pkgB:::&quot;functionName&quot;</code>.</p>
-</div>
+utils::<span class="kw">str</span>(xx) <span class="co"># show fields and names of non-trivial methods</span></code></pre>
+<pre><code>## Reference class 'mEdit' [package &quot;.GlobalEnv&quot;] with 2 fields
+##  $ edits: list()
+##  $ data : num [1:4, 1:3] 1 2 3 4 5 6 7 8 9 10 ...
+##  and 15 methods, of which 3 are possibly relevant:
+##    edit, show#envRefClass, undo</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">## add a method to save the object
+mEdit$<span class="kw">methods</span>(
+  <span class="dt">save =</span> function(file) {
+    <span class="st">'Save the current object on the file in R external object format.'</span>
+         base::<span class="kw">save</span>(.self, <span class="dt">file =</span> file)
+     }
+)
+
+tf &lt;-<span class="st"> </span><span class="kw">tempfile</span>()
+xx$<span class="kw">save</span>(tf)
+
+<span class="co"># mv &lt;- Class({</span>
+<span class="co">#   Class &lt;- &quot;matrixViewer&quot;</span>
+<span class="co">#   contains &lt;- &quot;mEdit&quot;</span>
+<span class="co">#   </span>
+<span class="co">#   viewerDevice &lt;- viewerFile &lt;- &quot;ANY&quot;</span>
+<span class="co">#   </span>
+<span class="co">#   view &lt;- function() {</span>
+<span class="co">#     dd &lt;- dev.cur(); dev.set(viewerDevice)</span>
+<span class="co">#     devAskNewPage(FALSE)</span>
+<span class="co">#     matplot(data, main = paste(&quot;After&quot;,length(edits),&quot;edits&quot;))</span>
+<span class="co">#     dev.set(dd)</span>
+<span class="co">#   }</span>
+<span class="co">#   </span>
+<span class="co">#   edit &lt;- function(i, j, value) {</span>
+<span class="co">#     callSuper(i, j, value)</span>
+<span class="co">#     view()</span>
+<span class="co">#   }</span>
+<span class="co"># })</span>
+<span class="co"># </span>
+<span class="co"># mv$methods(</span>
+<span class="co">#   initialize =</span>
+<span class="co">#     function(file = &quot;./matrixView.pdf&quot;, ...) {</span>
+<span class="co">#       viewerFile &lt;&lt;- file</span>
+<span class="co">#       pdf(viewerFile)</span>
+<span class="co">#       viewerDevice &lt;&lt;- dev.cur()</span>
+<span class="co">#       dev.set(dev.prev())</span>
+<span class="co">#       callSuper(...)</span>
+<span class="co">#     },</span>
+<span class="co">#   finalize = function() {</span>
+<span class="co">#     dev.off(viewerDevice)</span>
+<span class="co">#   })</span></code></pre>
 
 
 
