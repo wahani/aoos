@@ -1,3 +1,6 @@
+Version 0.1.2
+- New function Class, which is a wrapper around setRefClass
+
 Version 0.1.1
 
 - Bugfix when accessing reference objects.

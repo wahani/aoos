@@ -8,164 +8,103 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-## aoos classes
-
-Most of what this package can do is inspired by the r-package R6. Unlike R6, aoos relies on the methods package and the S4 class system. It was not written to be superior with respect to efficiency nor will it provide features you can not find in R6 (or R.oo, proto, ...). Use aoos if you want to use object oriented programming as a means to organise your source code.
-
-- An aoos class definition is a R expression. You can write code and decide which objects are public. 
-- You can use auto-complete to see public member functions.
-- You can use (and must endure) features of S4.
-
-All examples in the following are adapted from the R6-package.
-
-## Basics
-
-There are two functions you have to remember:
-
-- `defineClass`: To define a class...
-- `public`: To make something public
-
-Everything you define inside the class definition is private unless you declare it public explicitly. Every public member will inherit from class function. A "public field" is the get/set method for an object hidden behind a closure. An exception are objects which inherit from class 'environment' so basically all reference classes in R. Those you can access without get/set methods.
-
-Here is a simple class definition: 
-
-```{r}
-library(aoos)
-
-Person <- defineClass("Person", {
-  
-  personName <- public("")
-  
-  init <- function(name) {
-    self$personName(name)
-    self$greet()
-    }
-  
-  greet <- public(function() {
-    cat(paste0("Hello, my name is ", self$personName(), ".\n"))
-    })
-  
-  })
-```
-
-The return value of `defineClass` is the constructor function which is assigned to the name `Person`. All arguments to the constructor will be passed on to `init` if you defined it. In the above definition `init` will be private.
-
-```{r}
-ann <- Person("Ann")
-ann
-ann$personName()
-ann$personName("not Ann")
-ann$greet()
-```
-
-Inside the class definition you can use `self` but you do not have to; It just might be more explicit. You can also use the super-assignment operator `<<-` to replace private fields. The following illustrates the difference:
+This package implements two ways to define reference classes inside the R language. The original implementation was the function `defineClass` and an introduction to this implementation can be found here:
 
 ```{r, eval=FALSE}
-Person <- defineClass("Person", {
-  
-  personName <- "" # personName is private
-  
-  init <- function(name) {
-    self$personName <- name # option 1
-    personName <<- name # option 2
-    greet()
-    }
-  
-  greet <- public(function() {
-    cat(paste0("Hello, my name is ", personName, ".\n")) # before: personName()
-    })
-  })
+vignette("aoosClasses", "aoos")
 ```
 
-What you have to keep in mind is, that a public field is always hidden behind a get/set method and needs to be treated as a function. Private fields are just R objects and follow copy-on-modify semantics. Besides that the above class definition will work just as expected.
-
-## Predefined methods
-
-aoos classes inherit from class 'aoos'. For that class some S4-methods are defined you can use:
-
-- `show` which prints the public members of an object to the console
-- `summary` which tries to give a clue how much memory is used by an object
-
-For every class you define with `defineClass` the S4 method `initialize` is set. Do not change it. You can also use the S4 constructor `new`, however you cannot pass anything to `init`.
+`defineClass` is an own implementation of object orientation, like `setRefClass` it uses S4, and can be considered experimental, although it has been reliable in my own work. My current recommendation, however, is to use the function `Class`, which does not implement a new logic of object orientation but fixes my major critique of `setRefClass`: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression, very much like in `defineClass`, the results are then passed as arguments to `setRefClass`. The following example is taken from the documentation file of `setRefClass` to have a direct comparison so you can decide if this is an actual improvement in readability. To the best of my knowledge using `Class` instead of `setRefClass` only changes the appearance, all features are preserved and the outcome is identical to using `setRefClass`.
 
 ```{r}
-ann <- new("Person")
-ann$personName("Ann")
-ann$greet()
-```
-
-
-## Inheritance
-
-A class defined by `defineClass` can inherit from other aoos classes. The expression (`expr` in `defineClass`) is first evaluated for the parent and then for the child in the same environment. So you can override methods and fields. 
-
-```{r}
-Queue <- defineClass("Queue", {
-
-  queue <- list()
+mEdit <- Class({
+  Class <- "mEdit"
   
-  init <- function(...) {
-      for (item in list(...)) self$add(item)
-    }
-  
-  add <- public(function(x) {
-      queue <<- c(queue, list(x))
-      invisible(self)
-    })
+  data <- "matrix"
+  edits <- "list"
 
-  remove <- public(function() {
-      if (queueIsEmpty()) return(NULL)
-      head <- queue[[1]]
-      queue <<- queue[-1]
-      head
-    })
+  edit <- function(i, j, value) {
+    ## the following string documents the edit method
+    'Replaces the range [i, j] of the object by value.'
+    backup <- list(i, j, data[i,j])
+    data[i,j] <<- value
+    edits <<- c(edits, list(backup))
+    invisible(value)
+  }
 
-  queueIsEmpty <- function() length(queue) == 0
+  undo <- function() {
+    'Undoes the last edit() operation and update the edits field accordingly.'
+    prev <- edits
+    if(length(prev)) prev <- prev[[length(prev)]]
+    else stop("No more edits to undo")
+    edit(prev[[1]], prev[[2]], prev[[3]])
+    ## trim the edits list
+    length(edits) <<- length(edits) - 2
+    invisible(prev)
+  }
   
+  show <- function() {
+    'Method for automatically printing matrix editors' 
+    cat("Reference matrix editor object of class", 
+        classLabel(class(.self)), "\n")
+    cat("Data: \n")
+    methods::show(data)
+    cat("Undo list is of length", length(edits), "\n")
+  }
 })
 
-HistoryQueue <- defineClass("HistoryQueue", contains = "Queue", {
-  
-  head_idx <- 0
-  
-  remove <- public(function() {
-    if ((length(queue) - head_idx) == 0) return(NULL)
-    self$head_idx <- head_idx + 1
-    queue[[head_idx]]
-    })
-  
-  show <- public(function() {
-      cat("Next item is at index", head_idx + 1, "\n")
-      for (i in seq_along(queue)) {
-        cat(i, ": ", queue[[i]], "\n", sep = "")
-      }
-    })
-  
-  })
+xMat <- matrix(1:12,4,3)
+xx <- mEdit(data = xMat)
+xx$edit(2, 2, 0)
+xx
+xx$undo()
+mEdit$help("undo")
+stopifnot(all.equal(xx$data, xMat))
 
-q <- Queue(5, 6, "foo")
-q$remove()
-q
+utils::str(xx) # show fields and names of non-trivial methods
 
-hq <- HistoryQueue(5, 6, "foo")
-hq
-hq$show()
-hq$remove()
-hq$show()
-hq$remove()
+## add a method to save the object
+mEdit$methods(
+  save = function(file) {
+    'Save the current object on the file in R external object format.'
+         base::save(.self, file = file)
+     }
+)
+
+tf <- tempfile()
+xx$save(tf)
+
+# mv <- Class({
+#   Class <- "matrixViewer"
+#   contains <- "mEdit"
+#   
+#   viewerDevice <- viewerFile <- "ANY"
+#   
+#   view <- function() {
+#     dd <- dev.cur(); dev.set(viewerDevice)
+#     devAskNewPage(FALSE)
+#     matplot(data, main = paste("After",length(edits),"edits"))
+#     dev.set(dd)
+#   }
+#   
+#   edit <- function(i, j, value) {
+#     callSuper(i, j, value)
+#     view()
+#   }
+# })
+# 
+# mv$methods(
+#   initialize =
+#     function(file = "./matrixView.pdf", ...) {
+#       viewerFile <<- file
+#       pdf(viewerFile)
+#       viewerDevice <<- dev.cur()
+#       dev.set(dev.prev())
+#       callSuper(...)
+#     },
+#   finalize = function() {
+#     dev.off(viewerDevice)
+#   })
+
 ```
-
-Since these classes use the S4 system you can use `setMethod` to define additional methods like `show`. Define S4-methods always outside the `defineClass` function as `expr` will be evaluated every time a new instance is created.
-
-```{r}
-setMethod("show", "HistoryQueue", function(object) {
-  object$show()
-})
-
-hq
-```
-
-## Inheritance across packages
-
-This is a little tricky. `expr` is evaluated in a new environment whenever you create a new instance. If one class inherits from another the same environment is used for the evaluation. Thus, objects of the parent can be replaced; functions defined for the parent and the child share the same environment. The parent environment of an aoos class is the environment in which `defineClass` (for the parent) is called. This will typically be a package namespace. If you define class B in package pkgB which inherits from a class A from package pkgA class B will have the same scoping as a class in pkgA. Whenever you want to use functions from pkgB in class B you have to define them as part of the class definition or refer to them with `pkgB::"functionName"` or `pkgB:::"functionName"`.
 
