@@ -59,7 +59,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>This package implements two ways to define reference classes inside the R language. The original implementation was the function <code>defineClass</code> and an introduction to this implementation can be found here:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;aoosClasses&quot;</span>, <span class="st">&quot;aoos&quot;</span>)</code></pre>
 <p><code>defineClass</code> is an own implementation of object orientation, like <code>setRefClass</code> it uses S4, and can be considered experimental, although it has been reliable in my own work. My current recommendation, however, is to use the function <code>Class</code>, which does not implement a new logic of object orientation but fixes my major critique of <code>setRefClass</code>: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression, very much like in <code>defineClass</code>, the results are then passed as arguments to <code>setRefClass</code>. The following example is taken from the documentation file of <code>setRefClass</code> to have a direct comparison so you can decide if this is an actual improvement in readability. To the best of my knowledge using <code>Class</code> instead of <code>setRefClass</code> only changes the appearance, all features are preserved and the outcome is identical to using <code>setRefClass</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">mEdit &lt;-<span class="st"> </span><span class="kw">Class</span>({
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;aoos&quot;</span>)
+
+mEdit &lt;-<span class="st"> </span><span class="kw">Class</span>({
   Class &lt;-<span class="st"> &quot;mEdit&quot;</span>
   
   data &lt;-<span class="st"> &quot;matrix&quot;</span>

@@ -2,6 +2,8 @@
 #  vignette("aoosClasses", "aoos")
 
 ## ------------------------------------------------------------------------
+library("aoos")
+
 mEdit <- Class({
   Class <- "mEdit"
   
