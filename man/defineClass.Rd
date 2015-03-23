@@ -25,7 +25,7 @@ public(x = NULL, validity = function(x) TRUE)
 \item{validity}{function to check the validity of an object}
 }
 \description{
-\code{defineClass} has side effects. The constructor is the return value of \code{defineClass}. Use \code{public} to make things public; everything else will be private.
+Use \code{\link{Class}} instead of this function. \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}. Use \code{public} to make things public; everything else will be private.
 }
 \details{
 \code{defineClass} creates a S4-Class which can be used for standard S4 method dispatch. It will also set the method 'initialize' which need not to be changed. If you want to have some operations carried out on initialization use a function definition named \code{init} as part of \code{expr}. The return value from \code{defineClass} is the constructor function. It has the argument \code{...} which will be passed to \code{init}.

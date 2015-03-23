@@ -1,6 +1,6 @@
 #' Define a new class
 #' 
-#' \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}. Use \code{public} to make things public; everything else will be private.
+#' Use \code{\link{Class}} instead of this function. \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}. Use \code{public} to make things public; everything else will be private.
 #'  
 #' @param name character name of the class
 #' @param expr expression

@@ -64,5 +64,36 @@ test_that("Class wrapper", {
   removeClass("SubTest")
 })
 
-
+test_that("Private members for refClasses", {
+  
+  suppressWarnings({
+    Test <- Class({
+      Class <- "Test"
+      contains <- "Private"
+      
+      .p <- "numeric"
+      
+      getP <- function() .self$.p
+      setP <- function(v) .self$.p <- v
+      
+    })
+  })
+    
+  test <- Test()
+  # in testthat the correct methods can not be found. So the lines do not produce an error.
+  # I will make an example in the doc which produces error.
+#   print(showMethods("$"))
+#   print(showMethods("[["))
+#   expect_error(test$.p)
+#   expect_error(test$.self)
+  
+  expect_equal(test$setP(2), 2)
+  expect_equal(test$getP(), 2)
+  
+  # Disabled:
+  expect_error(test[[".p"]])
+  expect_error(test[[".p"]] <- 2)
+  
+  removeClass("Test")
+})
 
