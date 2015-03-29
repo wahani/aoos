@@ -2,9 +2,9 @@ setClass("public", contains = "VIRTUAL")
 setClass("publicFunction", contains = c("public", "function"))
 setClass("publicValue", contains = "publicFunction")
 setClass("publicEnv", contains = c("public", "list"))
+setClass("private", contains = "ANY")
 
 setGeneric("getPublicRepresentation", function(obj) obj)
-
 setMethod("getPublicRepresentation", "publicEnv", function(obj) {
   obj@.Data[[1]]
 })
@@ -69,3 +69,21 @@ setGeneric("public", function(x = NULL, validity = function(x) TRUE) {
 setMethod("public", c(x = "function"), function(x, validity) {
   publicFunction(x)
 })
+
+#' @rdname defineClass
+#' @export
+setMethod("public", c(x = "private"), function(x, validity) {
+  x
+})
+
+#' @rdname defineClass
+#' @export
+setMethod("public", c(x = "public"), function(x, validity) {
+  x
+})
+
+#' @rdname defineClass
+#' @export
+private <- function(x) {
+  new("private", x)
+} 

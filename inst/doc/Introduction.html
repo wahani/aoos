@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-03-23" />
+<meta name="date" content="2015-03-29" />
 
 <title>Introduction</title>
 
@@ -52,120 +52,70 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Introduction</h1>
-<h4 class="date"><em>2015-03-23</em></h4>
+<h4 class="date"><em>2015-03-29</em></h4>
 </div>
 
 
-<p>This package implements two ways to define reference classes inside the R language. The original implementation was the function <code>defineClass</code> and an introduction to this implementation can be found here:</p>
+<p>This package implements several approaches for object orientation inside the R language. The original implementation was the function <code>defineClass</code> and an introduction to this implementation can be found here:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;aoosClasses&quot;</span>, <span class="st">&quot;aoos&quot;</span>)</code></pre>
-<p><code>defineClass</code> is an own implementation of object orientation, like <code>setRefClass</code> it uses S4, and can be considered experimental, although it has been reliable in my own work. My current recommendation, however, is to use the function <code>Class</code>, which does not implement a new logic of object orientation but fixes my major critique of <code>setRefClass</code>: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression, very much like in <code>defineClass</code>, the results are then passed as arguments to <code>setRefClass</code>. The following example is taken from the documentation file of <code>setRefClass</code> to have a direct comparison so you can decide if this is an actual improvement in readability. To the best of my knowledge using <code>Class</code> instead of <code>setRefClass</code> only changes the appearance, all features are preserved and the outcome is identical to using <code>setRefClass</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;aoos&quot;</span>)
+<p><code>defineClass</code> is an own implementation of object orientation, like <code>setRefClass</code> it uses S4, and can be considered experimental, although it has been reliable in my own work. The function <code>Class</code> does not implement a new logic of object orientation but fixes my major critique of <code>setRefClass</code>: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression, very much like in <code>defineClass</code>, the results are then passed as arguments to <code>setRefClass</code>. The following example is taken from the documentation file of <code>setRefClass</code> to have a direct comparison so you can decide if this is an actual improvement in readability. To the best of my knowledge using <code>Class</code> instead of <code>setRefClass</code> only changes the appearance, all features are preserved and the outcome is identical to using <code>setRefClass</code>.</p>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(aoos)
 
-mEdit &lt;-<span class="st"> </span><span class="kw">Class</span>({
-  Class &lt;-<span class="st"> &quot;mEdit&quot;</span>
+PersonRC &lt;-<span class="st"> </span><span class="kw">Class</span>({
+  Class &lt;-<span class="st"> &quot;PersonRC&quot;</span>
   
-  data &lt;-<span class="st"> &quot;matrix&quot;</span>
-  edits &lt;-<span class="st"> &quot;list&quot;</span>
-
-  edit &lt;-<span class="st"> </span>function(i, j, value) {
-    ## the following string documents the edit method
-    <span class="st">'Replaces the range [i, j] of the object by value.'</span>
-    backup &lt;-<span class="st"> </span><span class="kw">list</span>(i, j, data[i,j])
-    data[i,j] &lt;&lt;-<span class="st"> </span>value
-    edits &lt;&lt;-<span class="st"> </span><span class="kw">c</span>(edits, <span class="kw">list</span>(backup))
-    <span class="kw">invisible</span>(value)
-  }
-
-  undo &lt;-<span class="st"> </span>function() {
-    <span class="st">'Undoes the last edit() operation and update the edits field accordingly.'</span>
-    prev &lt;-<span class="st"> </span>edits
-    if(<span class="kw">length</span>(prev)) prev &lt;-<span class="st"> </span>prev[[<span class="kw">length</span>(prev)]]
-    else <span class="kw">stop</span>(<span class="st">&quot;No more edits to undo&quot;</span>)
-    <span class="kw">edit</span>(prev[[<span class="dv">1</span>]], prev[[<span class="dv">2</span>]], prev[[<span class="dv">3</span>]])
-    ## trim the edits list
-    <span class="kw">length</span>(edits) &lt;&lt;-<span class="st"> </span><span class="kw">length</span>(edits) -<span class="st"> </span><span class="dv">2</span>
-    <span class="kw">invisible</span>(prev)
-  }
+  personName &lt;-<span class="st"> &quot;character&quot;</span>
   
-  show &lt;-<span class="st"> </span>function() {
-    <span class="st">'Method for automatically printing matrix editors'</span> 
-    <span class="kw">cat</span>(<span class="st">&quot;Reference matrix editor object of class&quot;</span>, 
-        <span class="kw">classLabel</span>(<span class="kw">class</span>(.self)), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
-    <span class="kw">cat</span>(<span class="st">&quot;Data: </span><span class="ch">\n</span><span class="st">&quot;</span>)
-    methods::<span class="kw">show</span>(data)
-    <span class="kw">cat</span>(<span class="st">&quot;Undo list is of length&quot;</span>, <span class="kw">length</span>(edits), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
-  }
-})
+  initialize &lt;-<span class="st"> </span>function(name) {
+    .self$personName &lt;-<span class="st"> </span>name
+    .self$<span class="kw">greet</span>()
+    }
+  
+  greet &lt;-<span class="st"> </span>function() {
+    <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, .self$personName, <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>))
+    }
+  
+  })
 
-xMat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">12</span>,<span class="dv">4</span>,<span class="dv">3</span>)
-xx &lt;-<span class="st"> </span><span class="kw">mEdit</span>(<span class="dt">data =</span> xMat)
-xx$<span class="kw">edit</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>)
-xx</code></pre>
-<pre><code>## Reference matrix editor object of class &quot;mEdit&quot; 
-## Data: 
-##      [,1] [,2] [,3]
-## [1,]    1    5    9
-## [2,]    2    0   10
-## [3,]    3    7   11
-## [4,]    4    8   12
-## Undo list is of length 1</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">xx$<span class="kw">undo</span>()
-mEdit$<span class="kw">help</span>(<span class="st">&quot;undo&quot;</span>)</code></pre>
-<pre><code>## Call:
-## $undo()
-## 
-## 
-## Undoes the last edit() operation and update the edits field accordingly.</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">all.equal</span>(xx$data, xMat))
+ann &lt;-<span class="st"> </span><span class="kw">PersonRC</span>(<span class="st">&quot;Ann&quot;</span>)</code></pre>
+<pre><code>## Hello, my name is Ann.</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ann</code></pre>
+<pre><code>## Reference class object of class &quot;PersonRC&quot;
+## Field &quot;personName&quot;:
+## [1] &quot;Ann&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ann$personName</code></pre>
+<pre><code>## [1] &quot;Ann&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ann$personName &lt;-<span class="st"> &quot;not Ann&quot;</span>
+ann$<span class="kw">greet</span>()</code></pre>
+<pre><code>## Hello, my name is not Ann.</code></pre>
+<p>Independently of the usage of <code>Class</code> you can use the class <code>Private</code> to add a notion of privacy to your reference class. This <em>feature</em> will make all fields with a leading dot inaccessible with the standard <code>$</code> function.</p>
+<pre class="sourceCode r"><code class="sourceCode r">PrivatePerson &lt;-<span class="st"> </span><span class="kw">Class</span>({
+  Class &lt;-<span class="st"> &quot;PrivatePerson&quot;</span>
+  contains &lt;-<span class="st"> &quot;Private&quot;</span>
+  
+  .personName &lt;-<span class="st"> &quot;character&quot;</span>
+  
+  initialize &lt;-<span class="st"> </span>function(name) {
+    .self$.personName &lt;-<span class="st"> </span>name
+    .self$<span class="kw">greet</span>()
+    }
+  
+  greet &lt;-<span class="st"> </span>function() {
+    <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, .self$.personName, <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>))
+    }
+  
+  })
 
-utils::<span class="kw">str</span>(xx) <span class="co"># show fields and names of non-trivial methods</span></code></pre>
-<pre><code>## Reference class 'mEdit' [package &quot;.GlobalEnv&quot;] with 2 fields
-##  $ edits: list()
-##  $ data : num [1:4, 1:3] 1 2 3 4 5 6 7 8 9 10 ...
-##  and 15 methods, of which 3 are possibly relevant:
-##    edit, show#envRefClass, undo</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">## add a method to save the object
-mEdit$<span class="kw">methods</span>(
-  <span class="dt">save =</span> function(file) {
-    <span class="st">'Save the current object on the file in R external object format.'</span>
-         base::<span class="kw">save</span>(.self, <span class="dt">file =</span> file)
-     }
-)
-
-tf &lt;-<span class="st"> </span><span class="kw">tempfile</span>()
-xx$<span class="kw">save</span>(tf)
-
-<span class="co"># mv &lt;- Class({</span>
-<span class="co">#   Class &lt;- &quot;matrixViewer&quot;</span>
-<span class="co">#   contains &lt;- &quot;mEdit&quot;</span>
-<span class="co">#   </span>
-<span class="co">#   viewerDevice &lt;- viewerFile &lt;- &quot;ANY&quot;</span>
-<span class="co">#   </span>
-<span class="co">#   view &lt;- function() {</span>
-<span class="co">#     dd &lt;- dev.cur(); dev.set(viewerDevice)</span>
-<span class="co">#     devAskNewPage(FALSE)</span>
-<span class="co">#     matplot(data, main = paste(&quot;After&quot;,length(edits),&quot;edits&quot;))</span>
-<span class="co">#     dev.set(dd)</span>
-<span class="co">#   }</span>
-<span class="co">#   </span>
-<span class="co">#   edit &lt;- function(i, j, value) {</span>
-<span class="co">#     callSuper(i, j, value)</span>
-<span class="co">#     view()</span>
-<span class="co">#   }</span>
-<span class="co"># })</span>
-<span class="co"># </span>
-<span class="co"># mv$methods(</span>
-<span class="co">#   initialize =</span>
-<span class="co">#     function(file = &quot;./matrixView.pdf&quot;, ...) {</span>
-<span class="co">#       viewerFile &lt;&lt;- file</span>
-<span class="co">#       pdf(viewerFile)</span>
-<span class="co">#       viewerDevice &lt;&lt;- dev.cur()</span>
-<span class="co">#       dev.set(dev.prev())</span>
-<span class="co">#       callSuper(...)</span>
-<span class="co">#     },</span>
-<span class="co">#   finalize = function() {</span>
-<span class="co">#     dev.off(viewerDevice)</span>
-<span class="co">#   })</span></code></pre>
+ann &lt;-<span class="st"> </span><span class="kw">PrivatePerson</span>(<span class="st">&quot;Ann&quot;</span>)</code></pre>
+<pre><code>## Hello, my name is Ann.</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ann</code></pre>
+<pre><code>## Reference class object of class &quot;PrivatePerson&quot;
+## Field &quot;.personName&quot;:
+## [1] &quot;Ann&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">inherits</span>(<span class="kw">try</span>(ann$.personName, <span class="dt">silent =</span> <span class="ot">TRUE</span>), <span class="st">&quot;try-error&quot;</span>))
+ann$<span class="kw">greet</span>()</code></pre>
+<pre><code>## Hello, my name is Ann.</code></pre>
 
 
 

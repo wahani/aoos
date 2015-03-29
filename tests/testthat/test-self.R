@@ -30,13 +30,13 @@ test_that("self awareness", {
 test_that("self can be accessed", {
   suppressWarnings({
     test <- defineClass("test", {
-      y <- 2
+      .y <- 2
       doSomething <- publicFunction(function() {
-        self$y <- self$y + 1
+        self$.y <- self$.y + 1
         invisible(self)
       })
       get <- publicFunction(function() {
-        self$y
+        self$.y
       })
     })
   })

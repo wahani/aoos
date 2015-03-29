@@ -1,6 +1,6 @@
 #' Define a new class
 #' 
-#' Use \code{\link{Class}} instead of this function. \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}. Use \code{public} to make things public; everything else will be private.
+#' \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}.
 #'  
 #' @param name character name of the class
 #' @param expr expression
@@ -11,23 +11,23 @@
 #' 
 #' All classes defined with \code{defineClass} inherit from class "aoos" which is a S4-class containing an environment. In that environment \code{expr} is evaluated; for inheritance, all \code{expr} from all parents will be evaluated first.
 #' 
-#' Everything in \code{expr} will be part of the new class definition. If you want to make objects public use \code{public}. If \code{x} in a call to \code{public} is a function it will be a public member function (method). For any other class the return value of \code{public} is a get and set method. If called without argument it will get the value, if called with argument it will set the value. You can define a validity function which will be called whenever the set method is called. Objects which inherit from class \code{environment} can be accessed directly, i.e. not via get/set methods.
+#' Everything in \code{expr} will be part of the new class definition. A leading dot in a name will be trated as private. You can use \code{public} and \code{private} to declare private and public members explicitly. If \code{x} in a call to \code{public} is a function it will be a public member function (method). For any other class the return value of \code{public} is a get and set method. If called without argument it will get the value, if called with argument it will set the value. You can define a validity function which will be called whenever the set method is called. Objects which inherit from class \code{environment} can be accessed directly, i.e. not via get/set methods.
 #' 
 #' @rdname defineClass
 #' @export
 #' @examples
 #' test <- defineClass("test", {
-#'   x <- public("Working ...")
-#'   y <- 0
+#'   x <- "Working ..."
+#'   .y <- 0
 #'   doSomething <- public(function() {
-#'     self$y <- y + 1
+#'     self$.y <- .y + 1
 #'     cat(x(), "\n")
 #'     invisible(self)
 #'   })
 #' })
 #' instance <- test()
 #' \dontrun{
-#' instance$y # error
+#' instance$.y # error
 #' }
 #' instance$doSomething()$doSomething()
 #' instance$x()
@@ -36,7 +36,7 @@
 #'
 #' # Example for reference classes as field
 #' MoreTesting <- defineClass("MoreTesting", {
-#'   refObj <- public(test())
+#'   refObj <- test()
 #' })
 #' instance <- MoreTesting()
 #' instance$refObj$x()
@@ -52,8 +52,7 @@ defineClass <- function(name, expr, contains = NULL) {
   }
   
   const <- function(...) {
-    object <- do.call("new", c(list(Class = name)))
-    init(object, ...)
+    do.call("new", c(list(Class = name), ...))
   }
   
   setClass(name, where = parentEnv, 
@@ -63,6 +62,7 @@ defineClass <- function(name, expr, contains = NULL) {
             function(.Object, ...) {
               .Object@.xData <- getMember()
               parent.env(.Object)$self <- .Object
+              init(.Object, ...)
             }, where = parentEnv)
   
   invisible(const)
@@ -88,6 +88,8 @@ setEnvironment <- function(contains, parentEnv) {
 }
 
 arrangeEnvironment <- function(e) {
+  publicNames <- ls(envir = e)
+  lapply(publicNames, function(n) assign(n, public(get(n, envir = e)), envir = e))
   allMember <- as.list(e, all.names = TRUE)
   publicMemberInd <- sapply(allMember, function(obj) inherits(obj, "public"))
   publicMember <- lapply(allMember[publicMemberInd], getPublicRepresentation)

@@ -5,7 +5,7 @@ test_that("Inheritance", {
   suppressWarnings({
     parent <- defineClass("parent", {
       publicMember <- publicValue("?!:")
-      privateMember <- NULL
+      privateMember <- private(NULL)
       get <- publicFunction(function() paste(publicMember(), privateMember))
     })
     
@@ -32,17 +32,17 @@ test_that("Replacing fields I", {
   
   suppressWarnings({
     parent <- defineClass("parent", {
-      privateMember <- NULL
+      privateMember <- private(NULL)
       get <- publicFunction(function() privateMember)
     })
     
     child <- defineClass("child", contains = "parent", {
-      privateMember <- "value"
+      privateMember <- private("value")
     })  
   })
     
   tmp <- child()
-  expect_equal(tmp$get(), "value")
+  expect_equal(tmp$get()@.Data, "value")
   
   removeClass("parent")
   removeClass("child")

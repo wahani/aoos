@@ -53,6 +53,6 @@ stopifnot(inherits(try(instance$.y), "try-error"))
 stopifnot(inherits(try(instance$.y <- 2), "try-error"))
 }
 \seealso{
-\link{Private-class}, \link{setRefClass}, \link{class}
+\link{Private-class}
 }
 

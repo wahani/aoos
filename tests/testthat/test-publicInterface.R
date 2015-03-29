@@ -94,3 +94,19 @@ test_that("", {
   removeClass("test2")
   
 })
+
+
+test_that("Enforce privacy", {
+  
+  test <- suppressWarnings({
+    test <- defineClass("test", {
+      x <- private(5)
+    })
+  })
+  
+  tmp <- test()
+  
+  expect_error(tmp$x)
+    
+  removeClass("test")
+})

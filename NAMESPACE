@@ -2,6 +2,7 @@
 
 export(Class)
 export(defineClass)
+export(private)
 export(public)
 export(publicFunction)
 export(publicValue)

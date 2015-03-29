@@ -3,9 +3,9 @@ test_that("Summary", {
   suppressWarnings({
     test <- defineClass("test", {
       x <- publicValue(1)
-      y <- NULL
+      .y <- NULL
       doSomething <- publicFunction(function() {
-        y <<- y + 1
+        .y <<- .y + 1
         invisible(self)
       })
     })
@@ -15,7 +15,8 @@ test_that("Summary", {
   df <- summary(instance)
   expect_is(df, "data.frame")
   expect_equal(nrow(df), 6)
-  expect_equal(rownames(df), c("doSomething", "self", "x", "x.validity", "x.x", "y"))
+  expect_equal(sort(rownames(df)), 
+               sort(c("doSomething", "self", "x", "x.validity", "x.x", ".y")))
   
   removeClass("test")
 })

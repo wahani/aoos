@@ -15,7 +15,7 @@ test_that("class-markup", {
   tmp <- test()
   expect_is(tmp$get(), "NULL")
   expect_equal(tmp$publicObject(), "BAM!")
-  expect_error(tmp$.privateObject) # how do implement that?
+  expect_error(tmp$.privateObject)
   expect_equal(tmp$set(2), 2)
   expect_equal(tmp$get(), 2)
   
@@ -39,7 +39,7 @@ test_that("default-call", {
 test_that("privacy works", {
   class <- suppressWarnings({
     defineClass("class", {
-      private <- 2
+      private <- private(2)
       get <- public(function() 1)
     })
   })
@@ -91,3 +91,32 @@ test_that("Naming of constructor functions", {
   removeClass("test")
 })
 
+test_that("class-markup v2.0", {
+  
+  suppressWarnings(
+    test <- defineClass("test2", {
+      .privateObject <- NULL
+      publicObject <- "BAM!"
+      get <- function() .privateObject      
+      set <- function(value) .privateObject <<- value
+      doSomethingWithPublicObject <- function() publicObject()
+    })
+  )
+  
+  tmp <- test()
+  expect_is(tmp$get(), "NULL")
+  expect_equal(tmp$publicObject(), "BAM!")
+  expect_error(tmp$.privateObject)
+  expect_equal(tmp$set(2), 2)
+  expect_equal(tmp$get(), 2)
+  
+  expect_equal(tmp$publicObject("jiggle"), "jiggle")
+  expect_equal(tmp$doSomethingWithPublicObject(), "jiggle")
+  
+  # New instance with new environment:
+  suppressWarnings(tmp2 <- test())
+  expect_is(tmp2$get(), "NULL")
+  expect_equal(tmp2$publicObject(), "BAM!")
+  
+  removeClass("test2")
+})

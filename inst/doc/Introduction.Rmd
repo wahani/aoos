@@ -8,105 +8,67 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-This package implements two ways to define reference classes inside the R language. The original implementation was the function `defineClass` and an introduction to this implementation can be found here:
+This package implements several approaches for object orientation inside the R language. The original implementation was the function `defineClass` and an introduction to this implementation can be found here:
 
 ```{r, eval=FALSE}
 vignette("aoosClasses", "aoos")
 ```
 
-`defineClass` is an own implementation of object orientation, like `setRefClass` it uses S4, and can be considered experimental, although it has been reliable in my own work. My current recommendation, however, is to use the function `Class`, which does not implement a new logic of object orientation but fixes my major critique of `setRefClass`: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression, very much like in `defineClass`, the results are then passed as arguments to `setRefClass`. The following example is taken from the documentation file of `setRefClass` to have a direct comparison so you can decide if this is an actual improvement in readability. To the best of my knowledge using `Class` instead of `setRefClass` only changes the appearance, all features are preserved and the outcome is identical to using `setRefClass`.
+`defineClass` is an own implementation of object orientation, like `setRefClass` it uses S4, and can be considered experimental, although it has been reliable in my own work. The function `Class` does not implement a new logic of object orientation but fixes my major critique of `setRefClass`: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression, very much like in `defineClass`, the results are then passed as arguments to `setRefClass`. The following example is taken from the documentation file of `setRefClass` to have a direct comparison so you can decide if this is an actual improvement in readability. To the best of my knowledge using `Class` instead of `setRefClass` only changes the appearance, all features are preserved and the outcome is identical to using `setRefClass`. 
+
+```{r, echo=FALSE}
+removeClass("PersonRC")
+```
 
 ```{r}
-library("aoos")
+library(aoos)
 
-mEdit <- Class({
-  Class <- "mEdit"
+PersonRC <- Class({
+  Class <- "PersonRC"
   
-  data <- "matrix"
-  edits <- "list"
-
-  edit <- function(i, j, value) {
-    ## the following string documents the edit method
-    'Replaces the range [i, j] of the object by value.'
-    backup <- list(i, j, data[i,j])
-    data[i,j] <<- value
-    edits <<- c(edits, list(backup))
-    invisible(value)
-  }
-
-  undo <- function() {
-    'Undoes the last edit() operation and update the edits field accordingly.'
-    prev <- edits
-    if(length(prev)) prev <- prev[[length(prev)]]
-    else stop("No more edits to undo")
-    edit(prev[[1]], prev[[2]], prev[[3]])
-    ## trim the edits list
-    length(edits) <<- length(edits) - 2
-    invisible(prev)
-  }
+  personName <- "character"
   
-  show <- function() {
-    'Method for automatically printing matrix editors' 
-    cat("Reference matrix editor object of class", 
-        classLabel(class(.self)), "\n")
-    cat("Data: \n")
-    methods::show(data)
-    cat("Undo list is of length", length(edits), "\n")
-  }
-})
+  initialize <- function(name) {
+    .self$personName <- name
+    .self$greet()
+    }
+  
+  greet <- function() {
+    cat(paste0("Hello, my name is ", .self$personName, ".\n"))
+    }
+  
+  })
 
-xMat <- matrix(1:12,4,3)
-xx <- mEdit(data = xMat)
-xx$edit(2, 2, 0)
-xx
-xx$undo()
-mEdit$help("undo")
-stopifnot(all.equal(xx$data, xMat))
+ann <- PersonRC("Ann")
+ann
+ann$personName
+ann$personName <- "not Ann"
+ann$greet()
+```
 
-utils::str(xx) # show fields and names of non-trivial methods
+Independently of the usage of `Class` you can use the class `Private` to add a notion of privacy to your reference class. This *feature* will make all fields with a leading dot inaccessible with the standard `$` function.
 
-## add a method to save the object
-mEdit$methods(
-  save = function(file) {
-    'Save the current object on the file in R external object format.'
-         base::save(.self, file = file)
-     }
-)
+```{r}
+PrivatePerson <- Class({
+  Class <- "PrivatePerson"
+  contains <- "Private"
+  
+  .personName <- "character"
+  
+  initialize <- function(name) {
+    .self$.personName <- name
+    .self$greet()
+    }
+  
+  greet <- function() {
+    cat(paste0("Hello, my name is ", .self$.personName, ".\n"))
+    }
+  
+  })
 
-tf <- tempfile()
-xx$save(tf)
-
-# mv <- Class({
-#   Class <- "matrixViewer"
-#   contains <- "mEdit"
-#   
-#   viewerDevice <- viewerFile <- "ANY"
-#   
-#   view <- function() {
-#     dd <- dev.cur(); dev.set(viewerDevice)
-#     devAskNewPage(FALSE)
-#     matplot(data, main = paste("After",length(edits),"edits"))
-#     dev.set(dd)
-#   }
-#   
-#   edit <- function(i, j, value) {
-#     callSuper(i, j, value)
-#     view()
-#   }
-# })
-# 
-# mv$methods(
-#   initialize =
-#     function(file = "./matrixView.pdf", ...) {
-#       viewerFile <<- file
-#       pdf(viewerFile)
-#       viewerDevice <<- dev.cur()
-#       dev.set(dev.prev())
-#       callSuper(...)
-#     },
-#   finalize = function() {
-#     dev.off(viewerDevice)
-#   })
-
+ann <- PrivatePerson("Ann")
+ann
+stopifnot(inherits(try(ann$.personName, silent = TRUE), "try-error"))
+ann$greet()
 ```
 
