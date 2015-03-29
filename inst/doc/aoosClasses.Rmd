@@ -1,0 +1,172 @@
+---
+title: "aoosClasses"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{aoosClasses}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+## aoos classes
+
+Most of what this package can do is inspired by the R-package R6. Unlike R6, aoos relies on the methods package and the S4 class system. It was not written to be superior with respect to efficiency. Use aoos if you want to use object oriented programming as a means to organise your source code.
+
+- An aoos class definition is a R expression. You can write code and decide which objects are public. 
+- You can use auto-complete to see public member functions.
+- You can use features of S4 (method dispatch).
+
+All examples in the following are adapted from the R6-package.
+
+## Basics
+
+There is one function you have to remember:
+
+- `defineClass`: To define a class.
+
+Everything you define inside the class definition will be public, objects with a leading dot in the name will be private. This can be overwritten by the functions `private` and `public`. Every public member will inherit from class function. A "public field" is the get/set method for an object hidden behind a closure. An exception are objects which inherit from class 'environment' so basically all reference classes in R. Those you can access without get/set methods.
+
+Here is a simple class definition: 
+
+```{r, echo=FALSE}
+removeClass("Person")
+```
+
+```{r}
+library(aoos)
+
+Person <- defineClass("Person", {
+  
+  personName <- ""
+  
+  init <- function(name) {
+    self$personName(name)
+    self$greet()
+    }
+  
+  greet <- function() {
+    cat(paste0("Hello, my name is ", self$personName(), ".\n"))
+    }
+  
+  })
+```
+
+The return value of `defineClass` is the constructor function which is assigned to the name `Person`. All arguments to the constructor will be passed on to `init` if you defined it.
+
+```{r}
+ann <- Person("Ann")
+ann
+ann$personName()
+ann$personName("not Ann")
+ann$greet()
+```
+
+Inside the class definition you can use `self` but you do not have to; It just might be more explicit. You can also use the super-assignment operator `<<-` to replace private fields. The following illustrates the difference:
+
+```{r, eval=FALSE}
+Person <- defineClass("Person", {
+  
+  .personName <- "" # .personName is private
+  
+  init <- function(name) {
+    self$.personName <- name # option 1
+    .personName <<- name # option 2
+    greet()
+    }
+  
+  greet <- public(function() {
+    cat(paste0("Hello, my name is ", .personName, ".\n")) # before: personName()
+    })
+  })
+```
+
+What you have to keep in mind is, that a public field is always hidden behind a get/set method and needs to be treated as a function. Private fields are just R objects and follow copy-on-modify semantics.
+
+## Predefined methods
+
+aoos classes inherit from class 'aoos'. For that class some S4-methods are defined you can use:
+
+- `show` which prints the public members of an object to the console
+- `summary` which tries to give a clue how much memory is used by an object
+
+For every class you define with `defineClass` the S4 method `initialize` is set. Do not change it. You can also use the S4 constructor `new` to create a new instance of your class.
+
+```{r}
+new("Person", "Ann")
+```
+
+
+## Inheritance
+
+A class defined by `defineClass` can inherit from other aoos classes. The expression (`expr` in `defineClass`) is first evaluated for the parent and then for the child in the same environment. So you can override methods and fields.
+
+```{r}
+Queue <- defineClass("Queue", {
+
+  .queue <- list()
+  
+  init <- function(...) {
+      for (item in list(...)) self$add(item)
+    }
+  
+  add <- function(x) {
+      .queue <<- c(.queue, list(x))
+      invisible(self)
+    }
+
+  remove <- function() {
+      if (queueIsEmpty()) return(NULL)
+      head <- .queue[[1]]
+      .queue <<- .queue[-1]
+      head
+    }
+
+  queueIsEmpty <- function() length(.queue) == 0
+  
+})
+
+HistoryQueue <- defineClass("HistoryQueue", contains = "Queue", {
+  
+  .head_idx <- 0
+  
+  remove <- function() {
+    if ((length(.queue) - .head_idx) == 0) return(NULL)
+    self$.head_idx <- .head_idx + 1
+    .queue[[.head_idx]]
+    }
+  
+  show <- function() {
+      cat("Next item is at index", .head_idx + 1, "\n")
+      for (i in seq_along(.queue)) {
+        cat(i, ": ", .queue[[i]], "\n", sep = "")
+      }
+    }
+  
+  })
+
+q <- Queue(5, 6, "foo")
+q$remove()
+q
+
+hq <- HistoryQueue(5, 6, "foo")
+hq
+hq$show()
+hq$remove()
+hq$show()
+hq$remove()
+```
+
+Since these classes use the S4 system you can use `setMethod` to define additional methods like `show`. Define S4-methods always outside the `defineClass` function as `expr` will be evaluated every time a new instance is created.
+
+```{r}
+setMethod("show", "HistoryQueue", function(object) {
+  object$show()
+})
+
+hq
+```
+
+## Inheritance across packages
+
+This is a little tricky. `expr` is evaluated in a new environment whenever you create a new instance. If one class inherits from another the same environment is used for the evaluation. Thus, objects of the parent can be replaced and the scoping of the parent is preserved; functions defined for the parent and the child share the same environment. The parent environment of an aoos class is the environment in which `defineClass` (for the parent) is called. This will typically be a package namespace. If you define class B in package pkgB which inherits from a class A from package pkgA class B will have the same scoping as a class in pkgA. Whenever you want to use functions from pkgB in class B you have to define them as part of the class definition or refer to them with `pkgB::"functionName"` or `pkgB:::"functionName"`.
+
