@@ -1,6 +1,7 @@
 context("Class")
 
 test_that("Class wrapper", {
+  
   suppressWarnings(
     Test <- Class({
       
@@ -97,3 +98,17 @@ test_that("Private members for refClasses", {
   removeClass("Test")
 })
 
+test_that("refClass with empty fields", {
+  
+  suppressWarnings({
+    Test <- Class({
+      Class <- "Test3"  
+    })
+  })
+  
+  test <- Test()
+  
+  expect_true(inherits(test, "Test3"))
+  
+  removeClass("Test3")
+})

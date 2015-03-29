@@ -10,7 +10,7 @@ Class(expr)
 \item{expr}{an expression}
 }
 \description{
-This is a wrapper around \code{\link{setRefClass}}. All arguments to \code{setRefClass} are defined in an expression which improves readability of the code. Besides that, no additional features are added.
+This is a wrapper around \code{\link{setRefClass}}. All arguments are defined in an expression (instead of lists) which improves readability of the code. Besides that, no additional features are added.
 }
 \examples{
 \dontrun{
@@ -53,6 +53,6 @@ stopifnot(inherits(try(instance$.y), "try-error"))
 stopifnot(inherits(try(instance$.y <- 2), "try-error"))
 }
 \seealso{
-\link{Private-class}
+\link{Private-class}, \link{setRefClass}, \link{class}
 }
 

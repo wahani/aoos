@@ -1,3 +1,6 @@
+Version 0.1.4
+- Bugfix in Class when constructing refClass with empty fields
+
 Version 0.1.3
 - New class 'Private' to add restricted access to methods and fields
 

@@ -1,6 +1,6 @@
 #' Define a Reference Class
 #' 
-#' This is a wrapper around \code{\link{setRefClass}}. All arguments to \code{setRefClass} are defined in an expression which improves readability of the code. Besides that, no additional features are added.
+#' This is a wrapper around \code{\link{setRefClass}}. All arguments are defined in an expression (instead of lists) which improves readability of the code. Besides that, no additional features are added.
 #' 
 #' @param expr an expression
 #' 
@@ -77,6 +77,7 @@ Class <- function(expr) {
 
 
 combineListElements <- function(l, ind, name) {
+  ind <- as.logical(ind)
   newElement <- l[ind]
   l[ind] <- NULL
   l[[name]] <- newElement
