@@ -28,9 +28,17 @@ install_github("wahani/aoos")
 ## 
 ##     o   Bugfix in Class when constructing refClass with empty fields
 ## 
+##     o   Updated behaviour of aoos classes. Leading '.' indicates a private member, all other names refer to public member
+## 
+##     o   New function private to declare a member to be private regardless of name
+## 
+##     o   Initialise method for aoos classes now properly passes arguments to init, so new can be used for initialisation
+## 
+##     o   Updated vignettes
+## 
 ## Changes in version 0.1.3:
 ## 
-##     o   New class 'Private' to add restricted access to methods and fields
+##     o   New class 'Private' to add restricted access to methods and fields of reference classes
 ## 
 ## Changes in version 0.1.2:
 ## 
