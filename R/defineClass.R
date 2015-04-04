@@ -41,13 +41,13 @@
 #' instance <- MoreTesting()
 #' instance$refObj$x()
 defineClass <- function(name, expr, contains = NULL) {
-
-  mc <- processMarkup(match.call())
+  
+  expr <- substitute(expr)
   parentEnv <- parent.frame()
   
   getMember <- function() {
-    e <- setEnvironment(contains, parentEnv) # name e is needed in eval(mc)
-    eval(mc)
+    e <- setEnvironment(contains, parentEnv)
+    eval(expr, envir = e)
     arrangeEnvironment(e)
   }
   
@@ -66,16 +66,6 @@ defineClass <- function(name, expr, contains = NULL) {
             }, where = parentEnv)
   
   invisible(const)
-}
-
-processMarkup <- function(mc) {
-  mc[[1]] <- quote(eval)
-  mc$envir <- quote(e)
-  expr <- mc$expr
-  mc$expr <- substitute(expression(expr))
-  mc$name <- NULL
-  mc$contains <- NULL
-  mc
 }
 
 setEnvironment <- function(contains, parentEnv) {
