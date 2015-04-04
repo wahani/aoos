@@ -52,12 +52,12 @@ test_that("Replacing fields II", {
   
   suppressWarnings({
     parent <- defineClass("parent", {
-      get <- publicFunction(function() foo())
-      foo <- publicFunction(function() 1)
+      get <- function() foo()
+      foo <- function() 1
     })
     
     child <- defineClass("child", contains = "parent", {
-      foo <- publicFunction(function() 2)
+      foo <- function() 2
     })
   })
     
@@ -67,4 +67,33 @@ test_that("Replacing fields II", {
   
   removeClass("parent")
   removeClass("child")
+})
+
+test_that("Inheritance of standard S4 classes", {
+  
+  setClass("Parent", contains = "VIRTUAL")
+  
+  setGeneric("testMethod", function(x) "default")
+  setMethod("testMethod", signature = "Parent", function(x) 1)
+  
+  suppressWarnings({
+    
+    child1 <- defineClass("Child1", contains = "Parent", {
+      get <- function() foo()
+      foo <- function() 1
+    })
+    
+    child2 <- defineClass("Child2", contains = "Child1", { })
+    
+  })
+  
+  tmp1 <- child1()
+  tmp2 <- child2()
+  
+  expect_equal(testMethod(tmp1), 1)
+  expect_equal(testMethod(tmp2), 1)
+  
+  removeClass("Child2")
+  removeClass("Child1")
+  removeClass("Parent")
 })

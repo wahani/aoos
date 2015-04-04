@@ -67,6 +67,7 @@ test_that("'init' function is executed", {
     })})
   
   expect_equal(test("jaj")$name(), "jaj")
+  expect_equal(new("test")$name(), "") # not executed
   
   removeClass("test")
 })

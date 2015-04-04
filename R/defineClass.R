@@ -44,9 +44,10 @@ defineClass <- function(name, expr, contains = NULL) {
   
   expr <- substitute(expr)
   parentEnv <- parent.frame()
+  aoosClass <- findAoosClasses(contains)
   
   getMember <- function() {
-    e <- setEnvironment(contains, parentEnv)
+    e <- setEnvironment(aoosClass, parentEnv)
     eval(expr, envir = e)
     arrangeEnvironment(e)
   }
@@ -56,7 +57,7 @@ defineClass <- function(name, expr, contains = NULL) {
   }
   
   setClass(name, where = parentEnv, 
-           contains = if(is.null(contains)) "aoos" else contains)
+           contains = c(if(!length(aoosClass)) "aoos" else NULL, contains))
   
   setMethod("initialize", name,
             function(.Object, ...) {
@@ -68,11 +69,18 @@ defineClass <- function(name, expr, contains = NULL) {
   invisible(const)
 }
 
-setEnvironment <- function(contains, parentEnv) {
-  if(is.null(contains)) {
+findAoosClasses <- function(contains) {
+  ind <- sapply(contains, function(class) {
+    any(names(getClassDef(class)@contains) == "aoos")
+  })
+  contains[ind]
+}
+
+setEnvironment <- function(aoosClass, parentEnv) {
+  if(!length(aoosClass)) {
     new.env(parent = parentEnv)
   } else {
-    object <- new(contains)
+    object <- new(aoosClass)
     parent.env(object)
   }
 }
@@ -90,9 +98,19 @@ arrangeEnvironment <- function(e) {
 
 init <- function(object, ...) {
   
-  if(exists("init", envir = parent.env(object), inherits = FALSE)) {
+  shouldInitBeCalled <- function() {
+    initMethodExists <- exists("init", envir = parent.env(object), inherits = FALSE)
+    hasArguments <- as.logical(length(list(...)))
+    initMethodExists && hasArguments
+  }
+  
+  if(shouldInitBeCalled()) {
     parent.env(object)$init(...)
   }
   
   object
 }
+
+
+
+
