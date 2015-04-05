@@ -57,7 +57,7 @@ defineClass <- function(name, expr, contains = NULL) {
   }
   
   setClass(name, where = parentEnv, 
-           contains = c(if(!length(aoosClass)) "aoos" else NULL, contains))
+           contains = c(contains, if(!length(aoosClass)) "aoos"))
   
   setMethod("initialize", name,
             function(.Object, ...) {
