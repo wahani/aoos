@@ -1,6 +1,7 @@
 Version 0.1.5
 - Bugfix when calling new/constructor without arguments
 - Inheritance of non-aoos classes - for S4 Method dispatch
+- update to summary method for aoos
 
 Version 0.1.4
 - Bugfix in Class when constructing refClass with empty fields

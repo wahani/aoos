@@ -86,7 +86,9 @@ setMethod("$<-", signature = c(x = "aoos"),
 #' @export
 setMethod("summary", signature = c(object = "aoos"),
           function(object, ...) {
-            envSize(parent.env(object))
+            out <- envSize(parent.env(object))
+            rownames(out) <- NULL
+            out
           })
 
 envSize <- function (env) {
@@ -99,15 +101,21 @@ envSize <- function (env) {
   obj.mode <- napply(names, mode)
   obj.type <- ifelse(is.na(obj.class), obj.mode, obj.class)
   obj.size <- napply(names, object.size)
-  
+
   obj.subsizes <- napply(names, function(x) {
-    if(inherits(x, "publicFunction") && !identical(environment(x), env)) 
+    if(inherits(x, "publicFunction") && !identical(environment(x), env))
       envSize(environment(x))
   })
-  
   obj.subsizes <- do.call(rbind, obj.subsizes)
+  obj.subsizes$Name <- rownames(obj.subsizes)
   
-  out <- rbind(data.frame(Type = obj.type, "Size.Mib" = round(obj.size / (1024^2), 1)), obj.subsizes)
-  out[order(rownames(out), out$Type), ]
+  out <- rbind(data.frame(
+    Name = names(obj.type),
+    Type = obj.type, 
+    "Size.Mib" = round(obj.size / (1024^2), 1),
+    stringsAsFactors = FALSE), 
+    obj.subsizes)
   
+  out[order(out$Name, out$Type), ]
+    
 }

@@ -63,6 +63,7 @@ defineClass <- function(name, expr, contains = NULL) {
             function(.Object, ...) {
               .Object@.xData <- getMember()
               parent.env(.Object)$self <- .Object
+              parent.env(.Object)$.self <- .Object
               init(.Object, ...)
             }, where = parentEnv)
   
