@@ -20,9 +20,21 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.1.0 
-## Development Version: 0.1.4 
+## Development Version: 0.1.5 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.1.5:
+## 
+##     o   Bugfix when calling new/constructor without arguments
+## 
+##     o   Inheritance of non-aoos classes - for S4 Method dispatch
+## 
+##     o   update to summary method for aoos
+## 
+##     o   New class 'Show' to easily override default show method for aoos classes
+## 
+##     o   New class 'Accessor' to override the default accessor for aoos classes
 ## 
 ## Changes in version 0.1.4:
 ## 
