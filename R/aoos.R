@@ -14,7 +14,6 @@ setMethod("show", signature = c(object = "aoos"),
             cat("Class: ", class(object), "\n", sep = "")
             cat("public member:\n")
             lapply(ls(object), function(n) cat(" ", n, "\n"))
-            #             print(env.profile(as.environment(object)))
           })
 
 #' @rdname aoos
@@ -29,11 +28,6 @@ setMethod("$", signature = c(x = "aoos"),
             
             getMember(name, x, privacy)
             
-#             if(inherits(member, "publicValue")) {
-#               member()
-#             } else {
-#               member
-#             }
           })
 
 envirSearch <- function(envList = list(environment())) {
@@ -56,7 +50,6 @@ getMember <- function(name, object, privacy = FALSE) {
   }
 }
 
-
 #' @rdname aoos
 #' @export
 #' @param value value to assign to. Will throw an error.
@@ -66,17 +59,12 @@ setMethod("$<-", signature = c(x = "aoos"),
             privacy <- !any(sapply(envirSearch(list(parent.frame())), 
                                    identical, y = parent.env(x)))
             
-            #             member <- getMember(name, x, privacy)
-            
-            #             if(inherits(member, "publicValue")) {
-            #               member(value)
-            #             } else {
             if(privacy) {
               stop("If you need to extend object, modify class definition.")
             } else {
               assign(name, value = value, envir = parent.env(x))
             }
-            #             }
+            
             x
           })
 
