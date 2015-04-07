@@ -55,19 +55,29 @@ test_that("privacy works", {
 
 
 test_that("'init' function is executed", {
-  test <- suppressWarnings({
-    defineClass("test", {
+  suppressWarnings({
+    test <- defineClass("test", {
       
-      name <- public("")
+      name <- ""
       
       init <- function(name) {
         self$name(name)
       } 
       
-    })})
+    })
+    
+    defineClass("TestInit", {
+      field <- ""
+      init <- function() {
+        self$field("b")
+      }
+    })
+    
+  })
   
   expect_equal(test("jaj")$name(), "jaj")
-  expect_equal(new("test")$name(), "") # not executed
+  expect_equal(new("test")$name(), "")
+  expect_equal(new("TestInit")$field(), "b")
   
   removeClass("test")
 })

@@ -101,8 +101,8 @@ init <- function(object, ...) {
   
   shouldInitBeCalled <- function() {
     initMethodExists <- exists("init", envir = parent.env(object), inherits = FALSE)
-    hasArguments <- as.logical(length(list(...)))
-    initMethodExists && hasArguments
+    #hasArguments <- as.logical(length(list(...)))
+    initMethodExists
   }
   
   if(shouldInitBeCalled()) {
