@@ -101,35 +101,36 @@
 })
 </div>
 <strong class='warning'>Warning message:
-Created a package name, ‘2015-04-12 10:20:07’, when none found</strong>
+Created a package name, ‘2015-04-12 10:36:30’, when none found</strong>
 <div class='input'>instance &lt;- test()
-## &lt;strong&gt;Not run&lt;/strong&gt;: 
+</div>
+<strong class='error'>Error in getClass(Class, where = topenv(parent.frame())): “test” is not a defined class</strong>
+<div class='input'>## &lt;strong&gt;Not run&lt;/strong&gt;: 
 # instance$.y # error
 # ## &lt;strong&gt;End(Not run)&lt;/strong&gt;
 instance$doSomething()$doSomething()
 </div>
-<div class='output'>Working ... 
-Working ... 
-</div>
+<strong class='error'>Error in eval(expr, envir, enclos): Objekt &#39;instance&#39; nicht gefunden</strong>
 <div class='input'>instance$x()
 </div>
-<div class='output'>[1] &quot;Working ...&quot;
-</div>
+<strong class='error'>Error in eval(expr, envir, enclos): Objekt &#39;instance&#39; nicht gefunden</strong>
 <div class='input'>instance$x(2)
-instance$x()
 </div>
-<div class='output'>[1] 2
+<strong class='error'>Error in eval(expr, envir, enclos): Objekt &#39;instance&#39; nicht gefunden</strong>
+<div class='input'>instance$x()
 </div>
+<strong class='error'>Error in eval(expr, envir, enclos): Objekt &#39;instance&#39; nicht gefunden</strong>
 <div class='input'>
 # Example for reference classes as field
 MoreTesting &lt;- defineClass(&quot;MoreTesting&quot;, {
   refObj &lt;- test()
 })
 instance &lt;- MoreTesting()
-instance$refObj$x()
 </div>
-<div class='output'>[1] &quot;Working ...&quot;
-</div></pre>
+<strong class='error'>Error in getClass(Class, where = topenv(parent.frame())): “MoreTesting” is not a defined class</strong>
+<div class='input'>instance$refObj$x()
+</div>
+<strong class='error'>Error in eval(expr, envir, enclos): Objekt &#39;instance&#39; nicht gefunden</strong></pre>
   </div>
   <div class="span4">
     <!-- <ul>
