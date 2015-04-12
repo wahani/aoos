@@ -54,7 +54,7 @@ test_that("Handling of reference classes as public member", {
   
 })
 
-test_that("", {
+test_that("Access methods reference fields", {
   
   suppressWarnings(
     test <- defineClass("test", {
@@ -109,4 +109,19 @@ test_that("Enforce privacy", {
   expect_error(tmp$x)
     
   removeClass("test")
+})
+
+test_that("Enforce public", {
+  
+  test <- suppressWarnings({
+    test <- defineClass("testEnforcePublic", {
+      .x <- public(5)
+    })
+  })
+  
+  tmp <- test()
+  
+  expect_equal(tmp$.x(), 5)
+  
+  removeClass("testEnforcePublic")
 })
