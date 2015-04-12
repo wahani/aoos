@@ -8,7 +8,7 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-This package implements several approaches and utilities for object orientation inside the R language. The need for this implementation was not to implement features like encapsulation or other concepts associated with object orientation in R as they are readily available in other packages (methods, R6, R.oo, proto). However, in this package class definitions are empored by non standard evaluation which contributes to the readibility and thus maintanability of your source code which is especially important in larger projects. 
+This package implements several ideas and utilities for object orientation inside the R language. The need for this implementation was not to implement features like encapsulation or other concepts associated with object orientation in R as they are readily available in other packages (methods, R6, R.oo, proto). However, in this package class definitions are empowered by non standard evaluation which contributes to the readability and thus maintainability of your source code which is especially important in larger projects. 
 
 The original implementation was the function `defineClass` and an introduction to this implementation can be found here:
 
@@ -18,7 +18,7 @@ vignette("aoosClasses", "aoos")
 
 `defineClass` is an own implementation of object orientation, like `setRefClass` it uses S4, and can be considered experimental, although it has been reliable in my own work. 
 
-The function `Class` does not implement a new logic of object orientation but fixes my major critique of `setRefClass`: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression. Very much like in `defineClass` the *evaluated expression* is then passed as argument to `setRefClass`. Also there is a class *Private* from which a reference class can inherit which adds a notion of privacy (overrides the default accessor functinos) to a reference class:
+The function `Class` does not implement a new logic of object orientation but fixes my major critique of `setRefClass`: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression. Very much like in `defineClass` the *evaluated expression* is then passed as argument to `setRefClass`. Also there is a class *Private* from which a reference class can inherit which adds a notion of privacy (overrides the default accessor functions) to a reference class:
 
 ```{r, eval=FALSE}
 vignette("referenceClasses", "aoos")

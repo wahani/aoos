@@ -2,7 +2,7 @@ setClass("public", contains = "VIRTUAL")
 setClass("publicFunction", contains = c("public", "function"))
 setClass("publicValue", contains = "publicFunction")
 setClass("publicEnv", contains = c("public", "list"))
-setClass("private", contains = "ANY")
+setClass("private", slots = c(.Data = "ANY"))
 
 setGeneric("getPublicRepresentation", function(obj) obj)
 setMethod("getPublicRepresentation", "publicEnv", function(obj) {

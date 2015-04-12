@@ -115,7 +115,7 @@ ann &lt;-<span class="st"> </span><span class="kw">PrivatePerson</span>(<span cl
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">stopifnot</span>(<span class="kw">inherits</span>(<span class="kw">try</span>(ann$.personName, <span class="dt">silent =</span> <span class="ot">TRUE</span>), <span class="st">&quot;try-error&quot;</span>))
 ann$<span class="kw">greet</span>()</code></pre>
 <pre><code>## Hello, my name is Ann.</code></pre>
-<p>There is really not much more to this but for illustation consider the class definition using setRefClass:</p>
+<p>There is really not much more to this but for illustration consider the class definition using setRefClass:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">removeClass</span>(<span class="st">&quot;PrivatePerson&quot;</span>)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">PrivatePerson &lt;-<span class="st"> </span><span class="kw">setRefClass</span>(

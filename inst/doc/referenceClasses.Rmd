@@ -64,7 +64,7 @@ stopifnot(inherits(try(ann$.personName, silent = TRUE), "try-error"))
 ann$greet()
 ```
 
-There is really not much more to this but for illustation consider the class definition using setRefClass:
+There is really not much more to this but for illustration consider the class definition using setRefClass:
 
 ```{r}
 removeClass("PrivatePerson")

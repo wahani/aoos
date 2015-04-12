@@ -1,7 +1,8 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. Has reference semantics and is built around S4.
+Another implementation of object-orientation in R. Has reference
+semantics and is built around S4.
 
 # Installation
 To install from CRAN:

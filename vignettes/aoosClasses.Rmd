@@ -24,7 +24,7 @@ There is one function you have to remember:
 
 - `defineClass`: To define a class.
 
-Everything you define inside the class definition will be public, objects with a leading dot in the name will be private. This can be overwritten by the functions `private` and `public`. Every public member will inherit from class function. A "public field" is the get/set method for an object hidden behind a closure (see the class \link{Accessor} if you dislike this). An exception are objects which inherit from class 'environment' so basically all reference classes in R. Those you can access without get/set methods.
+Everything you define inside the class definition will be public, objects with a leading dot in the name will be private. This can be overwritten by the functions `private` and `public`. Every public member will inherit from class function. A "public field" is the get/set method for an object hidden behind a closure (see the class *Accessor* if you dislike this). An exception are objects which inherit from class 'environment' so basically all reference classes in R. Those you can access without get/set methods.
 
 Here is a simple class definition: 
 

@@ -72,7 +72,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <ul>
 <li><code>defineClass</code>: To define a class.</li>
 </ul>
-<p>Everything you define inside the class definition will be public, objects with a leading dot in the name will be private. This can be overwritten by the functions <code>private</code> and <code>public</code>. Every public member will inherit from class function. A “public field” is the get/set method for an object hidden behind a closure. An exception are objects which inherit from class ‘environment’ so basically all reference classes in R. Those you can access without get/set methods.</p>
+<p>Everything you define inside the class definition will be public, objects with a leading dot in the name will be private. This can be overwritten by the functions <code>private</code> and <code>public</code>. Every public member will inherit from class function. A “public field” is the get/set method for an object hidden behind a closure (see the class <em>Accessor</em> if you dislike this). An exception are objects which inherit from class ‘environment’ so basically all reference classes in R. Those you can access without get/set methods.</p>
 <p>Here is a simple class definition:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(aoos)
 
