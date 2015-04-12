@@ -28,10 +28,6 @@ Everything you define inside the class definition will be public, objects with a
 
 Here is a simple class definition: 
 
-```{r, echo=FALSE}
-removeClass("Person")
-```
-
 ```{r}
 library(aoos)
 

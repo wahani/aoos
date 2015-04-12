@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-04-04" />
+<meta name="date" content="2015-04-12" />
 
 <title>aoosClasses</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">aoosClasses</h1>
-<h4 class="date"><em>2015-04-04</em></h4>
+<h4 class="date"><em>2015-04-12</em></h4>
 </div>
 
 
@@ -74,9 +74,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p>Everything you define inside the class definition will be public, objects with a leading dot in the name will be private. This can be overwritten by the functions <code>private</code> and <code>public</code>. Every public member will inherit from class function. A “public field” is the get/set method for an object hidden behind a closure. An exception are objects which inherit from class ‘environment’ so basically all reference classes in R. Those you can access without get/set methods.</p>
 <p>Here is a simple class definition:</p>
-<pre><code>## Warning in removeClass(&quot;Person&quot;): class definition for &quot;Person&quot; not found
-## (no action taken)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(aoos)
 
 Person &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span class="st">&quot;Person&quot;</span>, {

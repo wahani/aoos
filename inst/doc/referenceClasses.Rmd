@@ -1,0 +1,92 @@
+---
+title: "referenceClasses"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{referenceClasses}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+## reference classes
+
+To the best of my knowledge using `Class` instead of `setRefClass` only changes the appearance, all features are preserved and the outcome is identical to using `setRefClass`. 
+
+```{r}
+library(aoos)
+
+Person <- Class({
+  Class <- "person" # this is the argument 'Class' in setRefClass
+  
+  personName <- "character" # this is a field of class 'character'
+  
+  initialize <- function(name) {
+    .self$personName <- name
+    .self$greet()
+    }
+  
+  greet <- function() {
+    cat(paste0("Hello, my name is ", .self$personName, ".\n"))
+    }
+  
+  })
+
+ann <- Person("Ann")
+ann
+ann$personName
+ann$personName <- "not Ann"
+ann$greet()
+```
+
+Independently of the usage of `Class` you can use the class `Private` to add a notion of privacy to your reference class. This *feature* will make all fields with a leading dot inaccessible with the standard `$` function.
+
+```{r}
+PrivatePerson <- Class({
+  Class <- "PrivatePerson"
+  contains <- "Private" # also just passed as argument to setRefClass
+  
+  .personName <- "character"
+  
+  initialize <- function(name) {
+    .self$.personName <- name
+    .self$greet()
+    }
+  
+  greet <- function() {
+    cat(paste0("Hello, my name is ", .self$.personName, ".\n"))
+    }
+  
+  })
+
+ann <- PrivatePerson("Ann")
+ann
+stopifnot(inherits(try(ann$.personName, silent = TRUE), "try-error"))
+ann$greet()
+```
+
+There is really not much more to this but for illustation consider the class definition using setRefClass:
+
+```{r}
+removeClass("PrivatePerson")
+
+PrivatePerson <- setRefClass(
+  Class = "PrivatePerson", 
+  fields = list(.personName = "character"),
+  contains = "Private",
+  methods = list(
+    initialize = function(name) {
+      .self$.personName <- name
+      .self$greet()
+      },
+    greet = function() {
+      cat(paste0("Hello, my name is ", .self$.personName, ".\n"))
+      }
+    )
+  )
+
+ann <- PrivatePerson("Ann")
+ann
+stopifnot(inherits(try(ann$.personName, silent = TRUE), "try-error"))
+ann$greet()
+```
+
