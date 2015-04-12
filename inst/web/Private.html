@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Private-class. aoos 0.1.5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">aoos 0.1.5</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Private class</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>"$"(x, name)</div>
+<div>"$"(x, name) <- value</div>
+<div>"[["(x, i, j, ...)</div>
+<div>"[["(x, i, j, ...) <- value</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>the object</dd>
+      <dt>name</dt>
+      <dd>name of field or method</dd>
+      <dt>value</dt>
+      <dd>any object</dd>
+      <dt>i</dt>
+      <dd>like name</dd>
+      <dt>j</dt>
+      <dd>ignored</dd>
+      <dt>...</dt>
+      <dd>ignored</dd>
+    </dl>
+    
+    <div class="Private class">
+      <h2>Private class</h2>
+      
+    </div>
+
+    <div class="Private class">
+      <h2>Private class</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This is a virtual class to be contained in other class definitions. It overrides the default subset functions <code>$</code> and <code>[[</code> such that private member of a class can not be accessed. Private is every object which has a name with a leading "." (<code>grepl("^\\.", name)</code>). After this check the standard method for class 'envRefClass' is called or an error is reported.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>ClassWithPrivateField &lt;- Class({
+  Class &lt;- &quot;ClassWithPrivateField&quot;
+  contains &lt;- &quot;Private&quot;
+
+  .p &lt;- &quot;numeric&quot;
+
+  getP &lt;- function() .p
+  setP &lt;- function(v) .self$.p &lt;- v
+})
+</div>
+<strong class='warning'>Warning message:
+Created a package name, ‘2015-04-12 10:20:07’, when none found</strong>
+<div class='input'>
+test &lt;- ClassWithPrivateField()
+stopifnot(inherits(try(test$.p), &quot;try-error&quot;))
+stopifnot(inherits(try(test$.p &lt;- 2), &quot;try-error&quot;))
+stopifnot(inherits(try(test[[&quot;.p&quot;]]), &quot;try-error&quot;))
+stopifnot(inherits(try(test[[&quot;.p&quot;]] &lt;- 2), &quot;try-error&quot;))
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>$,Private-method</li><li>$&lt;-,Private-method</li><li>Private-class</li><li>[[,Private-method</li><li>[[&lt;-,Private-method</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<a href='Class.html'>Class</a>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

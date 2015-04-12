@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Index. aoos 0.1.5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Sebastian Warnholz">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">aoos 0.1.5</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <div class="row">
+  <div class="span8">
+    <p><a href="https://travis-ci.org/wahani/aoos"><img src="https://travis-ci.org/wahani/aoos.png?branch=master" alt="Build Status"/></a></p>
+
+<h1>Another object orientation system in R</h1>
+
+<p>Another implementation of object-orientation in R. Has reference semantics and is built around S4.</p>
+
+<h1>Installation</h1>
+
+<p>To install from CRAN:</p>
+
+<pre><code class="r">install.packages(&quot;aoos&quot;)
+</code></pre>
+
+<p>To install from this repo:</p>
+
+<pre><code class="r">library(devtools)
+install_github(&quot;wahani/aoos&quot;)
+</code></pre>
+
+<pre><code>## Version on CRAN: 0.1.0 
+## Development Version: 0.1.5 
+## 
+## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.1.5:
+## 
+##     o   Bugfix when calling new/constructor without arguments
+## 
+##     o   Inheritance of non-aoos classes - for S4 Method dispatch
+## 
+##     o   update to summary method for aoos
+## 
+##     o   New class &#39;Show&#39; to easily override default show method for aoos classes
+## 
+##     o   New class &#39;Accessor&#39; to override the default accessor for aoos classes
+## 
+## Changes in version 0.1.4:
+## 
+##     o   Bugfix in Class when constructing refClass with empty fields
+## 
+##     o   Updated behaviour of aoos classes. Leading &#39;.&#39; indicates a private member, all other names refer to public member
+## 
+##     o   New function private to declare a member to be private regardless of name
+## 
+##     o   Initialise method for aoos classes now properly passes arguments to init, so new can be used for initialisation
+## 
+##     o   Updated vignettes
+## 
+## Changes in version 0.1.3:
+## 
+##     o   New class &#39;Private&#39; to add restricted access to methods and fields of reference classes
+## 
+## Changes in version 0.1.2:
+## 
+##     o   New function Class, which is a wrapper around setRefClass
+## 
+## Changes in version 0.1.1:
+## 
+##     o   Bugfix when accessing reference objects.
+</code></pre>
+
+<h1>Material</h1>
+
+<ul>
+<li><a href="https://wahani.github.io/aoos/vignettes/Introduction.html">Introduction Vignette</a></li>
+<li><a href="https://wahani.github.io/aoos">Homepage</a></li>
+<li><a href="https://github.com/wahani/aoos">GitHub</a></li>
+</ul>
+
+
+    <h2>Help topics</h2>
+
+    <h3></h3>
+    
+    
+    <ul class="index">
+        
+      <li>
+        <code><a href="Accessor.html">Accessor-class</a></code>($,Accessor-method, $&lt;-,Accessor-method)<br />Accessor class</li>
+            
+      <li>
+        <code><a href="aoos.html">aoos-class</a></code>($,aoos-method, $&lt;-,aoos-method, show,aoos-method, summary,aoos-method)<br />Class aoos</li>
+            
+      <li>
+        <code><a href="Class.html">Class</a></code><br />Define a Reference Class</li>
+            
+      <li>
+        <code><a href="defineClass.html">defineClass</a></code>(private, public, public,function-method, public,private-method, public,public-method)<br />Define a new class</li>
+            
+      <li>
+        <code><a href="Private.html">Private-class</a></code>($,Private-method, $&lt;-,Private-method, [[,Private-method, [[&lt;-,Private-method)<br />Private class</li>
+            
+      <li>
+        <code><a href="publicInterface.html">publicFunction</a></code>($,publicEnv-method, publicValue)<br />Constructors for public members</li>
+            
+      <li>
+        <code><a href="Show.html">Show-class</a></code>(show,Show-method)<br />Show class</li>
+    
+    </ul>
+  </div>
+  
+  <div class="span3 offset1">
+    <h2>Vignettes</h2>
+    <ul>
+      <li><a href="vignettes/aoosClasses.html">aoosClasses</a></li>
+      <li><a href="vignettes/Introduction.html">Introduction</a></li>
+      <li><a href="vignettes/referenceClasses.html">referenceClasses</a></li>
+    </ul>
+        
+    <h2>Dependencies</h2>
+    <ul>
+      <li><strong>Depends</strong>: methods</li>
+      <li><strong>Imports</strong>: </li>
+      <li><strong>Suggests</strong>: testthat, knitr</li>
+      <li><strong>Extends</strong>: </li>
+    </ul>
+     
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
