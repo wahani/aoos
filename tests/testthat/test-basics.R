@@ -27,13 +27,11 @@ test_that("class-markup", {
   expect_is(tmp2$get(), "NULL")
   expect_equal(tmp2$publicObject(), "BAM!")
   
-  removeClass("test")
 })
 
 test_that("default-call", {
   expect_is(suppressWarnings(defineClass("tmp")), "function")
   expect_true(isClass("tmp"))
-  removeClass("tmp")
 })
 
 test_that("privacy works", {
@@ -50,7 +48,6 @@ test_that("privacy works", {
   expect_error(tmp$private)
   expect_error(tmp$something <- 1)
   
-  removeClass("class")
 })
 
 
@@ -79,7 +76,6 @@ test_that("'init' function is executed", {
   expect_equal(new("test")$name(), "")
   expect_equal(new("TestInit")$field(), "b")
   
-  removeClass("test")
 })
 
 test_that("Naming of constructor functions", {
@@ -99,7 +95,6 @@ test_that("Naming of constructor functions", {
   expect_is(tmp1$x(), "NULL")
   expect_equal(tmp$x(), 2)
   
-  removeClass("test")
 })
 
 test_that("class-markup v2.0", {
@@ -129,5 +124,4 @@ test_that("class-markup v2.0", {
   expect_is(tmp2$get(), "NULL")
   expect_equal(tmp2$publicObject(), "BAM!")
   
-  removeClass("test2")
 })

@@ -13,7 +13,6 @@ test_that("Validity function for set", {
   expect_is(tmp$x(), "numeric")
   expect_error(tmp$x("s"))
   
-  removeClass("test")
 })
 
 test_that("publicValue", {
@@ -47,10 +46,6 @@ test_that("Handling of reference classes as public member", {
   ro$refObj$value(2)
   ro$refObj$value()
   is(ro$refObj, "refObj")
-  
-  
-  removeClass("refObj")
-  removeClass("refObj2")
   
 })
 
@@ -89,10 +84,6 @@ test_that("Access methods reference fields", {
   expect_equal(instance$refObj$method(), test()$method())
   expect_equal(instance$method(), test()$method())
   
-  removeClass("test")
-  removeClass("test1")
-  removeClass("test2")
-  
 })
 
 
@@ -107,8 +98,7 @@ test_that("Enforce privacy", {
   tmp <- test()
   
   expect_error(tmp$x)
-    
-  removeClass("test")
+  
 })
 
 test_that("Enforce public", {
@@ -123,5 +113,4 @@ test_that("Enforce public", {
   
   expect_equal(tmp$.x(), 5)
   
-  removeClass("testEnforcePublic")
 })

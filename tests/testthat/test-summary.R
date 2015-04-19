@@ -18,5 +18,4 @@ test_that("Summary", {
   expect_equal(sort(df$Name), 
                sort(c("doSomething", "self", ".self", "x", "x.validity", "x.x", ".y")))
   
-  removeClass("test")
 })

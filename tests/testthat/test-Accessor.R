@@ -26,6 +26,5 @@ test_that("Class Accessor", {
   expect_equal(instance$x <- 2, 2)
   expect_equal(instance$x, 2)
   
-  removeClass("TestAcessor")
 })
 

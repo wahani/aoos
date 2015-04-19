@@ -24,7 +24,6 @@ test_that("self awareness", {
     expect_is(tmp$doSomething(), "test")
   }
   
-  removeClass("test")
 })
 
 test_that("self can be accessed", {
@@ -45,5 +44,4 @@ test_that("self can be accessed", {
   expect_is(instance$doSomething(), "test")
   expect_equal(instance$get(), 3)
   
-  removeClass("test")
 })
