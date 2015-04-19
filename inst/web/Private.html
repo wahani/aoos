@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Private-class. aoos 0.1.5</title>
+<title>Private-class. aoos 0.1.6</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">aoos 0.1.5</a>
+      <a class="brand" href="#">aoos 0.1.6</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -61,19 +61,9 @@
       <dd>ignored</dd>
     </dl>
     
-    <div class="Private class">
-      <h2>Private class</h2>
-      
-    </div>
-
-    <div class="Private class">
-      <h2>Private class</h2>
-      
-    </div>
-
     <div class="Description">
       <h2>Description</h2>
-      
+
       <p>This is a virtual class to be contained in other class definitions. It overrides the default subset functions <code>$</code> and <code>[[</code> such that private member of a class can not be accessed. Private is every object which has a name with a leading "." (<code>grepl("^\\.", name)</code>). After this check the standard method for class 'envRefClass' is called or an error is reported.</p>
   
     </div>
@@ -88,10 +78,7 @@
   getP &lt;- function() .p
   setP &lt;- function(v) .self$.p &lt;- v
 })
-</div>
-<strong class='warning'>Warning message:
-Created a package name, ‘2015-04-12 10:36:30’, when none found</strong>
-<div class='input'>
+
 test &lt;- ClassWithPrivateField()
 stopifnot(inherits(try(test$.p), &quot;try-error&quot;))
 stopifnot(inherits(try(test$.p &lt;- 2), &quot;try-error&quot;))
