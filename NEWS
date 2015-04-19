@@ -1,3 +1,6 @@
+Version 0.1.6
+- New class 'Binary' to add binary operators to aoos classes
+
 Version 0.1.5
 - Bugfix when calling new/constructor without arguments
 - Inheritance of non-aoos classes - for S4 Method dispatch

@@ -11,7 +11,9 @@
 #' 
 #' All classes defined with \code{defineClass} inherit from class "aoos" which is a S4-class containing an environment. In that environment \code{expr} is evaluated; for inheritance, all \code{expr} from all parents will be evaluated first.
 #' 
-#' Everything in \code{expr} will be part of the new class definition. A leading dot in a name will be trated as private. You can use \code{public} and \code{private} to declare private and public members explicitly. If \code{x} in a call to \code{public} is a function it will be a public member function (method). For any other class the return value of \code{public} is a get and set method. If called without argument it will get the value, if called with argument it will set the value. You can define a validity function which will be called whenever the set method is called. Objects which inherit from class \code{environment} can be accessed directly, i.e. not via get/set methods.
+#' Everything in \code{expr} will be part of the new class definition. A leading dot in a name will be interpreted as private. You can use \code{public} and \code{private} to declare private and public members explicitly. If \code{x} in a call to \code{public} is a function it will be a public member function (method). For any other class the return value of \code{public} is a get and set method. If called without argument it will get the value, if called with argument it will set the value. You can define a validity function which will be called whenever the set method is called. Objects which inherit from class \code{environment} can be accessed directly, i.e. not via get/set methods. If you want to access fields without get/set methods, you can use the class \code{\link{Accessor-class}}.
+#' 
+#' @seealso \code{\link{Accessor-class}}, \code{\link{Binary-class}}, \code{\link{Show-class}}
 #' 
 #' @rdname defineClass
 #' @export
@@ -111,7 +113,3 @@ init <- function(object, ...) {
   
   object
 }
-
-
-
-

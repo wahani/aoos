@@ -1,8 +1,7 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. Has reference
-semantics and is built around S4.
+Another implementation of object-orientation in R. Has reference semantics and is built around S4.
 
 # Installation
 To install from CRAN:
@@ -21,9 +20,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.1.0 
-## Development Version: 0.1.5 
+## Development Version: 0.1.6 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.1.6:
+## 
+##     o   New class 'Binary' to add binary operators to aoos classes
 ## 
 ## Changes in version 0.1.5:
 ## 
