@@ -68,5 +68,7 @@ install_github("wahani/aoos")
 # Material
 
 - [Introduction Vignette](https://wahani.github.io/aoos/vignettes/Introduction.html)
+- [aoosClasses Vignette](https://wahani.github.io/aoos/vignettes/aoosClasses.html)
+- [referenceClasses Vignette](https://wahani.github.io/aoos/vignettes/aoosClasses.html)
 - [Homepage](https://wahani.github.io/aoos)
 - [GitHub](https://github.com/wahani/aoos)
