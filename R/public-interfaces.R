@@ -9,6 +9,14 @@ setMethod("getPublicRepresentation", "publicEnv", function(obj) {
   obj@.Data[[1]]
 })
 
+#' @rdname defineClass
+#' @export
+setGeneric("private", function(x) new("private", x))
+
+#' @rdname defineClass
+#' @export
+setMethod("private", "public", function(x) x)
+
 #' Constructors for public members
 #' 
 #' These functions are used internally. You should not rely on them. Use \code{\link{public}} instead.
@@ -82,8 +90,3 @@ setMethod("public", c(x = "public"), function(x, validity) {
   x
 })
 
-#' @rdname defineClass
-#' @export
-private <- function(x) {
-  new("private", x)
-} 

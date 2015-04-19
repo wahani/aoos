@@ -125,3 +125,29 @@ test_that("class-markup v2.0", {
   expect_equal(tmp2$publicObject(), "BAM!")
   
 })
+
+test_that("init function is private by default", {
+  PrivateInitTest <- defineClass("PrivateInitTest", contains = "Accessor", {
+    x <- 1
+    init <- function() {
+      .self$x <- 2
+    }
+  })
+  
+  expect_equal(PrivateInitTest()$x, 2)
+  expect_error(PrivateInitTest()$init())
+  
+  # make init public explicitly
+  PublicInitTest <- defineClass("PublicInitTest", contains = "Accessor", {
+    x <- 1
+    init <- public(function() {
+      .self$x <- 2
+    })
+  })
+  
+  instance <- PublicInitTest()
+  instance$x <- 3
+  expect_equal(instance$x, 3)
+  instance$init()
+  expect_equal(instance$x, 2)
+})

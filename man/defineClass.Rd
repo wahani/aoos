@@ -4,6 +4,7 @@
 \name{defineClass}
 \alias{defineClass}
 \alias{private}
+\alias{private,public-method}
 \alias{public}
 \alias{public,function-method}
 \alias{public,private-method}
@@ -12,6 +13,10 @@
 \usage{
 defineClass(name, expr, contains = NULL)
 
+private(x)
+
+\S4method{private}{public}(x)
+
 public(x = NULL, validity = function(x) TRUE)
 
 \S4method{public}{`function`}(x = NULL, validity = function(x) TRUE)
@@ -19,8 +24,6 @@ public(x = NULL, validity = function(x) TRUE)
 \S4method{public}{private}(x = NULL, validity = function(x) TRUE)
 
 \S4method{public}{public}(x = NULL, validity = function(x) TRUE)
-
-private(x)
 }
 \arguments{
 \item{name}{character name of the class}

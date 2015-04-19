@@ -89,14 +89,28 @@ setEnvironment <- function(aoosClass, parentEnv) {
 }
 
 arrangeEnvironment <- function(e) {
+  handleSpecialNames(e)
+  handlePublicNames(e)
+  f <- makePublicRepresentation(e)
+  parent.env(f) <- e
+  f
+}
+
+handleSpecialNames <- function(e) {
+  if(exists("init", envir = e, inherits = FALSE)) 
+    assign("init", private(get("init", envir = e)), envir = e)
+}
+
+handlePublicNames <- function(e) {
   publicNames <- ls(envir = e)
   lapply(publicNames, function(n) assign(n, public(get(n, envir = e)), envir = e))
+}
+
+makePublicRepresentation <- function(e) {
   allMember <- as.list(e, all.names = TRUE)
   publicMemberInd <- sapply(allMember, function(obj) inherits(obj, "public"))
   publicMember <- lapply(allMember[publicMemberInd], getPublicRepresentation)
-  f <- list2env(publicMember)
-  parent.env(f) <- e
-  f
+  list2env(publicMember)
 }
 
 init <- function(object, ...) {
