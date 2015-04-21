@@ -1,17 +1,17 @@
 Package: aoos
 Type: Package
 Title: Another Object Orientation System
-Version: 0.1.6
-Date: 2014-04-19
-Author: Sebastian Warnholz
-Maintainer: Sebastian Warnholz <wahani@gmail.com>
+Version: 0.2.0
+Date: 2015-04-21
+Authors@R: person("Sebastian", "Warnholz", role = c("aut", "cre"),
+                  email = "wahani@gmail.com")
 URL: https://wahani.github.com/aoos
 BugReports: https://github.com/wahani/aoos/issues
 Description: Another implementation of object-orientation in R. Has reference
     semantics and is built around S4.
 Depends:
     methods,
-    R(>= 3.0)
+    R(>= 3.2.0)
 License: GPL-3 | file LICENSE
 Suggests:
     testthat,

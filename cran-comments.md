@@ -1,7 +1,9 @@
+
 ## Test environments
-* ubuntu (on travis-ci), R 3.1.2
+* ubuntu (on travis-ci), R 3.2.0
 * win-builder (devel and release)
-* local windows 7, R 3.1.2
+* local windows 7, R 3.2.0
+* local ubuntu 14.10, R 3.2.0
 
 ## R CMD check results
 There were no ERRORs, WARNINGs or NOTEs
