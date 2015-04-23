@@ -1,0 +1,78 @@
+context("ClosuresOO")
+
+test_that("Rational example with retList", {
+  Rational <- function(numer, denom) {
+    
+    gcd <- function(a, b) if(b == 0) a else Recall(b, a %% b)
+    
+    g <- gcd(numer, denom)
+    numer <- numer / g
+    denom <- denom / g
+    
+    print <- function() cat(paste0(numer, "/", denom, "\n"))
+    
+    add <- function(that) {
+      Rational(numer = numer * that$denom + that$numer * denom,
+               denom = denom * that$denom)
+    }
+    
+    neg <- function() {
+      Rational(numer = -numer,
+               denom = denom)
+    }
+    
+    sub <- function(that) {
+      add(that$neg())
+    }
+    
+    # Return everything in this scope:
+    retList("Rational")
+    
+  }
+  
+  rational <- Rational(2, 3)
+  expect_is(rational$add(rational), "Rational")
+  expect_is(rational$neg(), "Rational")
+  expect_is(rational$sub(rational), "Rational")
+  expect_true(inherits(rational, "list"))
+  
+  # Subtyping
+  
+  RationalSub <- function(numer, denom) {
+    super <- Rational(numer, denom)
+    mult <- function(that) {
+      RationalSub(self$numer * that$numer, self$denom * that$denom)
+    }
+    self <- retList("RationalSub", "mult", super)
+    self
+  }
+  
+  rationalSub <- RationalSub(2, 3)
+  expect_equal(class(rationalSub), c("RationalSub", "Rational", "list"))
+  expect_equal(names(rationalSub), c(names(rational), "mult"))
+  expect_equal(rationalSub$mult(rationalSub)$numer, 4)
+  expect_equal(rationalSub$mult(rationalSub)$denom, 9)
+  
+})
+
+test_that("funNames and retList", {
+  
+  Person <- function(name) {
+    force(name)
+    print <- function() cat("Hi, my name is", name)
+    retList(c("Person", "Print"))
+  }
+  
+  Employee <- function(id, ...) {
+    force(id)
+    super <- Person(...)
+    print <- function() cat(super$print(), "and my employee id is", id)
+    retList("Employee", funNames(), super)
+  }
+  
+  instance <- Employee(1, "Chef")
+  expect_true(all(names(instance) %in% c("print", "name")))
+  
+})
+
+

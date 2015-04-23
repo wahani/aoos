@@ -1,3 +1,6 @@
+Version 0.2.1
+- New functions retList and funNames to work with closures as objects
+
 Version 0.2.0
 
 - CRAN release

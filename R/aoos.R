@@ -107,3 +107,7 @@ envSize <- function (env) {
   out[order(out$Name, out$Type), ]
     
 }
+
+#' @rdname aoos
+#' @export
+setMethod("as.environment", "aoos", function(x) parent.env(x))

@@ -68,7 +68,7 @@ binaryMethodNames <- function() {
 makeBinaryMethod <- function(funName) {
   force(funName)
   function(e1, e2) {
-    e <- parent.env(e1)
+    e <- as.environment(e1)
     if(exists(funName, envir = e)) {
       get(funName, envir = e)(e2)
     } else {

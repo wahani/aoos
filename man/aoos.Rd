@@ -5,6 +5,7 @@
 \alias{$,aoos-method}
 \alias{$<-,aoos-method}
 \alias{aoos-class}
+\alias{as.environment,aoos-method}
 \alias{show,aoos-method}
 \alias{summary,aoos-method}
 \title{Class aoos}
@@ -16,6 +17,8 @@
 \S4method{$}{aoos}(x, name) <- value
 
 \S4method{summary}{aoos}(object, ...)
+
+\S4method{as.environment}{aoos}(x)
 }
 \arguments{
 \item{object}{object}
