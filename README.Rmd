@@ -5,7 +5,7 @@
 cat(gsub("\\n   ", "", packageDescription("aoos", fields = "Description")))
 ```
 
-# Installation
+## Installation
 To install from CRAN:
 ```{r, eval=FALSE}
 install.packages("aoos")
@@ -21,10 +21,14 @@ install_github("wahani/aoos")
 wahaniMiscs::getLocalPackageUpdates("aoos")
 ```
 
-# Material
+## Material
 
 - [Introduction Vignette](https://wahani.github.io/aoos/vignettes/Introduction.html)
 - [aoosClasses Vignette](https://wahani.github.io/aoos/vignettes/aoosClasses.html)
 - [referenceClasses Vignette](https://wahani.github.io/aoos/vignettes/aoosClasses.html)
 - [Homepage](https://wahani.github.io/aoos)
 - [GitHub](https://github.com/wahani/aoos)
+
+## Posts
+
+- [Introducing v0.1.0](http://wahani.github.io/2015/01/Introducing-Another-Object-Orientation-System/)
