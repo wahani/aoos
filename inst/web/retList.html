@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>aoos-class. aoos 0.2.1</title>
+<title>retList. aoos 0.2.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -35,46 +35,45 @@
         
       </header>
       
-      <h1>Class aoos</h1>
+      <h1>Return your current environment as list</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>"show"(object)</div>
-<div>"$"(x, name)</div>
-<div>"$"(x, name) <- value</div>
-<div>"summary"(object, ...)</div>
-<div>"as.environment"(x)</div></pre>
+    <pre><div>retList(class&nbsp;=&nbsp;NULL, exports&nbsp;=&nbsp;NULL, super&nbsp;=&nbsp;list())</div>
+<div>funNames()</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>object</dt>
-      <dd>object</dd>
-      <dt>x</dt>
-      <dd>object</dd>
-      <dt>name</dt>
-      <dd>member name</dd>
-      <dt>value</dt>
-      <dd>value to assign to. Will throw an error.</dd>
-      <dt>...</dt>
-      <dd>arguments passed to method (not used).</dd>
+      <dt>class</dt>
+      <dd>character giving the class name</dd>
+      <dt>exports</dt>
+      <dd>character with the names to include</dd>
+      <dt>super</dt>
+      <dd>object returned by this function which should be extended</dd>
     </dl>
     
     <div class="Description">
       <h2>Description</h2>
 
-      <p>This is an environment with some methods. Every class defined by <code>defineClass</code> will inherit from aoos. Summary will show a list of public and private members with approximated memory usage.</p>
+      <p>This functions can be used to construct a list with class attribute and merged with another list called super.</p>
+  
+      <p><code>funNames</code> returns the names of functions in the environment from which it is called.</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>$,aoos-method</li><li>$&lt;-,aoos-method</li><li>aoos-class</li><li>as.environment,aoos-method</li><li>show,aoos-method</li><li>summary,aoos-method</li>
+      <li>funNames</li><li>retList</li>
     </ul>
     <ul>
       
     </ul> -->
       
+    <h2>See also</h2>
+    
+<a href='http://www.inside-r.org/r-doc/base/ls'>ls</a>
+
         
   </div>
 </div>

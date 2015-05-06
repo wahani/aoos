@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Index. aoos 0.2.0</title>
+<title>Index. aoos 0.2.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">aoos 0.2.0</a>
+      <a class="brand" href="#">aoos 0.2.1</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -43,7 +43,7 @@
 
 <p>Another implementation of object-orientation in R. Has reference semantics and is built around S4.</p>
 
-<h1>Installation</h1>
+<h2>Installation</h2>
 
 <p>To install from CRAN:</p>
 
@@ -57,12 +57,16 @@ install_github(&quot;wahani/aoos&quot;)
 </code></pre>
 
 <pre><code>## Version on CRAN: 0.2.0 
-## Development Version: 0.2.0 
+## Development Version: 0.2.1 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.2.1:
+## 
+##     o   New functions retList and funNames to work with closures as objects
 </code></pre>
 
-<h1>Material</h1>
+<h2>Material</h2>
 
 <ul>
 <li><a href="https://wahani.github.io/aoos/vignettes/Introduction.html">Introduction Vignette</a></li>
@@ -70,6 +74,12 @@ install_github(&quot;wahani/aoos&quot;)
 <li><a href="https://wahani.github.io/aoos/vignettes/aoosClasses.html">referenceClasses Vignette</a></li>
 <li><a href="https://wahani.github.io/aoos">Homepage</a></li>
 <li><a href="https://github.com/wahani/aoos">GitHub</a></li>
+</ul>
+
+<h2>Posts</h2>
+
+<ul>
+<li><a href="http://wahani.github.io/2015/01/Introducing-Another-Object-Orientation-System/">Introducing v0.1.0</a></li>
 </ul>
 
 
@@ -84,7 +94,7 @@ install_github(&quot;wahani/aoos&quot;)
         <code><a href="Accessor.html">Accessor-class</a></code>($,Accessor-method, $&lt;-,Accessor-method)<br />Accessor class</li>
             
       <li>
-        <code><a href="aoos.html">aoos-class</a></code>($,aoos-method, $&lt;-,aoos-method, show,aoos-method, summary,aoos-method)<br />Class aoos</li>
+        <code><a href="aoos.html">aoos-class</a></code>($,aoos-method, $&lt;-,aoos-method, as.environment,aoos-method, show,aoos-method, summary,aoos-method)<br />Class aoos</li>
             
       <li>
         <code><a href="Binary.html">Binary-class</a></code><br />Binary-class</li>
@@ -100,6 +110,9 @@ install_github(&quot;wahani/aoos&quot;)
             
       <li>
         <code><a href="publicInterface.html">publicFunction</a></code>($,publicEnv-method, publicValue)<br />Constructors for public members</li>
+            
+      <li>
+        <code><a href="retList.html">retList</a></code>(funNames)<br />Return your current environment as list</li>
             
       <li>
         <code><a href="Show.html">Show-class</a></code>(show,Show-method)<br />Show class</li>
