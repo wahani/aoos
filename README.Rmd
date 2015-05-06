@@ -25,7 +25,7 @@ wahaniMiscs::getLocalPackageUpdates("aoos")
 
 - [Introduction Vignette](https://wahani.github.io/aoos/vignettes/Introduction.html)
 - [aoosClasses Vignette](https://wahani.github.io/aoos/vignettes/aoosClasses.html)
-- [referenceClasses Vignette](https://wahani.github.io/aoos/vignettes/aoosClasses.html)
+- [referenceClasses Vignette](https://wahani.github.io/aoos/vignettes/referenceClasses.html)
 - [Homepage](https://wahani.github.io/aoos)
 - [GitHub](https://github.com/wahani/aoos)
 
