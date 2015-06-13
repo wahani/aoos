@@ -1,3 +1,6 @@
+Version 0.2.2
+- New classes Infix and Print which enable encapsulated definitions of infix operators and print methods for S3 classes.
+
 Version 0.2.1
 - New functions retList and funNames to work with closures as objects
 

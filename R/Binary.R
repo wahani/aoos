@@ -4,7 +4,7 @@
 #' 
 #' @exportClass Binary
 #' 
-#' @details At the moment you can define binary operators as methods by naming them as \code{.<binaryOperator>} (see the example). This is implemented for the following operators: \code{+, -, *, /, \%\%, ^, <, >, ==, >=, <=, &, ==, ==}.
+#' @details At the moment you can define binary operators as methods by naming them as \code{.<binaryOperator>} (see the example). This is implemented for the following operators: \code{+, -, *, /, \%\%, ^, <, >, ==, >=, <=, &}.
 #' @rdname Binary
 #' 
 #' @examples
@@ -60,9 +60,7 @@ binaryMethodNames <- function() {
        c("==", ".=="),
        c(">=", ".>="),
        c("<=", ".<="),
-       c("&", ".&"),
-       c("==", ".=="),
-       c("==", ".=="))
+       c("&", ".&"))
 }
 
 makeBinaryMethod <- function(funName) {

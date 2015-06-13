@@ -4,7 +4,7 @@ knitr::knit("README.Rmd", "README.md")
 # devtools::install_github("hadley/staticdocs")
 devtools::document()
 devtools::build_vignettes()
-# staticdocs::build_site()
+staticdocs::build_site()
 
 # file.remove(
 #   list.files(path = "vignettes", pattern = "*.html", full.names = TRUE)

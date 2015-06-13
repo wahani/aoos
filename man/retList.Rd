@@ -21,7 +21,56 @@ This functions can be used to construct a list with class attribute and merged w
 
 \code{funNames} returns the names of functions in the environment from which it is called.
 }
+\examples{
+Test <- function(.x) {
+  force(.x)
+  getX <- function() .x
+  retList("Test")
+}
+
+Test(2)$getX()
+
+### Rational numbers example with infix operators and print method
+
+Rational <- function(numer, denom) {
+
+e <- environment()
+as.environment <- function() e
+
+gcd <- function(a, b) if(b == 0) a else Recall(b, a \%\% b)
+
+g <- gcd(numer, denom)
+numer <- numer / g
+denom <- denom / g
+
+print <- function() cat(paste0(numer, "/", denom, "\\n"))
+
+".+" <- function(that) {
+  Rational(numer = numer * that$denom + that$numer * denom,
+           denom = denom * that$denom)
+}
+
+neg <- function() {
+  Rational(numer = -numer,
+           denom = denom)
+}
+
+".-" <- function(that) {
+  self + that$neg()
+}
+
+# Return only what should be visible from this scope:
+self <- retList(c("Rational", "Infix", "Print"),
+                c("numer", "denom", "neg", "print", "as.environment"))
+self
+
+}
+
+rational <- Rational(2, 3)
+rational + rational
+rational - rational
+}
 \seealso{
-\link{ls}
+\link{ls}, \link{+.Infix}, \link{print.Print}
 }
 

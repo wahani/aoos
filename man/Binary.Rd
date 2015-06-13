@@ -8,7 +8,7 @@
 This is a virtual class to be contained in other class definitions. It can be used to define binary operators, e.g. \code{+} or \code{-}, inside an aoos class definition (\code{\link{defineClass}}).
 }
 \details{
-At the moment you can define binary operators as methods by naming them as \code{.<binaryOperator>} (see the example). This is implemented for the following operators: \code{+, -, *, /, \%\%, ^, <, >, ==, >=, <=, &, ==, ==}.
+At the moment you can define binary operators as methods by naming them as \code{.<binaryOperator>} (see the example). This is implemented for the following operators: \code{+, -, *, /, \%\%, ^, <, >, ==, >=, <=, &}.
 }
 \examples{
 Rational <- defineClass("Rational", contains = c("Show", "Binary"), {
