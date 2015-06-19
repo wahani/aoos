@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>retList. aoos 0.2.1</title>
+<title>retList. aoos 0.2.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -14,13 +14,25 @@
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   </head>
 
   <body>
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">aoos 0.2.1</a>
+      <a class="brand" href="#">aoos 0.2.3</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -35,22 +47,28 @@
         
       </header>
       
-      <h1>Return your current environment as list</h1>
+      <h1>Return current environment as list</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>retList(class&nbsp;=&nbsp;NULL, exports&nbsp;=&nbsp;NULL, super&nbsp;=&nbsp;list())</div>
-<div>funNames()</div></pre>
+    <pre><div>retList(class&nbsp;=&nbsp;NULL, exports&nbsp;=&nbsp;NULL, super&nbsp;=&nbsp;NULL, superEnv&nbsp;=&nbsp;listAsEnv(super))</div>
+<div>funNames()</div>
+<div>listAsEnv(x)</div>
+<div>getEnvironmentOfFirstFun(x)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
       <dt>class</dt>
-      <dd>character giving the class name</dd>
+      <dd>character giving the class name.</dd>
       <dt>exports</dt>
-      <dd>character with the names to include</dd>
+      <dd>character with the names to include.</dd>
       <dt>super</dt>
-      <dd>object returned by this function which should be extended</dd>
+      <dd>object returned by this function which should be extended.</dd>
+      <dt>superEnv</dt>
+      <dd>objects in an environment which should be included into your current scope.</dd>
+      <dt>x</dt>
+      <dd>a list</dd>
     </dl>
     
     <div class="Description">
@@ -60,11 +78,73 @@
   
       <p><code>funNames</code> returns the names of functions in the environment from which it is called.</p>
   
+      <p><code>listAsEnv</code> returns an evironment. If x is NULL it is empty. If x contains a function, it is the environment of that (the first) function. If x only has non-function values it converts the list to an environment.</p>
+  
+      <p><code>getEnvironmentOfFirstFun</code> returns the environment of the first function in a list.</p>
+  
     </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>Test &lt;- function(.x) {
+  force(.x)
+  getX &lt;- function() .x
+  retList(&quot;Test&quot;)
+}
+
+Test(2)$getX()
+</div>
+<div class='output'>[1] 2
+</div>
+<div class='input'>
+### Rational numbers example with infix operators and print method
+
+Rational &lt;- function(numer, denom) {
+
+e &lt;- environment()
+as.environment &lt;- function() e
+
+gcd &lt;- function(a, b) if(b == 0) a else Recall(b, a %% b)
+
+g &lt;- gcd(numer, denom)
+numer &lt;- numer / g
+denom &lt;- denom / g
+
+print &lt;- function() cat(paste0(numer, &quot;/&quot;, denom, &quot;\n&quot;))
+
+&quot;.+&quot; &lt;- function(that) {
+  Rational(numer = numer * that$denom + that$numer * denom,
+           denom = denom * that$denom)
+}
+
+neg &lt;- function() {
+  Rational(numer = -numer,
+           denom = denom)
+}
+
+&quot;.-&quot; &lt;- function(that) {
+  self + that$neg()
+}
+
+# Return only what should be visible from this scope:
+self &lt;- retList(c(&quot;Rational&quot;, &quot;Infix&quot;, &quot;Print&quot;),
+                c(&quot;numer&quot;, &quot;denom&quot;, &quot;neg&quot;, &quot;print&quot;, &quot;as.environment&quot;))
+self
+
+}
+
+rational &lt;- Rational(2, 3)
+rational + rational
+</div>
+<div class='output'>4/3
+</div>
+<div class='input'>rational - rational
+</div>
+<div class='output'>0/1
+</div></pre>
+  </div>
   <div class="span4">
     <!-- <ul>
-      <li>funNames</li><li>retList</li>
+      <li>funNames</li><li>getEnvironmentOfFirstFun</li><li>listAsEnv</li><li>retList</li>
     </ul>
     <ul>
       
@@ -72,7 +152,7 @@
       
     <h2>See also</h2>
     
-<a href='http://www.inside-r.org/r-doc/base/ls'>ls</a>
+<a href='http://www.inside-r.org/r-doc/base/ls'>ls</a>, <a href='Infix.html'>+.Infix</a>, <a href='Infix.html'>print.Print</a>
 
         
   </div>

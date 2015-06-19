@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>aoos-class. aoos 0.2.3</title>
+<title>envCopy. aoos 0.2.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -47,41 +47,32 @@
         
       </header>
       
-      <h1>Class aoos</h1>
+      <h1>Expose environment</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>"show"(object)</div>
-<div>"$"(x, name)</div>
-<div>"$"(x, name) <- value</div>
-<div>"summary"(object, ...)</div>
-<div>"as.environment"(x)</div></pre>
+    <pre><div>envCopy(from, to)</div>
+<div>envMerge(from, to)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>object</dt>
-      <dd>object</dd>
-      <dt>x</dt>
-      <dd>object</dd>
-      <dt>name</dt>
-      <dd>member name</dd>
-      <dt>value</dt>
-      <dd>value to assign to. Will throw an error.</dd>
-      <dt>...</dt>
-      <dd>arguments passed to method (not used).</dd>
+      <dt>from</dt>
+      <dd>environment</dd>
+      <dt>to</dt>
+      <dd>environment</dd>
     </dl>
     
     <div class="Description">
       <h2>Description</h2>
 
-      <p>This is an environment with some methods. Every class defined by <code>defineClass</code> will inherit from aoos. Summary will show a list of public and private members with approximated memory usage.</p>
+      <p>Tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects.</p>
   
     </div>
       </div>
   <div class="span4">
     <!-- <ul>
-      <li>$,aoos-method</li><li>$&lt;-,aoos-method</li><li>aoos-class</li><li>as.environment,aoos-method</li><li>show,aoos-method</li><li>summary,aoos-method</li>
+      <li>envCopy</li><li>envMerge</li>
     </ul>
     <ul>
       

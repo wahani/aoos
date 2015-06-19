@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-04-19" />
+<meta name="date" content="2015-06-19" />
 
 <title>aoosClasses</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">aoosClasses</h1>
-<h4 class="date"><em>2015-04-19</em></h4>
+<h4 class="date"><em>2015-06-19</em></h4>
 </div>
 
 
@@ -97,7 +97,9 @@ Person &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span c
 <pre><code>## Class: Person
 ## public member:
 ##   greet 
-##   personName</code></pre>
+##   init 
+##   personName 
+##   self</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">ann$<span class="kw">personName</span>()</code></pre>
 <pre><code>## [1] &quot;Ann&quot;</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">ann$<span class="kw">personName</span>(<span class="st">&quot;not Ann&quot;</span>)
@@ -133,7 +135,9 @@ ann$<span class="kw">greet</span>()</code></pre>
 <pre><code>## Class: Person
 ## public member:
 ##   greet 
-##   personName</code></pre>
+##   init 
+##   personName 
+##   self</code></pre>
 </div>
 <div id="inheritance" class="section level2">
 <h2>Inheritance</h2>
@@ -188,8 +192,10 @@ q$<span class="kw">remove</span>()</code></pre>
 <pre><code>## Class: Queue
 ## public member:
 ##   add 
+##   init 
 ##   queueIsEmpty 
-##   remove</code></pre>
+##   remove 
+##   self</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">hq &lt;-<span class="st"> </span><span class="kw">HistoryQueue</span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="st">&quot;foo&quot;</span>)
 hq</code></pre>
 <pre><code>## Next item is at index 1 

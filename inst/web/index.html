@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Index. aoos 0.2.1</title>
+<title>Index. aoos 0.2.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -14,13 +14,25 @@
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   </head>
 
   <body>
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">aoos 0.2.1</a>
+      <a class="brand" href="#">aoos 0.2.3</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -57,9 +69,13 @@ install_github(&quot;wahani/aoos&quot;)
 </code></pre>
 
 <pre><code>## Version on CRAN: 0.2.0 
-## Development Version: 0.2.1 
+## Development Version: 0.2.2 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.2.2:
+## 
+##     o   New classes Infix and Print which enable encapsulated definitions of infix operators and print methods for S3 classes.
 ## 
 ## Changes in version 0.2.1:
 ## 
@@ -71,7 +87,7 @@ install_github(&quot;wahani/aoos&quot;)
 <ul>
 <li><a href="https://wahani.github.io/aoos/vignettes/Introduction.html">Introduction Vignette</a></li>
 <li><a href="https://wahani.github.io/aoos/vignettes/aoosClasses.html">aoosClasses Vignette</a></li>
-<li><a href="https://wahani.github.io/aoos/vignettes/aoosClasses.html">referenceClasses Vignette</a></li>
+<li><a href="https://wahani.github.io/aoos/vignettes/referenceClasses.html">referenceClasses Vignette</a></li>
 <li><a href="https://wahani.github.io/aoos">Homepage</a></li>
 <li><a href="https://github.com/wahani/aoos">GitHub</a></li>
 </ul>
@@ -106,13 +122,19 @@ install_github(&quot;wahani/aoos&quot;)
         <code><a href="defineClass.html">defineClass</a></code>(private, private,public-method, public, public,function-method, public,private-method, public,public-method)<br />Define a new class</li>
             
       <li>
+        <code><a href="envHelper.html">envCopy</a></code>(envMerge)<br />Expose environment</li>
+            
+      <li>
+        <code><a href="Infix.html">print.Print</a></code>(&amp;.Infix, +.Infix, -.Infix, /.Infix, &lt;.Infix, &lt;=.Infix, ==.Infix, &gt;.Infix, &gt;=.Infix, %%.Infix, ^.Infix, as.environment.Infix)<br />S3 helper classes</li>
+            
+      <li>
         <code><a href="Private.html">Private-class</a></code>($,Private-method, $&lt;-,Private-method, [[,Private-method, [[&lt;-,Private-method)<br />Private class</li>
             
       <li>
         <code><a href="publicInterface.html">publicFunction</a></code>($,publicEnv-method, publicValue)<br />Constructors for public members</li>
             
       <li>
-        <code><a href="retList.html">retList</a></code>(funNames)<br />Return your current environment as list</li>
+        <code><a href="retList.html">retList</a></code>(funNames, getEnvironmentOfFirstFun, listAsEnv)<br />Return current environment as list</li>
             
       <li>
         <code><a href="Show.html">Show-class</a></code>(show,Show-method)<br />Show class</li>
@@ -131,9 +153,9 @@ install_github(&quot;wahani/aoos&quot;)
     <h2>Dependencies</h2>
     <ul>
       <li><strong>Depends</strong>: methods</li>
-      <li><strong>Imports</strong>: </li>
+      
       <li><strong>Suggests</strong>: testthat, knitr</li>
-      <li><strong>Extends</strong>: </li>
+      
     </ul>
     <h2>Authors</h2>
     <ul>
