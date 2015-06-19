@@ -1,4 +1,4 @@
-context("ClosuresOO")
+context("retList")
 
 test_that("Rational example with retList", {
   Rational <- function(numer, denom) {
@@ -36,7 +36,7 @@ test_that("Rational example with retList", {
   expect_is(rational$sub(rational), "Rational")
   expect_true(inherits(rational, "list"))
   
-  # Subtyping
+  # Subtyping 
   
   RationalSub <- function(numer, denom) {
     super <- Rational(numer, denom)
@@ -49,7 +49,7 @@ test_that("Rational example with retList", {
   
   rationalSub <- RationalSub(2, 3)
   expect_equal(class(rationalSub), c("RationalSub", "Rational", "list"))
-  expect_equal(names(rationalSub), c(names(rational), "mult"))
+  expect_equal(sort(names(rationalSub)), sort(c(names(rational), "mult")))
   expect_equal(rationalSub$mult(rationalSub)$numer, 4)
   expect_equal(rationalSub$mult(rationalSub)$denom, 9)
   
@@ -75,4 +75,25 @@ test_that("funNames and retList", {
   
 })
 
-
+test_that("Inheritance for retList", {
+  
+  Super <- function(.x) {
+    getX <- function() .x
+    getY <- function() 1
+    retList("Super", "getX")
+  }
+  
+  inheritFrom <- function(.x) {
+    newMethod <- function() getY()
+    retList("Child", funNames(), super = Super(1))
+  }
+  
+  super <- Super(2)
+  expect_equal(super$getX(), 2)
+  expect_null(super$getY)
+  
+  child <- inheritFrom(3)
+  expect_equal(child$getX(), 3)
+  expect_equal(child$newMethod(), 1)
+  
+})

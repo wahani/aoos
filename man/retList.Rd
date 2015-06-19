@@ -2,24 +2,39 @@
 % Please edit documentation in R/retList.R
 \name{retList}
 \alias{funNames}
+\alias{getEnvironmentOfFirstFun}
+\alias{listAsEnv}
 \alias{retList}
-\title{Return your current environment as list}
+\title{Return current environment as list}
 \usage{
-retList(class = NULL, exports = NULL, super = list())
+retList(class = NULL, exports = NULL, super = NULL,
+  superEnv = listAsEnv(super))
 
 funNames()
+
+listAsEnv(x)
+
+getEnvironmentOfFirstFun(x)
 }
 \arguments{
-\item{class}{character giving the class name}
+\item{class}{character giving the class name.}
 
-\item{exports}{character with the names to include}
+\item{exports}{character with the names to include.}
 
-\item{super}{object returned by this function which should be extended}
+\item{super}{object returned by this function which should be extended.}
+
+\item{superEnv}{objects in an environment which should be included into your current scope.}
+
+\item{x}{a list}
 }
 \description{
 This functions can be used to construct a list with class attribute and merged with another list called super.
 
 \code{funNames} returns the names of functions in the environment from which it is called.
+
+\code{listAsEnv} returns an evironment. If x is NULL it is empty. If x contains a function, it is the environment of that (the first) function. If x only has non-function values it converts the list to an environment.
+
+\code{getEnvironmentOfFirstFun} returns the environment of the first function in a list.
 }
 \examples{
 Test <- function(.x) {

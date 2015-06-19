@@ -1,8 +1,7 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. Has reference
-semantics and is built around S4.
+Another implementation of object-orientation in R. Has reference semantics and is built around S4.
 
 ## Installation
 To install from CRAN:
@@ -21,9 +20,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.2.0 
-## Development Version: 0.2.1 
+## Development Version: 0.2.2 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.2.2:
+## 
+##     o   New classes Infix and Print which enable encapsulated definitions of infix operators and print methods for S3 classes.
 ## 
 ## Changes in version 0.2.1:
 ## 

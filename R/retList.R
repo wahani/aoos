@@ -1,9 +1,10 @@
-#' Return your current environment as list
+#' Return current environment as list
 #' 
 #' This functions can be used to construct a list with class attribute and merged with another list called super.
-#' @param class character giving the class name
-#' @param exports character with the names to include
-#' @param super object returned by this function which should be extended
+#' @param class character giving the class name.
+#' @param exports character with the names to include.
+#' @param super object returned by this function which should be extended.
+#' @param superEnv objects in an environment which should be included into your current scope.
 #' 
 #' @seealso \link{ls}, \link{+.Infix}, \link{print.Print}
 #' @rdname retList
@@ -59,13 +60,14 @@
 #' rational + rational
 #' rational - rational
 #' 
-retList <- function(class = NULL, exports = NULL, super = list()) {
+retList <- function(class = NULL, exports = NULL, super = NULL, superEnv = listAsEnv(super)) {
   envir <- parent.frame()
-  superClasses <- if(is.null(super)) "list" else class(super)
-  child <- if(is.null(exports)) as.list(envir) else mget(exports, envir)
-  super[names(child)] <- child
-  class(super) <- c(class, superClasses)
-  super
+  exports <- unique(c(if (is.null(exports)) ls(envir) else exports, names(super)))
+  superClasses <- if (is.null(super)) "list" else class(super)
+  envMerge(superEnv, envir)
+  out <- mget(exports, envir)
+  class(out) <- c(class, superClasses)
+  out
 }
 
 #' \code{funNames} returns the names of functions in the environment from which it is called.
@@ -76,4 +78,24 @@ funNames <- function() {
   envir <- parent.frame()
   funInd <- unlist(eapply(envir, is.function))
   names(funInd)[funInd]
+}
+
+#' \code{listAsEnv} returns an evironment. If x is NULL it is empty. If x contains a function, it is the environment of that (the first) function. If x only has non-function values it converts the list to an environment.
+#' 
+#' @param x a list 
+#' 
+#' @rdname retList
+#' @export
+listAsEnv <- function(x) {
+  if (is.null(x)) return(new.env())
+  if (any(sapply(x, is.function))) return(getEnvironmentOfFirstFun(x))
+  list2env(x)
+}
+
+#' \code{getEnvironmentOfFirstFun} returns the environment of the first function in a list.
+#' 
+#' @rdname retList
+#' @export
+getEnvironmentOfFirstFun <- function(x) {
+  environment(x[sapply(x, is.function)][[1]])
 }
