@@ -1,5 +1,6 @@
 Version 0.2.3
 - retList can now 'inherit' from another list. An extra argument superEnv can be used to really extend a class definition in this framework.
+- retList has new arguments to control inheritance. 
 
 Version 0.2.2
 - New classes Infix and Print which enable encapsulated definitions of infix operators and print methods for S3 classes.

@@ -3,18 +3,30 @@
 \name{envCopy}
 \alias{envCopy}
 \alias{envMerge}
-\title{Expose environment}
+\title{Helpers for environments}
 \usage{
 envCopy(from, to)
 
-envMerge(from, to)
+envMerge(x, with)
 }
 \arguments{
 \item{from}{environment}
 
 \item{to}{environment}
+
+\item{x}{environment}
+
+\item{with}{environment}
 }
 \description{
-Tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects.
+Functions to help working with environments.
+}
+\details{
+\code{envCopy} tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects. Objects in 'to' are not replaced.
+
+\code{envMerge} will merge x and with. Merge will copy all objects from with to x. Prior to that, the environment of functions are changed to be x.
+}
+\seealso{
+\link{retList} where these are relevant.
 }
 

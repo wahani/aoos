@@ -21,7 +21,7 @@
 #' stopifnot(inherits(try(test$.p <- 2), "try-error"))
 #' stopifnot(inherits(try(test[[".p"]]), "try-error"))
 #' stopifnot(inherits(try(test[[".p"]] <- 2), "try-error"))
-setRefClass("Private", contains = "VIRTUAL", sealed = TRUE)
+setRefClass("Private", contains = "VIRTUAL")
 
 #' @export
 #' @rdname Private

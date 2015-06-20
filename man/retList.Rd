@@ -8,7 +8,8 @@
 \title{Return current environment as list}
 \usage{
 retList(class = NULL, exports = NULL, super = NULL,
-  superEnv = listAsEnv(super))
+  superEnv = listAsEnv(super), mergeFun = envMerge,
+  envir = parent.frame())
 
 funNames()
 
@@ -21,15 +22,20 @@ getEnvironmentOfFirstFun(x)
 
 \item{exports}{character with the names to include.}
 
-\item{super}{object returned by this function which should be extended.}
+\item{super}{a list which should be extended.}
 
 \item{superEnv}{objects in an environment which should be included into your current scope.}
+
+\item{mergeFun}{function with two arguments. Knows how to join/merge environments - \code{mergeFun(envir, superEnv)}. Default: \link{envMerge}.}
+
+\item{envir}{this is the environment you want to convert to the list. Default is the environment from which the function is called.}
 
 \item{x}{a list}
 }
 \description{
-This functions can be used to construct a list with class attribute and merged with another list called super.
-
+This functions can be used to construct a list with class attribute and merged with another list called super. What merge means can be specified with the mergeFun argument.
+}
+\details{
 \code{funNames} returns the names of functions in the environment from which it is called.
 
 \code{listAsEnv} returns an evironment. If x is NULL it is empty. If x contains a function, it is the environment of that (the first) function. If x only has non-function values it converts the list to an environment.
@@ -37,47 +43,56 @@ This functions can be used to construct a list with class attribute and merged w
 \code{getEnvironmentOfFirstFun} returns the environment of the first function in a list.
 }
 \examples{
+# To get a quick overview of the package:
+vignette("Introduction", "aoos")
+
+# A simple class with one method:
 Test <- function(.x) {
-  force(.x)
   getX <- function() .x
   retList("Test")
 }
 
-Test(2)$getX()
+stopifnot(Test(2)$getX() == 2)
+
+# A second example inheriting from Test
+Test2 <- function(.y) {
+  getX2 <- function() .x * 2
+  retList("Test2", super = Test(.y))
+}
+
+stopifnot(Test2(2)$getX() == 2)
+stopifnot(Test2(2)$getX2() == 4)
 
 ### Rational numbers example with infix operators and print method
 
 Rational <- function(numer, denom) {
 
-e <- environment()
-as.environment <- function() e
+  gcd <- function(a, b) if(b == 0) a else Recall(b, a \%\% b)
 
-gcd <- function(a, b) if(b == 0) a else Recall(b, a \%\% b)
+  g <- gcd(numer, denom)
+  numer <- numer / g
+  denom <- denom / g
 
-g <- gcd(numer, denom)
-numer <- numer / g
-denom <- denom / g
+  print <- function() cat(paste0(numer, "/", denom, "\\n"))
 
-print <- function() cat(paste0(numer, "/", denom, "\\n"))
+  ".+" <- function(that) {
+    Rational(numer = numer * that$denom + that$numer * denom,
+             denom = denom * that$denom)
+  }
 
-".+" <- function(that) {
-  Rational(numer = numer * that$denom + that$numer * denom,
-           denom = denom * that$denom)
-}
+  neg <- function() {
+    Rational(numer = -numer,
+             denom = denom)
+  }
 
-neg <- function() {
-  Rational(numer = -numer,
-           denom = denom)
-}
+  ".-" <- function(that) {
+    self + that$neg()
+  }
 
-".-" <- function(that) {
-  self + that$neg()
-}
-
-# Return only what should be visible from this scope:
-self <- retList(c("Rational", "Infix", "Print"),
-                c("numer", "denom", "neg", "print", "as.environment"))
-self
+  # Return only what should be visible from this scope:
+  self <- retList(c("Rational", "Infix", "Print"),
+                  c("numer", "denom", "neg", "print"))
+  self
 
 }
 

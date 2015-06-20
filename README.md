@@ -20,9 +20,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.2.0 
-## Development Version: 0.2.2 
+## Development Version: 0.2.3 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.2.3:
+## 
+##     o   retList can now 'inherit' from another list. An extra argument superEnv can be used to really extend a class definition in this framework.
 ## 
 ## Changes in version 0.2.2:
 ## 

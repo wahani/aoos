@@ -1,10 +1,15 @@
-#' Expose environment
+#' Helpers for environments
 #' 
-#' Tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects.
+#' Functions to help working with environments.
+#' 
+#' @details \code{envCopy} tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects. Objects in 'to' are not replaced.
 #' 
 #' @param from environment
 #' @param to environment
+#' @param x environment
+#' @param with environment
 #' 
+#' @seealso \link{retList} where these are relevant.
 #' @rdname envHelper
 #' @export
 envCopy <- function(from, to) {
@@ -16,15 +21,16 @@ envCopy <- function(from, to) {
   eNames
 }
 
+#' @details \code{envMerge} will merge x and with. Merge will copy all objects from with to x. Prior to that, the environment of functions are changed to be x.
 #' @rdname envHelper
 #' @export
-envMerge <- function(from, to) {
-  namesToCopy <- ls(from, all.names = TRUE)
-  funs <- envGetFuns(namesToCopy, from)
+envMerge <- function(x, with) {
+  namesToCopy <- ls(with, all.names = TRUE)
+  funs <- envGetFuns(namesToCopy, with)
   funs <- listKeepFuns(funs)
-  funs <- setEnvironmentOfFuns(funs, to)
-  envCopy(list2env(funs), to)
-  envCopy(from, to)
+  funs <- setEnvironmentOfFuns(funs, x)
+  envCopy(list2env(funs), x)
+  envCopy(with, x)
 }
 
 envGetFuns <- function(names, from) mget(names, from, "function", vector("list", length(names)), FALSE)
