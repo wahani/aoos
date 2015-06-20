@@ -47,13 +47,13 @@
         
       </header>
       
-      <h1>Expose environment</h1>
+      <h1>Helpers for environments</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
     <pre><div>envCopy(from, to)</div>
-<div>envMerge(from, to)</div></pre>
+<div>envMerge(x, with)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -61,12 +61,25 @@
       <dd>environment</dd>
       <dt>to</dt>
       <dd>environment</dd>
+      <dt>x</dt>
+      <dd>environment</dd>
+      <dt>with</dt>
+      <dd>environment</dd>
     </dl>
     
     <div class="Description">
       <h2>Description</h2>
 
-      <p>Tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects.</p>
+      <p>Functions to help working with environments.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p><code>envCopy</code> tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects. Objects in 'to' are not replaced.</p>
+  
+      <p><code>envMerge</code> will merge x and with. Merge will copy all objects from with to x. Prior to that, the environment of functions are changed to be x.</p>
   
     </div>
       </div>
@@ -78,6 +91,10 @@
       
     </ul> -->
       
+    <h2>See also</h2>
+    
+<a href='retList.html'>retList</a> where these are relevant.
+
         
   </div>
 </div>

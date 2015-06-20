@@ -52,7 +52,7 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>retList(class&nbsp;=&nbsp;NULL, exports&nbsp;=&nbsp;NULL, super&nbsp;=&nbsp;NULL, superEnv&nbsp;=&nbsp;listAsEnv(super))</div>
+    <pre><div>retList(class&nbsp;=&nbsp;NULL, exports&nbsp;=&nbsp;NULL, super&nbsp;=&nbsp;NULL, superEnv&nbsp;=&nbsp;listAsEnv(super), mergeFun&nbsp;=&nbsp;envMerge, envir&nbsp;=&nbsp;parent.frame())</div>
 <div>funNames()</div>
 <div>listAsEnv(x)</div>
 <div>getEnvironmentOfFirstFun(x)</div></pre>
@@ -64,9 +64,13 @@
       <dt>exports</dt>
       <dd>character with the names to include.</dd>
       <dt>super</dt>
-      <dd>object returned by this function which should be extended.</dd>
+      <dd>a list which should be extended.</dd>
       <dt>superEnv</dt>
       <dd>objects in an environment which should be included into your current scope.</dd>
+      <dt>mergeFun</dt>
+      <dd>function with two arguments. Knows how to join/merge environments - <code>mergeFun(envir, superEnv)</code>. Default: <a href='envHelper.html'>envMerge</a>.</dd>
+      <dt>envir</dt>
+      <dd>this is the environment you want to convert to the list. Default is the environment from which the function is called.</dd>
       <dt>x</dt>
       <dd>a list</dd>
     </dl>
@@ -74,8 +78,13 @@
     <div class="Description">
       <h2>Description</h2>
 
-      <p>This functions can be used to construct a list with class attribute and merged with another list called super.</p>
+      <p>This functions can be used to construct a list with class attribute and merged with another list called super. What merge means can be specified with the mergeFun argument.</p>
   
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
       <p><code>funNames</code> returns the names of functions in the environment from which it is called.</p>
   
       <p><code>listAsEnv</code> returns an evironment. If x is NULL it is empty. If x contains a function, it is the environment of that (the first) function. If x only has non-function values it converts the list to an environment.</p>
@@ -85,50 +94,59 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>Test &lt;- function(.x) {
-  force(.x)
+    <pre class="examples"><div class='input'># To get a quick overview of the package:
+vignette(&quot;Introduction&quot;, &quot;aoos&quot;)
+</div>
+<strong class='warning'>Warning message:
+vignette ‘Introduction’ not found</strong>
+<div class='input'>
+# A simple class with one method:
+Test &lt;- function(.x) {
   getX &lt;- function() .x
   retList(&quot;Test&quot;)
 }
 
-Test(2)$getX()
-</div>
-<div class='output'>[1] 2
-</div>
-<div class='input'>
+stopifnot(Test(2)$getX() == 2)
+
+# A second example inheriting from Test
+Test2 &lt;- function(.y) {
+  getX2 &lt;- function() .x * 2
+  retList(&quot;Test2&quot;, super = Test(.y))
+}
+
+stopifnot(Test2(2)$getX() == 2)
+stopifnot(Test2(2)$getX2() == 4)
+
 ### Rational numbers example with infix operators and print method
 
 Rational &lt;- function(numer, denom) {
 
-e &lt;- environment()
-as.environment &lt;- function() e
+  gcd &lt;- function(a, b) if(b == 0) a else Recall(b, a %% b)
 
-gcd &lt;- function(a, b) if(b == 0) a else Recall(b, a %% b)
+  g &lt;- gcd(numer, denom)
+  numer &lt;- numer / g
+  denom &lt;- denom / g
 
-g &lt;- gcd(numer, denom)
-numer &lt;- numer / g
-denom &lt;- denom / g
+  print &lt;- function() cat(paste0(numer, &quot;/&quot;, denom, &quot;\n&quot;))
 
-print &lt;- function() cat(paste0(numer, &quot;/&quot;, denom, &quot;\n&quot;))
+  &quot;.+&quot; &lt;- function(that) {
+    Rational(numer = numer * that$denom + that$numer * denom,
+             denom = denom * that$denom)
+  }
 
-&quot;.+&quot; &lt;- function(that) {
-  Rational(numer = numer * that$denom + that$numer * denom,
-           denom = denom * that$denom)
-}
+  neg &lt;- function() {
+    Rational(numer = -numer,
+             denom = denom)
+  }
 
-neg &lt;- function() {
-  Rational(numer = -numer,
-           denom = denom)
-}
+  &quot;.-&quot; &lt;- function(that) {
+    self + that$neg()
+  }
 
-&quot;.-&quot; &lt;- function(that) {
-  self + that$neg()
-}
-
-# Return only what should be visible from this scope:
-self &lt;- retList(c(&quot;Rational&quot;, &quot;Infix&quot;, &quot;Print&quot;),
-                c(&quot;numer&quot;, &quot;denom&quot;, &quot;neg&quot;, &quot;print&quot;, &quot;as.environment&quot;))
-self
+  # Return only what should be visible from this scope:
+  self &lt;- retList(c(&quot;Rational&quot;, &quot;Infix&quot;, &quot;Print&quot;),
+                  c(&quot;numer&quot;, &quot;denom&quot;, &quot;neg&quot;, &quot;print&quot;))
+  self
 
 }
 
