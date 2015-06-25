@@ -74,8 +74,8 @@
 retList <- function(class = NULL, exports = NULL, super = NULL, superEnv = listAsEnv(super), mergeFun = envMerge, envir = parent.frame()) {
   exports <- unique(c(if (is.null(exports)) ls(envir) else exports, names(super)))
   superClasses <- if (is.null(super)) "list" else class(super)
-  mergeFun(envir, superEnv)
-  out <- mget(exports, envir)
+  if (length(superEnv) > 0) mergeFun(envir, superEnv) # this is expensive
+  out <- as.list(envir)[exports]
   class(out) <- c(class, superClasses)
   out
 }
