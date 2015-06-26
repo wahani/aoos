@@ -72,6 +72,7 @@
 #' rational - rational
 #' 
 retList <- function(class = NULL, exports = NULL, super = NULL, superEnv = listAsEnv(super), mergeFun = envMerge, envir = parent.frame()) {
+  envir$.self <- envir
   exports <- unique(c(if (is.null(exports)) ls(envir) else exports, names(super)))
   superClasses <- if (is.null(super)) "list" else class(super)
   if (length(superEnv) > 0) mergeFun(envir, superEnv) # this is expensive

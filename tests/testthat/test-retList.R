@@ -39,12 +39,10 @@ test_that("Rational example with retList", {
   # Subtyping 
   
   RationalSub <- function(numer, denom) {
-    super <- Rational(numer, denom)
     mult <- function(that) {
-      RationalSub(self$numer * that$numer, self$denom * that$denom)
+      RationalSub(.self$numer * that$numer, .self$denom * that$denom)
     }
-    self <- retList("RationalSub", "mult", super)
-    self
+    retList("RationalSub", "mult", Rational(numer, denom))
   }
   
   rationalSub <- RationalSub(2, 3)
@@ -58,13 +56,11 @@ test_that("Rational example with retList", {
 test_that("funNames and retList", {
   
   Person <- function(name) {
-    force(name)
     print <- function() cat("Hi, my name is", name)
     retList(c("Person", "Print"))
   }
   
   Employee <- function(id, ...) {
-    force(id)
     super <- Person(...)
     print <- function() cat(super$print(), "and my employee id is", id)
     retList("Employee", funNames(), super)

@@ -1,3 +1,6 @@
+Version 0.2.4
+- retList has now an object called .self referring to itself.
+
 Version 0.2.3
 - retList can now 'inherit' from another list. An extra argument superEnv can be used to really extend a class definition in this framework.
 - retList has new arguments to control inheritance. 
