@@ -1,10 +1,10 @@
 #' Return current environment as list
 #' 
-#' This functions can be used to construct a list with class attribute and merged with another list called super. What merge means can be specified with the mergeFun argument.
+#' This functions can be used to construct a list with class attribute and merged with another list called super. What merge means can be specified with the mergeFun argument. It is intended to construct the return value (S3 class inheriting from 'list') of a function.
 #' 
 #' @param class character giving the class name.
-#' @param exports character with the names to include.
-#' @param super a list which should be extended.
+#' @param public character with the names to include.
+#' @param super a list to be extended.
 #' @param superEnv objects in an environment which should be included into your current scope.
 #' @param mergeFun function with two arguments. Knows how to join/merge environments - \code{mergeFun(envir, superEnv)}. Default: \link{envMerge}.
 #' @param envir this is the environment you want to convert to the list. Default is the environment from which the function is called.
@@ -51,19 +51,17 @@
 #'              denom = denom * that$denom)
 #'   }
 #' 
-#'   neg <- function() {
-#'     Rational(numer = -numer,
-#'              denom = denom)
-#'   }
-#' 
 #'   ".-" <- function(that) {
-#'     self + that$neg()
+#'     if (missing(that)) {
+#'       Rational(-numer, denom)
+#'     } else {
+#'       .self + (-that)
+#'     }
 #'   }
 #' 
 #'   # Return only what should be visible from this scope:
-#'   self <- retList(c("Rational", "Infix", "Print"),
-#'                   c("numer", "denom", "neg", "print"))
-#'   self
+#'   retList(c("Rational", "Infix", "Print"),
+#'           c("numer", "denom", "neg", "print"))
 #' 
 #' }
 #' 
@@ -71,12 +69,12 @@
 #' rational + rational
 #' rational - rational
 #' 
-retList <- function(class = NULL, exports = NULL, super = NULL, superEnv = listAsEnv(super), mergeFun = envMerge, envir = parent.frame()) {
+retList <- function(class = NULL, public = NULL, super = NULL, superEnv = listAsEnv(super), mergeFun = envMerge, envir = parent.frame()) {
   envir$.self <- envir
-  exports <- unique(c(if (is.null(exports)) ls(envir) else exports, names(super)))
+  public <- unique(c(if (is.null(public)) ls(envir) else public, names(super)))
   superClasses <- if (is.null(super)) "list" else class(super)
   if (length(superEnv) > 0) mergeFun(envir, superEnv) # this is expensive
-  out <- as.list(envir)[exports]
+  out <- as.list(envir)[public]
   class(out) <- c(class, superClasses)
   out
 }

@@ -7,7 +7,7 @@
 \alias{retList}
 \title{Return current environment as list}
 \usage{
-retList(class = NULL, exports = NULL, super = NULL,
+retList(class = NULL, public = NULL, super = NULL,
   superEnv = listAsEnv(super), mergeFun = envMerge,
   envir = parent.frame())
 
@@ -20,9 +20,9 @@ getEnvironmentOfFirstFun(x)
 \arguments{
 \item{class}{character giving the class name.}
 
-\item{exports}{character with the names to include.}
+\item{public}{character with the names to include.}
 
-\item{super}{a list which should be extended.}
+\item{super}{a list to be extended.}
 
 \item{superEnv}{objects in an environment which should be included into your current scope.}
 
@@ -33,7 +33,7 @@ getEnvironmentOfFirstFun(x)
 \item{x}{a list}
 }
 \description{
-This functions can be used to construct a list with class attribute and merged with another list called super. What merge means can be specified with the mergeFun argument.
+This functions can be used to construct a list with class attribute and merged with another list called super. What merge means can be specified with the mergeFun argument. It is intended to construct the return value (S3 class inheriting from 'list') of a function.
 }
 \details{
 \code{funNames} returns the names of functions in the environment from which it is called.
@@ -80,19 +80,17 @@ Rational <- function(numer, denom) {
              denom = denom * that$denom)
   }
 
-  neg <- function() {
-    Rational(numer = -numer,
-             denom = denom)
-  }
-
   ".-" <- function(that) {
-    self + that$neg()
+    if (missing(that)) {
+      Rational(-numer, denom)
+    } else {
+      .self + (-that)
+    }
   }
 
   # Return only what should be visible from this scope:
-  self <- retList(c("Rational", "Infix", "Print"),
-                  c("numer", "denom", "neg", "print"))
-  self
+  retList(c("Rational", "Infix", "Print"),
+          c("numer", "denom", "neg", "print"))
 
 }
 
