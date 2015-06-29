@@ -93,3 +93,5 @@ test_that("Inheritance for retList", {
   expect_equal(child$newMethod(), 1)
   
 })
+
+

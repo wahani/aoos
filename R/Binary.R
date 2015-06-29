@@ -67,10 +67,11 @@ makeBinaryMethod <- function(funName) {
   force(funName)
   function(e1, e2) {
     e <- as.environment(e1)
-    if(exists(funName, envir = e)) {
-      get(funName, envir = e)(e2)
+    if (exists(funName, envir = e)) {
+      if (missing(e2)) get(funName, envir = e)() 
+      else get(funName, envir = e)(e2)
     } else {
-      stop(funName, " is not defined.")
+      NextMethod()
     }
   }
 }

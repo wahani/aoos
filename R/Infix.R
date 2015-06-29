@@ -7,7 +7,7 @@
 #' @param x an object
 #' @param ... arguments passed to the local print method.
 #' 
-#' @details The rhs is coerced with \code{as.environment} and in that environment the binary operators must be found and named as \code{.<binaryOperator>} (see the example for \code{\link{retList}}). This is implemented for the following operators: \code{+, -, *, /, \%\%, ^, <, >, ==, >=, <=, &}.
+#' @details The lhs is coerced with \code{as.environment} and in that environment the binary operators must be found and named as \code{.<binaryOperator>} (see the example for \code{\link{retList}}). This is implemented for the following operators: \code{+, -, *, /, \%\%, ^, <, >, ==, >=, <=, &}. Also part of the operators you can implement with Infix is \code{!}, although it is unary.
 #' 
 #' @export
 #' @rdname Infix
@@ -57,6 +57,12 @@ print.Print <- function(x, ...) x$print(...)
 #' @export
 #' @rdname Infix
 "&.Infix" <-  makeBinaryMethod(".&")
+
+#' @export
+#' @rdname Infix
+"!.Infix" <- function(x) {
+  get(".!", envir = as.environment(x), inherits = FALSE)()
+}
 
 #' @export
 #' @rdname Infix
