@@ -33,6 +33,9 @@ test_that("Infix selects next method.", {
   }
   
   expect_true(Test(2) + 2 == 4)
+  # This is not really testing what I want. It should test that S3 dispatch is 
+  # continued after checking for infix functions encapsulated in class. Error
+  # message depends on language settings...
   expect_error(Test(2) - 2 == 4)
   
 })
