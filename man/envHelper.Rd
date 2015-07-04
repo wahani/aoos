@@ -22,9 +22,9 @@ envMerge(x, with)
 Functions to help working with environments.
 }
 \details{
-\code{envCopy} tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects. Objects in 'to' are not replaced.
+\code{envCopy} tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects.
 
-\code{envMerge} will merge x and with. Merge will copy all objects from with to x. Prior to that, the environment of functions are changed to be x.
+\code{envMerge} will merge x and with. Merge will copy all objects from x to with. Prior to that, the environment of functions are changed to be with iff functions in x have environment x; else the environment of functions are preserved.
 }
 \seealso{
 \link{retList} where these are relevant.

@@ -74,12 +74,14 @@ test_that("funNames and retList", {
 test_that("Inheritance for retList", {
   
   Super <- function(.x) {
+    statsFun <- stats::add1
     getX <- function() .x
     getY <- function() 1
-    retList("Super", "getX")
+    retList("Super", c("getX", "statsFun"))
   }
   
   inheritFrom <- function(.x) {
+    statsFun <- stats::add1
     newMethod <- function() getY()
     retList("Child", funNames(), super = Super(1))
   }
@@ -92,6 +94,30 @@ test_that("Inheritance for retList", {
   expect_equal(child$getX(), 3)
   expect_equal(child$newMethod(), 1)
   
+  expect_identical(environment(super$statsFun), environment(stats::add1))
+  expect_is(child$statsFun, "function")
+  expect_is(environment(child$statsFun), "environment")
+  
+  expect_identical(environment(child$statsFun), environment(stats::add1))
+  expect_is(child$statsFun, "function")
+  expect_is(environment(child$statsFun), "environment")
+  
 })
 
-
+test_that("... are processed in retList", {
+  RLA <- function(x = 1) {
+    getx <- function() .self$x
+    inc <- function(n = 1) .self$x <- .self$x + n
+    retList("RLA", c("x", "getx", "inc"))
+  }
+  
+  RLAChild <- function(...) {
+    retList("RLAChild", super = RLA(...))
+  }
+  
+  child <- RLAChild(2)
+  expect_equal(child$getx(), 2)
+  child <- RLAChild()
+  expect_equal(child$getx(), 1)
+  
+})

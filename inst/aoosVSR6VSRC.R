@@ -53,7 +53,6 @@ AOOS <- defineClass("AOOS", {
 R6Child <- R6Class("R6Child", inherit = R6)
 RCChild <- setRefClass("RCChild", contains = "RC")
 RLAChild <- function(...) {
-  self <- environment()
   retList("RLAChild", super = RLA(...))
 }
 AOOSChild <- defineClass("AOOSChild", contains = "AOOS", {})

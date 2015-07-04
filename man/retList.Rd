@@ -11,7 +11,7 @@ retList(class = NULL, public = NULL, super = NULL,
   superEnv = listAsEnv(super), mergeFun = envMerge,
   envir = parent.frame())
 
-funNames()
+funNames(envir = parent.frame())
 
 listAsEnv(x)
 

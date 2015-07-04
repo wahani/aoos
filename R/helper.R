@@ -2,7 +2,7 @@
 #' 
 #' Functions to help working with environments.
 #' 
-#' @details \code{envCopy} tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects. Objects in 'to' are not replaced.
+#' @details \code{envCopy} tries to copy all objects in a given environment into the environment 'to'. Returns the names of copied objects.
 #' 
 #' @param from environment
 #' @param to environment
@@ -14,28 +14,34 @@
 #' @export
 envCopy <- function(from, to) {
   eNames <- ls(from, all.names = TRUE)
+  eNames <- eNames[!(eNames == "...")]
   for (n in eNames) {
-    if (!exists(n, to, inherits = FALSE))
       assign(n, get(n, envir = from, inherits = FALSE), envir = to)
   }
   eNames
 }
 
-#' @details \code{envMerge} will merge x and with. Merge will copy all objects from with to x. Prior to that, the environment of functions are changed to be x.
+#' @details \code{envMerge} will merge x and with. Merge will copy all objects from x to with. Prior to that, the environment of functions are changed to be with iff functions in x have environment x; else the environment of functions are preserved.
 #' @rdname envHelper
 #' @export
 envMerge <- function(x, with) {
-  namesToCopy <- ls(with, all.names = TRUE)
-  funs <- envGetFuns(namesToCopy, with)
-  funs <- listKeepFuns(funs)
-  funs <- setEnvironmentOfFuns(funs, x)
-  envCopy(list2env(funs), x)
-  envCopy(with, x)
+  
+  setEnvironmentOfLocalFuns <- function(x, with) {
+    functionNames <- funNames(x)
+    for (n in functionNames) {
+      fun <- get(n, envir = x)
+      if (identical(environment(fun), x)) {
+        environment(fun) <- with
+        assign(n, fun, envir = x)
+      }
+    }
+  }
+  
+  setEnvironmentOfLocalFuns(x, with)
+  envCopy(x, with)
+  with
+  
 }
 
-envGetFuns <- function(names, from) mget(names, from, "function", vector("list", length(names)), FALSE)
 
-listKeepFuns <- function(funList) funList[unlist(lapply(funList, Negate(is.null)))]
-
-setEnvironmentOfFuns <- function(funList, e) lapply(funList, `environment<-`, value = e)
 

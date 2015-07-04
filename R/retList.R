@@ -70,10 +70,10 @@
 #' rational - rational
 #' 
 retList <- function(class = NULL, public = NULL, super = NULL, superEnv = listAsEnv(super), mergeFun = envMerge, envir = parent.frame()) {
-  envir$.self <- envir
   public <- unique(c(if (is.null(public)) ls(envir) else public, names(super)))
   superClasses <- if (is.null(super)) "list" else class(super)
-  if (length(superEnv) > 0) mergeFun(envir, superEnv) # this is expensive
+  if (length(superEnv) > 0) envir <- mergeFun(envir, superEnv)
+  envir$.self <- envir
   out <- as.list(envir)[public]
   class(out) <- c(class, superClasses)
   out
@@ -83,8 +83,7 @@ retList <- function(class = NULL, public = NULL, super = NULL, superEnv = listAs
 #' 
 #' @rdname retList
 #' @export
-funNames <- function() {
-  envir <- parent.frame()
+funNames <- function(envir = parent.frame()) {
   funInd <- unlist(eapply(envir, is.function))
   names(funInd)[funInd]
 }
@@ -97,8 +96,8 @@ funNames <- function() {
 #' @export
 listAsEnv <- function(x) {
   if (is.null(x)) return(new.env())
-  if (any(sapply(x, is.function))) return(getEnvironmentOfFirstFun(x))
-  list2env(x)
+  else if (any(sapply(x, is.function))) return(getEnvironmentOfFirstFun(x))
+  else return(list2env(x))
 }
 
 #' @details \code{getEnvironmentOfFirstFun} returns the environment of the first function in a list.
