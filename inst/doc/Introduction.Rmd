@@ -23,3 +23,9 @@ The function `Class` does not implement a new logic of object orientation but fi
 ```{r, eval=FALSE}
 vignette("referenceClasses", "aoos")
 ```
+
+With `retList` it is made easy to play object orientation without introducing anything new but S3. It defines the return value of a function (which also serves as the constructor) which is a list. You can specify a class name and which objects you want to have in that list. Some ideas borrowed from the `setRefClass` framework are encapsulated print methods, and from `defineClass` the possibility to define encapsulated infix operators. Furthermore `retList` provides an implementation for inheritance. Since S3 does not provide a formal class definition classes inherit the properties from instances of super classes. How exactly this works reduces to the question of how you would join two environments in R. What would you do with the enclosing environment of functions? What would you do with naming conflicts? Since you may disagree with me on how this should be done, you can change it by providing a function which knows how to join two environments. There is not an own vignette for this function but a couple of examples in the help file.
+
+```{r, eval=FALSE}
+vignette("retList", "aoos")
+```
