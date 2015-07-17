@@ -1,0 +1,92 @@
+---
+title: "Performance benchmarks"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{performance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+All this is taken from [the R6 performance documentation](http://rpubs.com/wch/17459).
+
+
+## Definitions
+
+```{r}
+library("R6")
+library("aoos")
+library("microbenchmark")
+
+R6 <- R6Class("R6",
+              public = list(
+                x = NULL,
+                initialize = function(x = 1) self$x <- x,
+                getx = function() self$x,
+                inc = function(n = 1) self$x <- x + n
+              )
+)
+
+RC <- setRefClass("RC", 
+                  fields = list(x = "numeric"),
+                  methods = list(
+                    initialize = function(x = 1) .self$x <- x,
+                    getx = function() x,
+                    inc = function(n = 1) x <<- x + n
+                  )
+)
+
+RList <- function(x = 1) {
+  self <- environment()
+  getx <- function() self$x
+  inc <- function(n = 1) self$x <- self$x + n
+  out <- list(x = x, getx = getx, inc = inc)
+  class(out) <- "RList"
+  out
+}
+
+RLA <- function(x = 1) {
+  getx <- function() .self$x
+  inc <- function(n = 1) .self$x <- .self$x + n
+  retList("RLA", c("x", "getx", "inc"))
+}
+
+AOOS <- defineClass("AOOS", {
+  getx <- function() .self$x
+  inc <- function(n = 1) .self$x <- .self$x + n
+  init <- function(x = 1) .self$x <- x
+})
+
+# And some more definitions for inheritance
+R6Child <- R6Class("R6Child", inherit = R6)
+RCChild <- setRefClass("RCChild", contains = "RC")
+RLAChild <- function(...) {
+  retList("RLAChild", super = RLA(...))
+}
+AOOSChild <- defineClass("AOOSChild", contains = "AOOS", {})
+```
+
+## Results
+
+```{r}
+benchmark1 <- microbenchmark(
+  AOOS(),
+  RC$new(),
+  R6$new(),
+  RLA(),
+  RList()
+) 
+
+print(benchmark1, digits = 2)
+```
+
+```{r}
+benchmark2 <- microbenchmark(
+  AOOSChild(),
+  RCChild$new(),
+  R6Child$new(),
+  RLAChild()
+)
+
+print(benchmark2, digits = 2)
+```

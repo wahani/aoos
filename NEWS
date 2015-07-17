@@ -1,6 +1,8 @@
 Version 0.2.5
 - retList: renamed argument 'exports' to 'public'.
 - Possible to define encapsulated unary operators.
+- Vignette on classes with reList.
+- Vignette on performance.
 
 Version 0.2.4
 - retList has now an object called .self referring to itself.

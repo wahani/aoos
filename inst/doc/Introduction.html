@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-12" />
+<meta name="date" content="2015-07-17" />
 
 <title>Introduction</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Introduction</h1>
-<h4 class="date"><em>2015-07-12</em></h4>
+<h4 class="date"><em>2015-07-17</em></h4>
 </div>
 
 
@@ -62,8 +62,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p><code>defineClass</code> is an own implementation of object orientation, like <code>setRefClass</code> it uses S4, and can be considered experimental, although it has been reliable in my own work.</p>
 <p>The function <code>Class</code> does not implement a new logic of object orientation but fixes my major critique of <code>setRefClass</code>: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression. Very much like in <code>defineClass</code> the <em>evaluated expression</em> is then passed as argument to <code>setRefClass</code>. Also there is a class <em>Private</em> from which a reference class can inherit which adds a notion of privacy (overrides the default accessor functions) to a reference class:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;referenceClasses&quot;</span>, <span class="st">&quot;aoos&quot;</span>)</code></pre>
-<p>With <code>retList</code> it is made easy to play object orientation without introducing anything new but S3. It defines the return value of a function (which also serves as the constructor) which is a list. You can specify a class name and which objects you want to have in that list. Some ideas borrowed from the <code>setRefClass</code> framework are encapsulated print methods, and from <code>defineClass</code> the possibility to define encapsulated infix operators. Furthermore <code>retList</code> provides an implementation for inheritance. Since S3 does not provide a formal class definition classes inherit the properties from instances of super classes. How exactly this works reduces to the question of how you would join two environments in R. What would you do with the enclosing environment of functions? What would you do with naming conflicts? Since you may disagree with me on how this should be done, you can change it by providing a function which knows how to join two environments. There is not an own vignette for this function but a couple of examples in the help file.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;retList&quot;</span>, <span class="st">&quot;aoos&quot;</span>)</code></pre>
+<p>With <code>retList</code> it is made easy to play object orientation without introducing anything new but S3. It defines the return value of a function (which also serves as the constructor) which is a list. You can specify a class name and which objects you want to have in that list. Some ideas borrowed from the <code>setRefClass</code> framework are encapsulated print methods, and from <code>defineClass</code> the possibility to define encapsulated infix operators. Furthermore <code>retList</code> provides an implementation for inheritance. Since S3 does not provide a formal class definition classes inherit the properties from instances of super classes. How exactly this works reduces to the question of how you would join two environments in R. What would you do with the enclosing environment of functions? What would you do with naming conflicts? Since you may disagree with me on how this should be done, you can change it by providing a function which knows how to join two environments.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;retListClasses&quot;</span>, <span class="st">&quot;aoos&quot;</span>)</code></pre>
 
 
 

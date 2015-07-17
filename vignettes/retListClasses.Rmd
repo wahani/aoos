@@ -51,14 +51,14 @@ Person <- function(name) {
 }
 ```
 
-`retList` is used as a generic constructor function. It allways returns a list containing all visible values from the environment where it is called. There is a print method `print.Print` in the package which will look for a member function called print for printing. Hence the `print` method in the class *Person* will be used as *S3* printing method.
+`retList` is used as a generic constructor function. It allways returns a list containing all visible values from the environment where it is called. There is a print method `print.Print` in the package which will look for a member function called print for printing. Thus the `print` method in the class *Person* will be used as *S3* printing method.
 
 ```{r}
 ann <- Person("Ann")
 ann
 ```
 
-Inside the class definition you can use `.self` but you do not have to; It just might be more explicit. You can also use the super-assignment operator `<<-`.
+Inside the class definition - i.e. the body of the constructor - you can use `.self` but you do not have to; It just might be more explicit. You can also use the super-assignment operator `<<-`. Note that `.self` not a reference to the instance itself, it is only referencing to the environment in which the methods will live in.
 
 You should keep in mind that a public field is a value in a list and not a reference to `.self`. Thus if your object should have public fields you have to define get/set methods. In this example you can think of `name` as an attribute since changing it in an instance won't change the bahavior of `greet`. Here is something you can do instead:
 

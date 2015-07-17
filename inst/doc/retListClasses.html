@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-12" />
+<meta name="date" content="2015-07-17" />
 
 <title>retListClasses</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">retListClasses</h1>
-<h4 class="date"><em>2015-07-12</em></h4>
+<h4 class="date"><em>2015-07-17</em></h4>
 </div>
 
 
@@ -86,11 +86,11 @@ Person &lt;-<span class="st"> </span>function(name) {
   
   <span class="kw">retList</span>(<span class="kw">c</span>(<span class="st">&quot;Person&quot;</span>, <span class="st">&quot;Print&quot;</span>))
 }</code></pre>
-<p><code>retList</code> is used as a generic constructor function. It allways returns a list containing all visible values from the environment where it is called. There is a print method <code>print.Print</code> in the package which will look for a member function called print for printing. Hence the <code>print</code> method in the class <em>Person</em> will be used as <em>S3</em> printing method.</p>
+<p><code>retList</code> is used as a generic constructor function. It allways returns a list containing all visible values from the environment where it is called. There is a print method <code>print.Print</code> in the package which will look for a member function called print for printing. Thus the <code>print</code> method in the class <em>Person</em> will be used as <em>S3</em> printing method.</p>
 <pre class="sourceCode r"><code class="sourceCode r">ann &lt;-<span class="st"> </span><span class="kw">Person</span>(<span class="st">&quot;Ann&quot;</span>)
 ann</code></pre>
 <pre><code>## Hello, my name is Ann.</code></pre>
-<p>Inside the class definition you can use <code>.self</code> but you do not have to; It just might be more explicit. You can also use the super-assignment operator <code>&lt;&lt;-</code>.</p>
+<p>Inside the class definition - i.e. the body of the constructor - you can use <code>.self</code> but you do not have to; It just might be more explicit. You can also use the super-assignment operator <code>&lt;&lt;-</code>. Note that <code>.self</code> not a reference to the instance itself, it is only referencing to the environment in which the methods will live in.</p>
 <p>You should keep in mind that a public field is a value in a list and not a reference to <code>.self</code>. Thus if your object should have public fields you have to define get/set methods. In this example you can think of <code>name</code> as an attribute since changing it in an instance won’t change the bahavior of <code>greet</code>. Here is something you can do instead:</p>
 <pre class="sourceCode r"><code class="sourceCode r">Person &lt;-<span class="st"> </span>function(.name) {
   

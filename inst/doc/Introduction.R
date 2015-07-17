@@ -5,5 +5,5 @@
 #  vignette("referenceClasses", "aoos")
 
 ## ---- eval=FALSE---------------------------------------------------------
-#  vignette("retList", "aoos")
+#  vignette("retListClasses", "aoos")
 
