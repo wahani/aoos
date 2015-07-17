@@ -18,6 +18,8 @@ Depends:
 License: GPL-3 | file LICENSE
 Suggests:
     testthat,
-    knitr
+    knitr,
+    microbenchmark,
+    R6
 Encoding: UTF-8
 VignetteBuilder: knitr
