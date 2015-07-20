@@ -23,9 +23,38 @@ install_github("wahani/aoos")
 
 
 ```
-## Error in summary(packageStatus()): Fehler bei der Auswertung des Argumentes 'object' bei der Methodenauswahl
-## für Funktion 'summary': Fehler in contrib.url(getOption("repos"), type = type) : 
-##   versuche CRAN ohne einen Spiegelserver zu nutzen
+## Version on CRAN: 0.2.0 
+## Development Version: 0.2.5 
+## 
+## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.2.5:
+## 
+##     o   retList: renamed argument 'exports' to 'public'.
+## 
+##     o   Possible to define encapsulated unary operators.
+## 
+##     o   Vignette on classes with reList.
+## 
+##     o   Vignette on performance.
+## 
+## Changes in version 0.2.4:
+## 
+##     o   retList has now an object called .self referring to itself.
+## 
+## Changes in version 0.2.3:
+## 
+##     o   retList can now 'inherit' from another list. An extra argument superEnv can be used to really extend a class definition in this framework.
+## 
+##     o   retList has new arguments to control inheritance. 
+## 
+## Changes in version 0.2.2:
+## 
+##     o   New classes Infix and Print which enable encapsulated definitions of infix operators and print methods for S3 classes.
+## 
+## Changes in version 0.2.1:
+## 
+##     o   New functions retList and funNames to work with closures as objects
 ```
 
 ## Material
