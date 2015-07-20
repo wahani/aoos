@@ -1,7 +1,11 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. Has reference semantics and is built around S4.
+Another implementation of object-orientation in R. Has an 
+  interface to S4 referenceClasses and two alternative new implementations. One 
+  is an experimental version built oround S4 (defineClass) and the other one 
+  (retList) makes it more convenient to work with lists returned from functions 
+  and uses only S3.
 
 ## Installation
 To install from CRAN:
@@ -19,22 +23,9 @@ install_github("wahani/aoos")
 
 
 ```
-## Version on CRAN: 0.2.0 
-## Development Version: 0.2.3 
-## 
-## Updates in package NEWS-file since last release to CRAN:
-## 
-## Changes in version 0.2.3:
-## 
-##     o   retList can now 'inherit' from another list. An extra argument superEnv can be used to really extend a class definition in this framework.
-## 
-## Changes in version 0.2.2:
-## 
-##     o   New classes Infix and Print which enable encapsulated definitions of infix operators and print methods for S3 classes.
-## 
-## Changes in version 0.2.1:
-## 
-##     o   New functions retList and funNames to work with closures as objects
+## Error in summary(packageStatus()): Fehler bei der Auswertung des Argumentes 'object' bei der Methodenauswahl
+## für Funktion 'summary': Fehler in contrib.url(getOption("repos"), type = type) : 
+##   versuche CRAN ohne einen Spiegelserver zu nutzen
 ```
 
 ## Material

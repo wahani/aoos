@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>aoos classes</title>
+<title>Definitions</title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -201,257 +201,101 @@ hr {
 </head>
 
 <body>
-<h2>aoos classes</h2>
+<p>All this is taken from <a href="http://rpubs.com/wch/17459">the R6 performance documentation</a>.</p>
 
-<p>Most of what this package can do is inspired by the R-package R6. Unlike R6, aoos relies on the methods package and the S4 class system. It was not written to be superior with respect to efficiency. Use aoos if you want to use object oriented programming as a means to organise your source code.</p>
+<h2>Definitions</h2>
 
-<ul>
-<li>An aoos class definition is a R expression. You can write code and decide which objects are public. </li>
-<li>You can use auto-complete to see public member functions.</li>
-<li>You can use features of S4 (method dispatch).</li>
-</ul>
+<pre><code class="r">library(&quot;R6&quot;)
+library(&quot;aoos&quot;)
+library(&quot;microbenchmark&quot;)
 
-<p>All examples in the following are adapted from the R6-package.</p>
+R6 &lt;- R6Class(&quot;R6&quot;,
+              public = list(
+                x = NULL,
+                initialize = function(x = 1) self$x &lt;- x,
+                getx = function() self$x,
+                inc = function(n = 1) self$x &lt;- x + n
+              )
+)
 
-<h2>Basics</h2>
+RC &lt;- setRefClass(&quot;RC&quot;, 
+                  fields = list(x = &quot;numeric&quot;),
+                  methods = list(
+                    initialize = function(x = 1) .self$x &lt;- x,
+                    getx = function() x,
+                    inc = function(n = 1) x &lt;&lt;- x + n
+                  )
+)
 
-<p>There is one function you have to remember:</p>
+RList &lt;- function(x = 1) {
+  self &lt;- environment()
+  getx &lt;- function() self$x
+  inc &lt;- function(n = 1) self$x &lt;- self$x + n
+  out &lt;- list(x = x, getx = getx, inc = inc)
+  class(out) &lt;- &quot;RList&quot;
+  out
+}
 
-<ul>
-<li><code>defineClass</code>: To define a class.</li>
-</ul>
+RLA &lt;- function(x = 1) {
+  getx &lt;- function() .self$x
+  inc &lt;- function(n = 1) .self$x &lt;- .self$x + n
+  retList(&quot;RLA&quot;, c(&quot;x&quot;, &quot;getx&quot;, &quot;inc&quot;))
+}
 
-<p>Everything you define inside the class definition will be public, objects with a leading dot in the name will be private. This can be overwritten by the functions <code>private</code> and <code>public</code>. Every public member will inherit from class function. A &ldquo;public field&rdquo; is the get/set method for an object hidden behind a closure (see the class <em>Accessor</em> if you dislike this). An exception are objects which inherit from class &#39;environment&#39; so basically all reference classes in R. Those you can access without get/set methods.</p>
-
-<p>Here is a simple class definition: </p>
-
-<pre><code class="r">library(aoos)
-
-Person &lt;- defineClass(&quot;Person&quot;, {
-
-  personName &lt;- &quot;&quot;
-
-  init &lt;- function(name) {
-    self$personName(name)
-    self$greet()
-    }
-
-  greet &lt;- function() {
-    cat(paste0(&quot;Hello, my name is &quot;, self$personName(), &quot;.\n&quot;))
-    }
-
-  })
-</code></pre>
-
-<p>The return value of <code>defineClass</code> is the constructor function which is assigned to the name <code>Person</code>. All arguments to the constructor will be passed on to <code>init</code> if you defined it.</p>
-
-<pre><code class="r">ann &lt;- Person(&quot;Ann&quot;)
-</code></pre>
-
-<pre><code>## Hello, my name is Ann.
-</code></pre>
-
-<pre><code class="r">ann
-</code></pre>
-
-<pre><code>## Class: Person
-## public member:
-##   greet 
-##   init 
-##   personName 
-##   self
-</code></pre>
-
-<pre><code class="r">ann$personName()
-</code></pre>
-
-<pre><code>## [1] &quot;Ann&quot;
-</code></pre>
-
-<pre><code class="r">ann$personName(&quot;not Ann&quot;)
-ann$greet()
-</code></pre>
-
-<pre><code>## Hello, my name is not Ann.
-</code></pre>
-
-<p>Inside the class definition you can use <code>self</code> but you do not have to; It just might be more explicit. You can also use the super-assignment operator <code>&lt;&lt;-</code> to replace private fields. The following illustrates the difference:</p>
-
-<pre><code class="r">Person &lt;- defineClass(&quot;Person&quot;, {
-
-  .personName &lt;- &quot;&quot; # .personName is private
-
-  init &lt;- function(name) {
-    self$.personName &lt;- name # option 1
-    .personName &lt;&lt;- name # option 2
-    greet()
-    }
-
-  greet &lt;- public(function() {
-    cat(paste0(&quot;Hello, my name is &quot;, .personName, &quot;.\n&quot;)) # before: personName()
-    })
-  })
-</code></pre>
-
-<p>What you have to keep in mind is, that a public field is always hidden behind a get/set method and needs to be treated as a function. Private fields are just R objects and follow copy-on-modify semantics.</p>
-
-<h2>Predefined methods</h2>
-
-<p>aoos classes inherit from class &#39;aoos&#39;. For that class some S4-methods are defined you can use:</p>
-
-<ul>
-<li><code>show</code> which prints the public members of an object to the console</li>
-<li><code>summary</code> which tries to give a clue how much memory is used by an object</li>
-</ul>
-
-<p>For every class you define with <code>defineClass</code> the S4 method <code>initialize</code> is set. Do not change it. You can also use the S4 constructor <code>new</code> to create a new instance of your class.</p>
-
-<pre><code class="r">new(&quot;Person&quot;, &quot;Ann&quot;)
-</code></pre>
-
-<pre><code>## Hello, my name is Ann.
-</code></pre>
-
-<pre><code>## Class: Person
-## public member:
-##   greet 
-##   init 
-##   personName 
-##   self
-</code></pre>
-
-<h2>Inheritance</h2>
-
-<p>A class defined by <code>defineClass</code> can inherit from other aoos classes. The expression (<code>expr</code> in <code>defineClass</code>) is first evaluated for the parent and then for the child in the same environment. So you can override methods and fields.</p>
-
-<pre><code class="r">Queue &lt;- defineClass(&quot;Queue&quot;, {
-
-  .queue &lt;- list()
-
-  init &lt;- function(...) {
-      for (item in list(...)) self$add(item)
-    }
-
-  add &lt;- function(x) {
-      .queue &lt;&lt;- c(.queue, list(x))
-      invisible(self)
-    }
-
-  remove &lt;- function() {
-      if (queueIsEmpty()) return(NULL)
-      head &lt;- .queue[[1]]
-      .queue &lt;&lt;- .queue[-1]
-      head
-    }
-
-  queueIsEmpty &lt;- function() length(.queue) == 0
-
+AOOS &lt;- defineClass(&quot;AOOS&quot;, {
+  getx &lt;- function() .self$x
+  inc &lt;- function(n = 1) .self$x &lt;- .self$x + n
+  init &lt;- function(x = 1) .self$x &lt;- x
 })
 
-HistoryQueue &lt;- defineClass(&quot;HistoryQueue&quot;, contains = &quot;Queue&quot;, {
-
-  .head_idx &lt;- 0
-
-  remove &lt;- function() {
-    if ((length(.queue) - .head_idx) == 0) return(NULL)
-    self$.head_idx &lt;- .head_idx + 1
-    .queue[[.head_idx]]
-    }
-
-  show &lt;- function() {
-      cat(&quot;Next item is at index&quot;, .head_idx + 1, &quot;\n&quot;)
-      for (i in seq_along(.queue)) {
-        cat(i, &quot;: &quot;, .queue[[i]], &quot;\n&quot;, sep = &quot;&quot;)
-      }
-    }
-
-  })
-
-q &lt;- Queue(5, 6, &quot;foo&quot;)
-q$remove()
+# And some more definitions for inheritance
+R6Child &lt;- R6Class(&quot;R6Child&quot;, inherit = R6)
+RCChild &lt;- setRefClass(&quot;RCChild&quot;, contains = &quot;RC&quot;)
+RLAChild &lt;- function(...) {
+  retList(&quot;RLAChild&quot;, super = RLA(...))
+}
+AOOSChild &lt;- defineClass(&quot;AOOSChild&quot;, contains = &quot;AOOS&quot;, {})
 </code></pre>
 
-<pre><code>## [1] 5
+<h2>Results</h2>
+
+<pre><code class="r">benchmark1 &lt;- microbenchmark(
+  AOOS(),
+  RC$new(),
+  R6$new(),
+  RLA(),
+  RList()
+) 
+
+print(benchmark1, digits = 2)
 </code></pre>
 
-<pre><code class="r">q
+<pre><code>## Unit: microseconds
+##      expr    min     lq mean median     uq  max neval cld
+##    AOOS() 1393.8 1448.1 1785 1511.4 1722.1 6009   100   c
+##  RC$new()  281.5  303.7  389  329.5  407.0 2034   100  b 
+##  R6$new()   48.5   62.8   76   66.6   83.2  152   100 a  
+##     RLA()   20.1   26.1   57   29.8   33.8 2586   100 a  
+##   RList()    2.6    4.5    6    5.5    6.8   15   100 a
 </code></pre>
 
-<pre><code>## Class: Queue
-## public member:
-##   add 
-##   init 
-##   queueIsEmpty 
-##   remove 
-##   self
+<pre><code class="r">benchmark2 &lt;- microbenchmark(
+  AOOSChild(),
+  RCChild$new(),
+  R6Child$new(),
+  RLAChild()
+)
+
+print(benchmark2, digits = 2)
 </code></pre>
 
-<pre><code class="r">hq &lt;- HistoryQueue(5, 6, &quot;foo&quot;)
-hq
+<pre><code>## Unit: microseconds
+##           expr  min   lq mean median   uq  max neval cld
+##    AOOSChild() 2844 2919 3228   2978 3184 5903   100   c
+##  RCChild$new()  275  298  379    332  380 2497   100  b 
+##  R6Child$new()  202  224  261    249  276  503   100 ab 
+##     RLAChild()  141  157  205    173  184 2694   100 a
 </code></pre>
-
-<pre><code>## Class: HistoryQueue
-## public member:
-##   add 
-##   init 
-##   queueIsEmpty 
-##   remove 
-##   self 
-##   show
-</code></pre>
-
-<pre><code class="r">hq$show()
-</code></pre>
-
-<pre><code>## Next item is at index 1 
-## 1: 5
-## 2: 6
-## 3: foo
-</code></pre>
-
-<pre><code class="r">hq$remove()
-</code></pre>
-
-<pre><code>## [1] 5
-</code></pre>
-
-<pre><code class="r">hq$show()
-</code></pre>
-
-<pre><code>## Next item is at index 2 
-## 1: 5
-## 2: 6
-## 3: foo
-</code></pre>
-
-<pre><code class="r">hq$remove()
-</code></pre>
-
-<pre><code>## [1] 6
-</code></pre>
-
-<p>Since these classes use the S4 system you can use <code>setMethod</code> to define additional methods like <code>show</code>. Define S4-methods always outside the <code>defineClass</code> function as <code>expr</code> will be evaluated every time a new instance is created.</p>
-
-<pre><code class="r">setMethod(&quot;show&quot;, &quot;HistoryQueue&quot;, function(object) {
-  object$show()
-})
-</code></pre>
-
-<pre><code>## [1] &quot;show&quot;
-</code></pre>
-
-<pre><code class="r">hq
-</code></pre>
-
-<pre><code>## Next item is at index 3 
-## 1: 5
-## 2: 6
-## 3: foo
-</code></pre>
-
-<h2>Inheritance across packages</h2>
-
-<p>This is a little tricky. <code>expr</code> is evaluated in a new environment whenever you create a new instance. If one class inherits from another the same environment is used for the evaluation. Thus, objects of the parent can be replaced and the scoping of the parent is preserved; functions defined for the parent and the child share the same environment. The parent environment of an aoos class is the environment in which <code>defineClass</code> (for the parent) is called. This will typically be a package namespace. If you define class B in package pkgB which inherits from a class A from package pkgA class B will have the same scoping as a class in pkgA. Whenever you want to use functions from pkgB in class B you have to define them as part of the class definition or refer to them with <code>pkgB::&quot;functionName&quot;</code> or <code>pkgB:::&quot;functionName&quot;</code>.</p>
 
 </body>
 

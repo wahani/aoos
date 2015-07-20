@@ -1,12 +1,19 @@
-#' ---
-#' title: "aoos vs. R6 vs. reference classes"
-#' author: "Seb!"
-#' ---
+---
+title: "Performance benchmarks"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{performance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
 
-#' This is an adoption from [the R6 performance documentation](http://rpubs.com/wch/17459).
-#'
-#' ## Definitions
+All this is taken from [the R6 performance documentation](http://rpubs.com/wch/17459).
 
+
+## Definitions
+
+```{r}
 library("R6")
 library("aoos")
 library("microbenchmark")
@@ -50,35 +57,36 @@ AOOS <- defineClass("AOOS", {
   init <- function(x = 1) .self$x <- x
 })
 
+# And some more definitions for inheritance
 R6Child <- R6Class("R6Child", inherit = R6)
 RCChild <- setRefClass("RCChild", contains = "RC")
 RLAChild <- function(...) {
   retList("RLAChild", super = RLA(...))
 }
 AOOSChild <- defineClass("AOOSChild", contains = "AOOS", {})
+```
 
-#' ## Results
+## Results
 
-microbenchmark(
+```{r}
+benchmark1 <- microbenchmark(
   AOOS(),
   RC$new(),
   R6$new(),
   RLA(),
   RList()
-)
+) 
 
-microbenchmark(
+print(benchmark1, digits = 2)
+```
+
+```{r}
+benchmark2 <- microbenchmark(
   AOOSChild(),
   RCChild$new(),
   R6Child$new(),
   RLAChild()
 )
 
-#+ echo=FALSE
-# Rprof(tmp <- tempfile())
-# out <- replicate(10000, RLAChild(), simplify = FALSE)
-# Rprof()
-# profileSummary <- summaryRprof(tmp)
-# unlink(tmp)
-# 
-# profileSummary$by.total
+print(benchmark2, digits = 2)
+```
