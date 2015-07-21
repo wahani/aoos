@@ -13,7 +13,7 @@
 #  }
 
 ## ------------------------------------------------------------------------
-library(aoos)
+library("aoos")
 
 Person <- function(name) {
   
@@ -50,55 +50,27 @@ p$name("Paul")
 p
 
 ## ------------------------------------------------------------------------
-Queue <- function(...) {
-  
-  .queue <- list(...)
-  
-  add <- function(x) {
-    .queue <<- c(.queue, list(x))
-    x
-  }
-  
-  remove <- function() {
-    if (queueIsEmpty()) return(NULL)
-    head <- .queue[[1]]
-    .queue <<- .queue[-1]
-    head
-  }
-  
-  queueIsEmpty <- function() length(.queue) == 0
-  
-  retList("Queue")
-  
-}
-
-HistoryQueue <- function(...) {
-  
-  .head_idx <- 0
-  
-  remove <- function() {
-    if ((length(.queue) - .head_idx) == 0) return(NULL)
-    .head_idx <<- .head_idx + 1
-    .queue[[.head_idx]]
-    }
+Person <- function(name) {
   
   print <- function(...) {
-      cat("Next item is at index", .head_idx + 1, "\n")
-      for (i in seq_along(.queue)) {
-        cat(i, ": ", .queue[[i]], "\n", sep = "")
-      }
+    cat(paste0("Hello, my name is ", .self$name, ".\n"))
   }
   
-  retList(c("HistoryQueue", "Print"), super = Queue(...))
+  retList(c("Person", "Print"))
+
 }
 
-q <- Queue(5, 6, "foo")
-q$remove()
+Employee <- function(id, ...) {
+  
+  print <- function(...) {
+    cat("Name: ", name, "\nID:   ", id)
+  }
+  
+  retList("Employee", super = Person(...))
+  
+}
 
-hq <- HistoryQueue(5, 6, "foo")
-hq
-hq$remove()
-hq
-hq$remove()
-hq
+kalle <- Employee("1", "Kalle")
+str(kalle)
+kalle
 
