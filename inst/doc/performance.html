@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-21" />
+<meta name="date" content="2015-07-22" />
 
 <title>Performance benchmarks</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Performance benchmarks</h1>
-<h4 class="date"><em>2015-07-21</em></h4>
+<h4 class="date"><em>2015-07-22</em></h4>
 </div>
 
 
@@ -122,12 +122,12 @@ AOOSChild &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<spa
 
 <span class="kw">print</span>(benchmark1, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>## Unit: microseconds
-##      expr  min     lq   mean median     uq  max neval cld
-##    AOOS() 1445 1479.6 1713.2 1503.9 1793.4 4415   100   c
-##  RC$new()  281  298.6  382.9  312.7  345.8 5802   100  b 
-##  R6$new()   54   66.5   74.2   71.2   77.3  137   100 a  
-##     RLA()   19   25.2   59.4   29.4   31.1 3019   100 a  
-##   RList()    3    4.3    6.5    5.2    6.4   74   100 a</code></pre>
+##      expr    min     lq   mean median     uq   max neval cld
+##    AOOS() 1443.4 1480.2 1687.3   1504 1700.3  7041   100   b
+##  RC$new()  277.3  293.0  398.8    313  355.6  2940   100  a 
+##  R6$new()   54.2   60.8  297.2     70   77.7 22527   100  a 
+##     RLA()   20.1   25.6   57.6     29   31.6  2826   100  a 
+##   RList()    2.5    3.7    5.3      5    6.2    20   100  a</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">benchmark2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(
   <span class="kw">AOOSChild</span>(),
   RCChild$<span class="kw">new</span>(),
@@ -138,10 +138,10 @@ AOOSChild &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<spa
 <span class="kw">print</span>(benchmark2, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>## Unit: microseconds
 ##           expr  min   lq mean median   uq   max neval cld
-##    AOOSChild() 3027 3094 3437   3151 3441  6277   100   c
-##  RCChild$new()  297  327  539    344  374 18335   100  b 
-##  R6Child$new()  218  249  269    263  281   390   100 ab 
-##     RLAChild()  134  159  180    173  181   765   100 a</code></pre>
+##    AOOSChild() 3048 3129 3482   3166 3682  6259   100   b
+##  RCChild$new()  292  310  384    335  381  2711   100  a 
+##  R6Child$new()  213  233  269    261  292   540   100  a 
+##     RLAChild()  140  161  331    173  187 15079   100  a</code></pre>
 </div>
 
 

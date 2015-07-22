@@ -43,7 +43,7 @@ library("aoos")
 
 Person <- function(name) {
   
-  print <- function() {
+  print <- function(x, ...) {
     cat(paste0("Hello, my name is ", .self$name, ".\n"))
   }
   
@@ -65,7 +65,7 @@ You should keep in mind that a public field is a value in a list and not a refer
 ```{r}
 Person <- function(.name) {
   
-  print <- function(...) {
+  print <- function(x, ...) {
     cat(paste0("Hello, my name is ", .self$.name, ".\n"))
   }
   
@@ -93,7 +93,7 @@ An object can inherit from another object. The constructer then extends the inst
 ```{r}
 Person <- function(name) {
   
-  print <- function(...) {
+  print <- function(x, ...) {
     cat(paste0("Hello, my name is ", .self$name, ".\n"))
   }
   
@@ -103,7 +103,7 @@ Person <- function(name) {
 
 Employee <- function(id, ...) {
   
-  print <- function(...) {
+  print <- function(x, ...) {
     cat("Name: ", name, "\nID:   ", id)
   }
   

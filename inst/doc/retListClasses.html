@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-21" />
+<meta name="date" content="2015-07-22" />
 
 <title>retListClasses</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">retListClasses</h1>
-<h4 class="date"><em>2015-07-21</em></h4>
+<h4 class="date"><em>2015-07-22</em></h4>
 </div>
 
 
@@ -80,7 +80,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 Person &lt;-<span class="st"> </span>function(name) {
   
-  print &lt;-<span class="st"> </span>function() {
+  print &lt;-<span class="st"> </span>function(x, ...) {
     <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, .self$name, <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>))
   }
   
@@ -94,7 +94,7 @@ ann</code></pre>
 <p>You should keep in mind that a public field is a value in a list and not a reference to the value in <code>.self</code>. Thus, if your object should have public fields you have to define get/set methods. In this example you can think of <code>name</code> as an attribute since changing it in an instance won’t change the bahavior of <code>greet</code>. Here is something you can do instead:</p>
 <pre class="sourceCode r"><code class="sourceCode r">Person &lt;-<span class="st"> </span>function(.name) {
   
-  print &lt;-<span class="st"> </span>function(...) {
+  print &lt;-<span class="st"> </span>function(x, ...) {
     <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, .self$.name, <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>))
   }
   
@@ -122,7 +122,7 @@ p</code></pre>
 <p>An object can inherit from another object. The constructer then extends the instance of the super class/object. For that you can supply a call to the super classes constructor function, where you also have to supply arguments for initialization.</p>
 <pre class="sourceCode r"><code class="sourceCode r">Person &lt;-<span class="st"> </span>function(name) {
   
-  print &lt;-<span class="st"> </span>function(...) {
+  print &lt;-<span class="st"> </span>function(x, ...) {
     <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, .self$name, <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>))
   }
   
@@ -132,7 +132,7 @@ p</code></pre>
 
 Employee &lt;-<span class="st"> </span>function(id, ...) {
   
-  print &lt;-<span class="st"> </span>function(...) {
+  print &lt;-<span class="st"> </span>function(x, ...) {
     <span class="kw">cat</span>(<span class="st">&quot;Name: &quot;</span>, name, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">ID:   &quot;</span>, id)
   }
   
@@ -144,9 +144,9 @@ kalle &lt;-<span class="st"> </span><span class="kw">Employee</span>(<span class
 <span class="kw">str</span>(kalle)</code></pre>
 <pre><code>## List of 3
 ##  $ id   : chr &quot;1&quot;
-##  $ print:function (...)  
+##  $ print:function (x, ...)  
 ##   ..- attr(*, &quot;srcref&quot;)=Class 'srcref'  atomic [1:8] 13 12 15 3 12 3 13 15
-##   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x6e95ae8&gt; 
+##   .. .. ..- attr(*, &quot;srcfile&quot;)=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x1dadd450&gt; 
 ##  $ name : chr &quot;Kalle&quot;
 ##  - attr(*, &quot;class&quot;)= chr [1:4] &quot;Employee&quot; &quot;Person&quot; &quot;Print&quot; &quot;list&quot;</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">kalle</code></pre>

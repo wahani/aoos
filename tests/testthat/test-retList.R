@@ -9,7 +9,7 @@ test_that("Rational example with retList", {
     numer <- numer / g
     denom <- denom / g
     
-    print <- function() cat(paste0(numer, "/", denom, "\n"))
+    print <- function(x, ...) cat(paste0(numer, "/", denom, "\n"))
     
     add <- function(that) {
       Rational(numer = numer * that$denom + that$numer * denom,
@@ -56,13 +56,13 @@ test_that("Rational example with retList", {
 test_that("funNames and retList", {
   
   Person <- function(name) {
-    print <- function() cat("Hi, my name is", name)
+    print <- function(x, ...) cat("Hi, my name is", name)
     retList(c("Person", "Print"))
   }
   
   Employee <- function(id, ...) {
     super <- Person(...)
-    print <- function() cat(super$print(), "and my employee id is", id)
+    print <- function(x, ...) cat(super$print(), "and my employee id is", id)
     retList("Employee", funNames(), super)
   }
   

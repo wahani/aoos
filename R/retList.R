@@ -44,7 +44,7 @@
 #'   numer <- numer / g
 #'   denom <- denom / g
 #' 
-#'   print <- function() cat(paste0(numer, "/", denom, "\n"))
+#'   print <- function(x, ...) cat(paste0(numer, "/", denom, "\n"))
 #' 
 #'   ".+" <- function(that) {
 #'     Rational(numer = numer * that$denom + that$numer * denom,

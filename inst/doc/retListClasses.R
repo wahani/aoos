@@ -17,7 +17,7 @@ library("aoos")
 
 Person <- function(name) {
   
-  print <- function() {
+  print <- function(x, ...) {
     cat(paste0("Hello, my name is ", .self$name, ".\n"))
   }
   
@@ -31,7 +31,7 @@ ann
 ## ------------------------------------------------------------------------
 Person <- function(.name) {
   
-  print <- function(...) {
+  print <- function(x, ...) {
     cat(paste0("Hello, my name is ", .self$.name, ".\n"))
   }
   
@@ -52,7 +52,7 @@ p
 ## ------------------------------------------------------------------------
 Person <- function(name) {
   
-  print <- function(...) {
+  print <- function(x, ...) {
     cat(paste0("Hello, my name is ", .self$name, ".\n"))
   }
   
@@ -62,7 +62,7 @@ Person <- function(name) {
 
 Employee <- function(id, ...) {
   
-  print <- function(...) {
+  print <- function(x, ...) {
     cat("Name: ", name, "\nID:   ", id)
   }
   

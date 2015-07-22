@@ -12,7 +12,7 @@
 #' @export
 #' @rdname Infix
 #' @seealso \link{Binary-class}, \link{retList}
-print.Print <- function(x, ...) x$print(...)
+print.Print <- function(x, ...) x$print(x, ...)
 
 #' @export
 #' @rdname Infix
