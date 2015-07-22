@@ -5,7 +5,7 @@
 #' @param class character giving the class name.
 #' @param public character with the names to include.
 #' @param super a list to be extended.
-#' @param superEnv objects in an environment which should be included into your current scope.
+#' @param superEnv environment where new methods will live in.
 #' @param mergeFun function with two arguments. Knows how to join/merge environments - \code{mergeFun(envir, superEnv)}. Default: \link{envMerge}.
 #' @param envir this is the environment you want to convert to the list. Default is the environment from which the function is called.
 #' 
@@ -16,6 +16,9 @@
 #' @examples 
 #' # To get a quick overview of the package:
 #' vignette("Introduction", "aoos")
+#' 
+#' # To get more info about retList:
+#' vignette("retListClasses", "aoos")
 #' 
 #' # A simple class with one method:
 #' Test <- function(.x) {
@@ -68,13 +71,13 @@
 #' rational <- Rational(2, 3)
 #' rational + rational
 #' rational - rational
-#' 
-retList <- function(class = NULL, public = NULL, super = NULL, superEnv = listAsEnv(super), mergeFun = envMerge, envir = parent.frame()) {
+retList <- function(class = NULL, public = NULL, super = NULL, superEnv = asEnv(super), mergeFun = envMerge, envir = parent.frame()) {
   public <- unique(c(if (is.null(public)) ls(envir) else public, names(super)))
   superClasses <- if (is.null(super)) "list" else class(super)
   if (length(superEnv) > 0) envir <- mergeFun(envir, superEnv)
   envir$.self <- envir
   out <- as.list(envir)[public]
+  attr(out, ".self") <- envir
   class(out) <- c(class, superClasses)
   out
 }
@@ -88,22 +91,14 @@ funNames <- function(envir = parent.frame()) {
   names(funInd)[funInd]
 }
 
-#' @details \code{listAsEnv} returns an evironment. If x is NULL it is empty. If x contains a function, it is the environment of that (the first) function. If x only has non-function values it converts the list to an environment.
+#' @details \code{asEnv} returns an evironment. If x is NULL it is empty. Else if x has an attribute called \code{.self} it is this attribute which is returned. If x only has non-function values it converts the list to an environment.
 #' 
 #' @param x a list 
 #' 
 #' @rdname retList
 #' @export
-listAsEnv <- function(x) {
+asEnv <- function(x) {
   if (is.null(x)) return(new.env())
-  else if (any(sapply(x, is.function))) return(getEnvironmentOfFirstFun(x))
+  else if (!is.null(attr(x, ".self"))) return(attr(x, ".self"))
   else return(list2env(x))
-}
-
-#' @details \code{getEnvironmentOfFirstFun} returns the environment of the first function in a list.
-#' 
-#' @rdname retList
-#' @export
-getEnvironmentOfFirstFun <- function(x) {
-  environment(x[sapply(x, is.function)][[1]])
 }

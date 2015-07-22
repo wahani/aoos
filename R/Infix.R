@@ -67,5 +67,5 @@ print.Print <- function(x, ...) x$print(x, ...)
 #' @export
 #' @rdname Infix
 as.environment.Infix <- function(x) {
-  getEnvironmentOfFirstFun(x)
+  asEnv(x)
 }

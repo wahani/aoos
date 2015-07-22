@@ -59,12 +59,171 @@ install_github("wahani/aoos")
 
 ## Material
 
-- [Introduction Vignette](https://wahani.github.io/aoos/vignettes/Introduction.html)
-- [aoosClasses Vignette](https://wahani.github.io/aoos/vignettes/aoosClasses.html)
-- [referenceClasses Vignette](https://wahani.github.io/aoos/vignettes/referenceClasses.html)
-- [Homepage](https://wahani.github.io/aoos)
-- [GitHub](https://github.com/wahani/aoos)
+- [Introduction Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/Introduction.html): Is an overview of the things in this package.
+- [retList](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/retListClasses.html): Is what I would recommend to use from this package.
+- [Performace Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/performance.html): If this is an issue for you.
+- [aoosClasses Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/aoosClasses.html)
+- [referenceClasses Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/referenceClasses.html)
 
 ## Posts
 
 - [Introducing v0.1.0](http://wahani.github.io/2015/01/Introducing-Another-Object-Orientation-System/)
+- [Introducing v0.2.0](http://wahani.github.io/2015/05/Introducing-Another-Object-Orientation-System-2/)
+
+## Examples:
+
+### Simple class:
+
+Names with a "." are not part of the constructed *list*.
+
+```r
+Employee <- function(.name, .salary) {
+  'Common base class for all employees'
+  
+  print <- function(x, ...) {
+    cat("Name  : ", .self$.name, "\nSalary: ", .self$.salary)
+  }
+  
+  getName <- function() .name
+  getSalary <- function() .self$.salary
+  
+  retList(c("Employee", "Print"))
+  
+}
+
+peter <- Employee("Peter", 5)
+peter
+```
+
+```
+## Name  :  Peter 
+## Salary:  5
+```
+
+```r
+peter$getName()
+```
+
+```
+## [1] "Peter"
+```
+
+```r
+peter$getSalary()
+```
+
+```
+## [1] 5
+```
+
+### Inheritance:
+
+
+```r
+Manager <- function(.name, .salary, .bonus) {
+  'Extending the Employee class'
+  
+  bonus <- function(x) {
+    if (!missing(x)) .self$.bonus <- x
+    .self$.bonus
+  }
+  
+  print <- function(x, ...) {
+    cat("Name  : ", .self$.name, "\nSalary: ", .self$.salary, 
+        "\nBonus:", .self$.bonus)
+  }
+  
+  retList("Manager", super = Employee(.name, .salary))
+  
+}
+
+julia <- Manager("Julia", 5, 5 * 1e6)
+julia
+```
+
+```
+## Name  :  Julia 
+## Salary:  5 
+## Bonus: 5e+06
+```
+
+```r
+julia$getSalary()
+```
+
+```
+## [1] 5
+```
+
+```r
+julia$bonus(10)
+```
+
+```
+## [1] 10
+```
+
+```r
+julia
+```
+
+```
+## Name  :  Julia 
+## Salary:  5 
+## Bonus: 10
+```
+
+### More features
+
+This is something which is possible in Python and I was just curious if I can map it into `R`. It's okay:
+
+
+```r
+initPerson <- function() {
+  
+  .superEnv <- environment()
+  .count <- 0
+  
+  getCount <- function() {
+    cat("There are", .self$.count, "people out there.")
+  }
+  
+  new <- function(name) {
+    # happens on init
+    .count <<- .count + 1
+    
+    print <- function(x, ...) cat("My name is", .self$name)
+    
+    # Every instance knows about .count:
+    retList(c("Person", "Print"), superEnv = new.env(parent = .superEnv))
+  }
+  
+  retList("ConstructorPerson")
+  
+}
+
+Person <- initPerson()
+Person$getCount()
+```
+
+```
+## There are 0 people out there.
+```
+
+```r
+joe <- Person$new("Joe")
+joe
+```
+
+```
+## My name is Joe
+```
+
+```r
+sandra <- Person$new("Sandra")
+Person$getCount()
+```
+
+```
+## There are 2 people out there.
+```
