@@ -193,6 +193,7 @@ initPerson <- function() {
     .count <<- .count + 1
     
     print <- function(x, ...) cat("My name is", .self$name)
+    countSiblings <- function() .count
     
     # Every instance knows about .count:
     retList(c("Person", "Print"), superEnv = new.env(parent = .superEnv))
@@ -226,4 +227,12 @@ Person$getCount()
 
 ```
 ## There are 2 people out there.
+```
+
+```r
+sandra$countSiblings()
+```
+
+```
+## [1] 2
 ```
