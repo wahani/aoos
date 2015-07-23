@@ -71,14 +71,14 @@
 #' rational <- Rational(2, 3)
 #' rational + rational
 #' rational - rational
-retList <- function(class = NULL, public = NULL, super = NULL, superEnv = asEnv(super), mergeFun = envMerge, envir = parent.frame()) {
-  public <- unique(c(if (is.null(public)) ls(envir) else public, names(super)))
-  superClasses <- if (is.null(super)) "list" else class(super)
-  if (length(superEnv) > 0) envir <- mergeFun(envir, superEnv)
+retList <- function(class = NULL, public = ls(envir), super = list(), superEnv = asEnv(super), mergeFun = envMerge, envir = parent.frame()) {
+  public <- unique(c(public, names(super)))
+  classes <- c(class, class(super))
+  if (!is.null(superEnv)) envir <- mergeFun(envir, superEnv)
   envir$.self <- envir
   out <- as.list(envir)[public]
   attr(out, ".self") <- envir
-  class(out) <- c(class, superClasses)
+  class(out) <- classes
   out
 }
 
@@ -91,14 +91,17 @@ funNames <- function(envir = parent.frame()) {
   names(funInd)[funInd]
 }
 
-#' @details \code{asEnv} returns an evironment. If x is NULL it is empty. Else if x has an attribute called \code{.self} it is this attribute which is returned. If x only has non-function values it converts the list to an environment.
+#' @details \code{asEnv} trys to find an environment for x. If x is NULL or an empty list, the function returns \code{NULL}. (Else) If x has an attribute called \code{.self} it is this attribute which is returned. (Else) If x is a list it is converted to an environment.
 #' 
 #' @param x a list 
 #' 
 #' @rdname retList
 #' @export
 asEnv <- function(x) {
-  if (is.null(x)) return(new.env())
-  else if (!is.null(attr(x, ".self"))) return(attr(x, ".self"))
-  else return(list2env(x))
+  if (is.null(x)) return(x)
+  else if (is.list(x) && length(x) == 0) return(NULL)
+  else if (is.environment(attr(x, ".self"))) return(attr(x, ".self"))
+  else if (is.list(x)) return(list2env(x))
+  else if (is.environment(x)) return(x)
+  else stop("Don't know what to do with x. Expected types are list, environment or NULL.")
 }

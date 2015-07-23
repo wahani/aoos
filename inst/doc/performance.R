@@ -30,13 +30,13 @@ RList <- function(x = 1) {
   out
 }
 
-RLA <- function(x = 1) {
+RL <- function(x = 1) {
   getx <- function() .self$x
   inc <- function(n = 1) .self$x <- .self$x + n
-  retList("RLA", c("x", "getx", "inc"))
+  retList("RL", c("x", "getx", "inc"))
 }
 
-AOOS <- defineClass("AOOS", {
+DC <- defineClass("DC", {
   getx <- function() .self$x
   inc <- function(n = 1) .self$x <- .self$x + n
   init <- function(x = 1) .self$x <- x
@@ -45,17 +45,17 @@ AOOS <- defineClass("AOOS", {
 # And some more definitions for inheritance
 R6Child <- R6Class("R6Child", inherit = R6)
 RCChild <- setRefClass("RCChild", contains = "RC")
-RLAChild <- function(...) {
-  retList("RLAChild", super = RLA(...))
+RLChild <- function(...) {
+  retList("RLChild", super = RL(...))
 }
-AOOSChild <- defineClass("AOOSChild", contains = "AOOS", {})
+DCChild <- defineClass("DCChild", contains = "DC", {})
 
 ## ------------------------------------------------------------------------
 benchmark1 <- microbenchmark(
-  AOOS(),
+  DC(),
   RC$new(),
   R6$new(),
-  RLA(),
+  RL(),
   RList()
 ) 
 
@@ -63,10 +63,10 @@ print(benchmark1, digits = 2)
 
 ## ------------------------------------------------------------------------
 benchmark2 <- microbenchmark(
-  AOOSChild(),
+  DCChild(),
   RCChild$new(),
   R6Child$new(),
-  RLAChild()
+  RLChild()
 )
 
 print(benchmark2, digits = 2)

@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-22" />
+<meta name="date" content="2015-07-23" />
 
 <title>Performance benchmarks</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Performance benchmarks</h1>
-<h4 class="date"><em>2015-07-22</em></h4>
+<h4 class="date"><em>2015-07-23</em></h4>
 </div>
 
 
@@ -90,13 +90,13 @@ RList &lt;-<span class="st"> </span>function(<span class="dt">x =</span> <span c
   out
 }
 
-RLA &lt;-<span class="st"> </span>function(<span class="dt">x =</span> <span class="dv">1</span>) {
+RL &lt;-<span class="st"> </span>function(<span class="dt">x =</span> <span class="dv">1</span>) {
   getx &lt;-<span class="st"> </span>function() .self$x
   inc &lt;-<span class="st"> </span>function(<span class="dt">n =</span> <span class="dv">1</span>) .self$x &lt;-<span class="st"> </span>.self$x +<span class="st"> </span>n
-  <span class="kw">retList</span>(<span class="st">&quot;RLA&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;getx&quot;</span>, <span class="st">&quot;inc&quot;</span>))
+  <span class="kw">retList</span>(<span class="st">&quot;RL&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;getx&quot;</span>, <span class="st">&quot;inc&quot;</span>))
 }
 
-AOOS &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span class="st">&quot;AOOS&quot;</span>, {
+DC &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span class="st">&quot;DC&quot;</span>, {
   getx &lt;-<span class="st"> </span>function() .self$x
   inc &lt;-<span class="st"> </span>function(<span class="dt">n =</span> <span class="dv">1</span>) .self$x &lt;-<span class="st"> </span>.self$x +<span class="st"> </span>n
   init &lt;-<span class="st"> </span>function(<span class="dt">x =</span> <span class="dv">1</span>) .self$x &lt;-<span class="st"> </span>x
@@ -105,43 +105,43 @@ AOOS &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span cla
 <span class="co"># And some more definitions for inheritance</span>
 R6Child &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;R6Child&quot;</span>, <span class="dt">inherit =</span> R6)
 RCChild &lt;-<span class="st"> </span><span class="kw">setRefClass</span>(<span class="st">&quot;RCChild&quot;</span>, <span class="dt">contains =</span> <span class="st">&quot;RC&quot;</span>)
-RLAChild &lt;-<span class="st"> </span>function(...) {
-  <span class="kw">retList</span>(<span class="st">&quot;RLAChild&quot;</span>, <span class="dt">super =</span> <span class="kw">RLA</span>(...))
+RLChild &lt;-<span class="st"> </span>function(...) {
+  <span class="kw">retList</span>(<span class="st">&quot;RLChild&quot;</span>, <span class="dt">super =</span> <span class="kw">RL</span>(...))
 }
-AOOSChild &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span class="st">&quot;AOOSChild&quot;</span>, <span class="dt">contains =</span> <span class="st">&quot;AOOS&quot;</span>, {})</code></pre>
+DCChild &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span class="st">&quot;DCChild&quot;</span>, <span class="dt">contains =</span> <span class="st">&quot;DC&quot;</span>, {})</code></pre>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
 <pre class="sourceCode r"><code class="sourceCode r">benchmark1 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(
-  <span class="kw">AOOS</span>(),
+  <span class="kw">DC</span>(),
   RC$<span class="kw">new</span>(),
   R6$<span class="kw">new</span>(),
-  <span class="kw">RLA</span>(),
+  <span class="kw">RL</span>(),
   <span class="kw">RList</span>()
 ) 
 
 <span class="kw">print</span>(benchmark1, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>## Unit: microseconds
-##      expr    min     lq   mean median     uq  max neval cld
-##    AOOS() 1512.0 1661.3 1867.2 1744.4 1911.8 8819   100   c
-##  RC$new()  272.0  307.4  395.1  344.2  373.0 3372   100  b 
-##  R6$new()   54.7   68.6   82.9   78.7   96.8  153   100 a  
-##     RLA()   20.4   24.6   34.4   32.5   41.3   87   100 a  
-##   RList()    2.6    3.7    5.6    5.5    6.8   14   100 a</code></pre>
+##      expr    min     lq   mean median     uq   max neval cld
+##      DC() 1397.8 1427.5 1715.3 1465.0 1733.8  9348   100   b
+##  RC$new()  275.1  299.2  362.6  322.9  365.6  2299   100  a 
+##  R6$new()   53.9   67.5   84.5   73.9   88.1   445   100  a 
+##      RL()   16.2   21.9  267.0   25.3   27.6 24010   100  a 
+##   RList()    2.4    3.9    5.7    5.5    6.5    21   100  a</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">benchmark2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(
-  <span class="kw">AOOSChild</span>(),
+  <span class="kw">DCChild</span>(),
   RCChild$<span class="kw">new</span>(),
   R6Child$<span class="kw">new</span>(),
-  <span class="kw">RLAChild</span>()
+  <span class="kw">RLChild</span>()
 )
 
 <span class="kw">print</span>(benchmark2, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>## Unit: microseconds
 ##           expr  min   lq mean median   uq   max neval cld
-##    AOOSChild() 3176 3279 4031   3403 3625 41363   100   b
-##  RCChild$new()  273  319  386    341  388  1549   100  a 
-##  R6Child$new()  211  241  272    269  293   464   100  a 
-##     RLAChild()   79   95  113    105  119   487   100  a</code></pre>
+##      DCChild() 2917 3040 3628   3118 3340 28482   100   b
+##  RCChild$new()  283  311  386    343  384  2901   100  a 
+##  R6Child$new()  218  247  275    273  302   377   100  a 
+##      RLChild()   68   81   97     93  105   555   100  a</code></pre>
 </div>
 
 

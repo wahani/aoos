@@ -6,7 +6,7 @@
 \alias{retList}
 \title{Return current environment as list}
 \usage{
-retList(class = NULL, public = NULL, super = NULL,
+retList(class = NULL, public = ls(envir), super = list(),
   superEnv = asEnv(super), mergeFun = envMerge, envir = parent.frame())
 
 funNames(envir = parent.frame())
@@ -34,7 +34,7 @@ This functions can be used to construct a list with class attribute and merged w
 \details{
 \code{funNames} returns the names of functions in the environment from which it is called.
 
-\code{asEnv} returns an evironment. If x is NULL it is empty. Else if x has an attribute called \code{.self} it is this attribute which is returned. If x only has non-function values it converts the list to an environment.
+\code{asEnv} trys to find an environment for x. If x is NULL or an empty list, the function returns \code{NULL}. (Else) If x has an attribute called \code{.self} it is this attribute which is returned. (Else) If x is a list it is converted to an environment.
 }
 \examples{
 # To get a quick overview of the package:
