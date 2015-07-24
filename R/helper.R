@@ -26,19 +26,22 @@ envCopy <- function(from, to) {
 #' @export
 envMerge <- function(x, with) {
   
-  setEnvironmentOfLocalFuns <- function(x, with) {
-    functionNames <- funNames(x)
+  setEnvironmentOfLocalFuns <- function(e, with, x) {
+    functionNames <- funNames(e)
     for (n in functionNames) {
-      fun <- get(n, envir = x)
+      fun <- get(n, envir = e)
       if (identical(environment(fun), x)) {
         environment(fun) <- with
-        assign(n, fun, envir = x)
+        assign(n, fun, envir = e)
       }
     }
   }
   
-  setEnvironmentOfLocalFuns(x, with)
-  envCopy(x, with)
+  # Make a new env to preserve x:
+  e <- new.env()
+  envCopy(x, e)
+  setEnvironmentOfLocalFuns(e, with, x)
+  envCopy(e, with)
   with
   
 }

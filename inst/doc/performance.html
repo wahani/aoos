@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-23" />
+<meta name="date" content="2015-07-24" />
 
 <title>Performance benchmarks</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Performance benchmarks</h1>
-<h4 class="date"><em>2015-07-23</em></h4>
+<h4 class="date"><em>2015-07-24</em></h4>
 </div>
 
 
@@ -123,11 +123,11 @@ DCChild &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span 
 <span class="kw">print</span>(benchmark1, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>## Unit: microseconds
 ##      expr    min     lq   mean median     uq   max neval cld
-##      DC() 1397.8 1427.5 1715.3 1465.0 1733.8  9348   100   b
-##  RC$new()  275.1  299.2  362.6  322.9  365.6  2299   100  a 
-##  R6$new()   53.9   67.5   84.5   73.9   88.1   445   100  a 
-##      RL()   16.2   21.9  267.0   25.3   27.6 24010   100  a 
-##   RList()    2.4    3.9    5.7    5.5    6.5    21   100  a</code></pre>
+##      DC() 1428.3 1475.8 1904.0 1567.3 1734.1 19398   100   c
+##  RC$new()  286.8  307.0  386.2  327.6  347.3  2953   100  b 
+##  R6$new()   54.9   67.5   82.0   74.8   86.7   367   100 ab 
+##      RL()   16.1   21.1   50.1   25.2   27.7  2474   100 a  
+##   RList()    2.8    4.3    5.6    5.6    6.2    20   100 a</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">benchmark2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(
   <span class="kw">DCChild</span>(),
   RCChild$<span class="kw">new</span>(),
@@ -138,10 +138,10 @@ DCChild &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span 
 <span class="kw">print</span>(benchmark2, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>## Unit: microseconds
 ##           expr  min   lq mean median   uq   max neval cld
-##      DCChild() 2917 3040 3628   3118 3340 28482   100   b
-##  RCChild$new()  283  311  386    343  384  2901   100  a 
-##  R6Child$new()  218  247  275    273  302   377   100  a 
-##      RLChild()   68   81   97     93  105   555   100  a</code></pre>
+##      DCChild() 2918 3007 3424   3072 3144 20922   100   b
+##  RCChild$new()  279  319  411    339  372  3126   100  a 
+##  R6Child$new()  213  245  269    266  289   357   100  a 
+##      RLChild()   82   99  115    109  118   766   100  a</code></pre>
 </div>
 
 
