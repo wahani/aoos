@@ -37,7 +37,7 @@ public(x = NULL, validity = function(x) TRUE)
 \item{validity}{function to check the validity of an object}
 }
 \description{
-This is an experimental implementation of reference classes. Use \code{\link{Class}} or \code{\link{retList}} instead. \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}.
+This is an experimental implementation of reference classes. Use \code{\link{defineRefClass}} or \code{\link{retList}} instead. \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}.
 }
 \details{
 \code{defineClass} creates a S4-Class which can be used for standard S4 method dispatch. It will also set the method 'initialize' which need not to be changed. If you want to have some operations carried out on initialization use a function definition named \code{init} as part of \code{expr}. The return value from \code{defineClass} is the constructor function. It has the argument \code{...} which will be passed to \code{init}.

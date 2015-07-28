@@ -24,9 +24,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.2.0 
-## Development Version: 0.2.5 
+## Development Version: 0.2.6 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.2.6:
+## 
+##     o   Renaming Class -> defineRefClass
 ## 
 ## Changes in version 0.2.5:
 ## 
@@ -74,7 +78,8 @@ install_github("wahani/aoos")
 
 ### Simple class:
 
-Names with a "." are not part of the constructed *list*.
+Basically you define constructor functions. There is no *formal* class definition. The function body will define what members an object will have. You quit the function defining the return value using `retList` which is a *generic* constructor function. By default it will look at the environment from which it is called and convert that environment into a list. That list is returned and is an object. Names with a "." are not part of the constructed *list* (by default).
+
 
 ```r
 Employee <- function(.name, .salary) {
@@ -116,7 +121,31 @@ peter$getSalary()
 ## [1] 5
 ```
 
+Here every instance is of class *Employee* and also inherits from class *Print*. This enables us to define the print method in the functions body and is equivalent to invoking the print method directly:
+
+
+```r
+peter
+```
+
+```
+## Name  :  Peter 
+## Salary:  5
+```
+
+```r
+peter$print()
+```
+
+```
+## Name  :  Peter 
+## Salary:  5
+```
+
+
 ### Inheritance:
+
+You can inherit methods and fields from a super class, or rather an instance, because there is no *formal* calls definition. Methods and fields can be replaced in the child, all member from the parent are also available for the methods of the child.
 
 
 ```r
@@ -173,29 +202,57 @@ julia
 ## Bonus: 10
 ```
 
-### More features
+### More 
 
-This is something which is possible in Python and I was just curious if I can map it into `R`. It's okay:
+Something you have to keep in mind is that returned objects are of class *list*. If you want to have a public field you have to define get and set methods, because you will see a copy of those fields in the object, they behave more like an attribute.
 
 
 ```r
-initPerson <- function() {
+ObjectWithField <- function(name) {
+  getName <- function() {
+    name
+  }
+  retList()
+} 
+
+obj <- ObjectWithField("Alexander")
+obj$name <- "Noah"
+obj$getName()
+```
+
+```
+## [1] "Alexander"
+```
+
+```r
+obj$name
+```
+
+```
+## [1] "Noah"
+```
+
+After all this framework is very flexible (as is `R`) and we can do more abstract representations of *things*. In this example I want to create a constructor object which also keeps track of how many instances exist, or rather have been created so far. Also every instance should know how many siblings it has, or in other words all instances share the reference to a field accessible by all of them.
+
+
+```r
+initFamily <- function(.familyName) {
   
   .superEnv <- environment()
   .count <- 0
   
   getCount <- function() {
-    cat("There are", .self$.count, "people out there.")
+    cat("There are", .self$.count, paste0(.familyName, "s"), "out there.")
   }
   
-  new <- function(name) {
+  new <- function(.name) {
     # happens on init
     .count <<- .count + 1
     
-    print <- function(x, ...) cat("My name is", .self$name)
-    countSiblings <- function() .count
+    print <- function(x, ...) cat("My name is", .self$.name, .familyName, "!")
+    countSiblings <- function() cat("I have", .count, "siblings!")
     
-    # Every instance knows about .count:
+    # So every instance knows about .count and .familyName:
     retList(c("Person", "Print"), superEnv = new.env(parent = .superEnv))
   }
   
@@ -203,30 +260,23 @@ initPerson <- function() {
   
 }
 
-Person <- initPerson()
-Person$getCount()
+schmidt <- initFamily("Schmidt")
+schmidt$getCount()
 ```
 
 ```
-## There are 0 people out there.
-```
-
-```r
-joe <- Person$new("Joe")
-joe
-```
-
-```
-## My name is Joe
+## There are 0 Schmidts out there.
 ```
 
 ```r
-sandra <- Person$new("Sandra")
-Person$getCount()
+lisa <- schmidt$new("Lisa")
+
+sandra <- schmidt$new("Sandra")
+schmidt$getCount()
 ```
 
 ```
-## There are 2 people out there.
+## There are 2 Schmidts out there.
 ```
 
 ```r
@@ -234,5 +284,21 @@ sandra$countSiblings()
 ```
 
 ```
-## [1] 2
+## I have 2 siblings!
+```
+
+```r
+sandra
+```
+
+```
+## My name is Sandra Schmidt !
+```
+
+```r
+lisa
+```
+
+```
+## My name is Lisa Schmidt !
 ```

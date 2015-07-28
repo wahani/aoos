@@ -1,6 +1,6 @@
 #' Define a new class
 #' 
-#' This is an experimental implementation of reference classes. Use \code{\link{Class}} or \code{\link{retList}} instead. \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}.
+#' This is an experimental implementation of reference classes. Use \code{\link{defineRefClass}} or \code{\link{retList}} instead. \code{defineClass} has side effects. The constructor is the return value of \code{defineClass}.
 #'  
 #' @param name character name of the class
 #' @param expr expression

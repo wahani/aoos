@@ -34,7 +34,7 @@
 This is a virtual class to be contained in other class definitions. It overrides the default subset functions \code{$} and \code{[[} such that private member of a class can not be accessed. Private is every object which has a name with a leading "." (\code{grepl("^\\\\.", name)}). After this check the standard method for class 'envRefClass' is called or an error is reported.
 }
 \examples{
-ClassWithPrivateField <- Class({
+ClassWithPrivateField <- defineRefClass({
   Class <- "ClassWithPrivateField"
   contains <- "Private"
 
@@ -51,6 +51,6 @@ stopifnot(inherits(try(test[[".p"]]), "try-error"))
 stopifnot(inherits(try(test[[".p"]] <- 2), "try-error"))
 }
 \seealso{
-\link{Class}
+\link{defineRefClass}
 }
 

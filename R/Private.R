@@ -2,11 +2,11 @@
 #' 
 #' This is a virtual class to be contained in other class definitions. It overrides the default subset functions \code{$} and \code{[[} such that private member of a class can not be accessed. Private is every object which has a name with a leading "." (\code{grepl("^\\\\.", name)}). After this check the standard method for class 'envRefClass' is called or an error is reported.
 #' 
-#' @seealso \link{Class}
+#' @seealso \link{defineRefClass}
 #' @export
 #' @rdname Private
 #' @examples
-#' ClassWithPrivateField <- Class({
+#' ClassWithPrivateField <- defineRefClass({
 #'   Class <- "ClassWithPrivateField"
 #'   contains <- "Private"
 #'   

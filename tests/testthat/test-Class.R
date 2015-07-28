@@ -1,9 +1,9 @@
-context("Class")
+context("defineRefClass")
 
 test_that("Class wrapper", {
   
   suppressWarnings(
-    Test <- Class({
+    Test <- defineRefClass({
       
       Class <- "Test"
       
@@ -30,7 +30,7 @@ test_that("Class wrapper", {
   Character <- setClass("Character", contains = "character")
   
   suppressWarnings({
-    SubTest <- Class({
+    SubTest <- defineRefClass({
       
       Class <- "SubTest"
       contains <- "Test"
@@ -66,7 +66,7 @@ test_that("Class wrapper", {
 test_that("Private members for refClasses", {
   
   suppressWarnings({
-    Test <- Class({
+    Test <- defineRefClass({
       Class <- "Test"
       contains <- "Private"
       
@@ -88,8 +88,6 @@ test_that("Private members for refClasses", {
   
   expect_equal(test$setP(2), 2)
   expect_equal(test$getP(), 2)
-  
-  # Disabled:
   expect_error(test[[".p"]])
   expect_error(test[[".p"]] <- 2)
   
@@ -98,7 +96,7 @@ test_that("Private members for refClasses", {
 test_that("refClass with empty fields", {
   
   suppressWarnings({
-    Test <- Class({
+    Test <- defineRefClass({
       Class <- "Test3"  
     })
   })

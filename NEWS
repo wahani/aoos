@@ -1,3 +1,6 @@
+Version 0.2.6
+- Renaming Class -> defineRefClass
+
 Version 0.2.5
 - retList: renamed argument 'exports' to 'public'.
 - Possible to define encapsulated unary operators.

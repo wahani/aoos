@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-24" />
+<meta name="date" content="2015-07-28" />
 
 <title>referenceClasses</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">referenceClasses</h1>
-<h4 class="date"><em>2015-07-24</em></h4>
+<h4 class="date"><em>2015-07-28</em></h4>
 </div>
 
 
@@ -61,7 +61,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>To the best of my knowledge using <code>Class</code> instead of <code>setRefClass</code> only changes the appearance, all features are preserved and the outcome is identical to using <code>setRefClass</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(aoos)
 
-Person &lt;-<span class="st"> </span><span class="kw">Class</span>({
+Person &lt;-<span class="st"> </span><span class="kw">defineRefClass</span>({
   Class &lt;-<span class="st"> &quot;person&quot;</span> <span class="co"># this is the argument 'Class' in setRefClass</span>
   
   personName &lt;-<span class="st"> &quot;character&quot;</span> <span class="co"># this is a field of class 'character'</span>
@@ -69,13 +69,13 @@ Person &lt;-<span class="st"> </span><span class="kw">Class</span>({
   initialize &lt;-<span class="st"> </span>function(name) {
     .self$personName &lt;-<span class="st"> </span>name
     .self$<span class="kw">greet</span>()
-    }
+  }
   
   greet &lt;-<span class="st"> </span>function() {
     <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, .self$personName, <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>))
-    }
+  }
   
-  })
+})
 
 ann &lt;-<span class="st"> </span><span class="kw">Person</span>(<span class="st">&quot;Ann&quot;</span>)</code></pre>
 <pre><code>## Hello, my name is Ann.</code></pre>
@@ -89,7 +89,7 @@ ann &lt;-<span class="st"> </span><span class="kw">Person</span>(<span class="st
 ann$<span class="kw">greet</span>()</code></pre>
 <pre><code>## Hello, my name is not Ann.</code></pre>
 <p>Independently of the usage of <code>Class</code> you can use the class <code>Private</code> to add a notion of privacy to your reference class. This <em>feature</em> will make all fields with a leading dot inaccessible with the standard <code>$</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">PrivatePerson &lt;-<span class="st"> </span><span class="kw">Class</span>({
+<pre class="sourceCode r"><code class="sourceCode r">PrivatePerson &lt;-<span class="st"> </span><span class="kw">defineRefClass</span>({
   Class &lt;-<span class="st"> &quot;PrivatePerson&quot;</span>
   contains &lt;-<span class="st"> &quot;Private&quot;</span> <span class="co"># also just passed as argument to setRefClass</span>
   
@@ -98,13 +98,13 @@ ann$<span class="kw">greet</span>()</code></pre>
   initialize &lt;-<span class="st"> </span>function(name) {
     .self$.personName &lt;-<span class="st"> </span>name
     .self$<span class="kw">greet</span>()
-    }
+  }
   
   greet &lt;-<span class="st"> </span>function() {
     <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, .self$.personName, <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>))
-    }
+  }
   
-  })
+})
 
 ann &lt;-<span class="st"> </span><span class="kw">PrivatePerson</span>(<span class="st">&quot;Ann&quot;</span>)</code></pre>
 <pre><code>## Hello, my name is Ann.</code></pre>
@@ -126,12 +126,12 @@ ann$<span class="kw">greet</span>()</code></pre>
     <span class="dt">initialize =</span> function(name) {
       .self$.personName &lt;-<span class="st"> </span>name
       .self$<span class="kw">greet</span>()
-      },
+    },
     <span class="dt">greet =</span> function() {
       <span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="st">&quot;Hello, my name is &quot;</span>, .self$.personName, <span class="st">&quot;.</span><span class="ch">\n</span><span class="st">&quot;</span>))
-      }
-    )
+    }
   )
+)
 
 ann &lt;-<span class="st"> </span><span class="kw">PrivatePerson</span>(<span class="st">&quot;Ann&quot;</span>)</code></pre>
 <pre><code>## Hello, my name is Ann.</code></pre>

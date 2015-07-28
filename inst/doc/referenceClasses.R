@@ -1,7 +1,7 @@
 ## ------------------------------------------------------------------------
 library(aoos)
 
-Person <- Class({
+Person <- defineRefClass({
   Class <- "person" # this is the argument 'Class' in setRefClass
   
   personName <- "character" # this is a field of class 'character'
@@ -9,13 +9,13 @@ Person <- Class({
   initialize <- function(name) {
     .self$personName <- name
     .self$greet()
-    }
+  }
   
   greet <- function() {
     cat(paste0("Hello, my name is ", .self$personName, ".\n"))
-    }
+  }
   
-  })
+})
 
 ann <- Person("Ann")
 ann
@@ -24,7 +24,7 @@ ann$personName <- "not Ann"
 ann$greet()
 
 ## ------------------------------------------------------------------------
-PrivatePerson <- Class({
+PrivatePerson <- defineRefClass({
   Class <- "PrivatePerson"
   contains <- "Private" # also just passed as argument to setRefClass
   
@@ -33,13 +33,13 @@ PrivatePerson <- Class({
   initialize <- function(name) {
     .self$.personName <- name
     .self$greet()
-    }
+  }
   
   greet <- function() {
     cat(paste0("Hello, my name is ", .self$.personName, ".\n"))
-    }
+  }
   
-  })
+})
 
 ann <- PrivatePerson("Ann")
 ann
@@ -57,12 +57,12 @@ PrivatePerson <- setRefClass(
     initialize = function(name) {
       .self$.personName <- name
       .self$greet()
-      },
+    },
     greet = function() {
       cat(paste0("Hello, my name is ", .self$.personName, ".\n"))
-      }
-    )
+    }
   )
+)
 
 ann <- PrivatePerson("Ann")
 ann

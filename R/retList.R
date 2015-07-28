@@ -20,6 +20,9 @@
 #' # To get more info about retList:
 #' vignette("retListClasses", "aoos")
 #' 
+#' # To get some infos in performance:
+#' vignette("performance", "aoos")
+#' 
 #' # A simple class with one method:
 #' Test <- function(.x) {
 #'   getX <- function() .x

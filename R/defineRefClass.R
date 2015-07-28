@@ -12,7 +12,7 @@
 #' }
 #'
 #' # Minimal example:
-#' Test <- Class({
+#' Test <- defineRefClass({
 #'   Class <- "Test" # this is passed as argument to setRefClass
 #'   x <- "character" # all objects which are not functions are fields
 #'   do <- function() cat("Yes, Yes, I'm working...") # a method
@@ -23,7 +23,7 @@
 #' test$do()
 #'
 #' # Inheritance and privacy:
-#' pTest <- Class({
+#' pTest <- defineRefClass({
 #'   Class <- "pTest"
 #'   # Privacy is solved by inheriting from a class 'Private' which redefines
 #'   # the methods for access.
@@ -45,7 +45,7 @@
 #' # A notion of privacy:
 #' stopifnot(inherits(try(instance$.y), "try-error"))
 #' stopifnot(inherits(try(instance$.y <- 2), "try-error"))
-Class <- function(expr) {
+defineRefClass <- function(expr) {
 
   mc <- match.call()
   e <- new.env()
