@@ -5,7 +5,6 @@ Version: 0.2.6
 Date: 2015-04-21
 Authors@R: person("Sebastian", "Warnholz", role = c("aut", "cre"),
                   email = "wahani@gmail.com")
-URL: https://wahani.github.com/aoos
 BugReports: https://github.com/wahani/aoos/issues
 Description: Another implementation of object-orientation in R. Has an 
   interface to S4 referenceClasses and two alternative new implementations. One 
