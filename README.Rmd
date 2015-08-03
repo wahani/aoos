@@ -41,8 +41,9 @@ wahaniMiscs::getLocalPackageUpdates("aoos")
 Basically you define constructor functions. There is no *formal* class definition. The function body will define what members an object will have. You quit the function defining the return value using `retList` which is a *generic* constructor function. By default it will look at the environment from which it is called and convert that environment into a list. That list is returned and is an object. Names with a "." are not part of the constructed *list* (by default).
 
 ```{r}
+library("aoos")
 Employee <- function(.name, .salary) {
-  'Common base class for all employees'
+  "Common base class for all employees"
   
   print <- function(x, ...) {
     cat("Name  : ", .self$.name, "\nSalary: ", .self$.salary)
@@ -75,7 +76,7 @@ You can inherit methods and fields from a super class, or rather an instance, be
 
 ```{r}
 Manager <- function(.name, .salary, .bonus) {
-  'Extending the Employee class'
+  "Extending the Employee class"
   
   bonus <- function(x) {
     if (!missing(x)) .self$.bonus <- x
@@ -153,3 +154,5 @@ sandra$countSiblings()
 sandra
 lisa
 ```
+
+

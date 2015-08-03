@@ -102,9 +102,9 @@ funNames <- function(envir = parent.frame()) {
 #' @export
 asEnv <- function(x) {
   if (is.null(x)) return(x)
-  else if (is.list(x) && length(x) == 0) return(NULL)
   else if (is.environment(attr(x, ".self"))) return(attr(x, ".self"))
-  else if (is.list(x)) return(list2env(x))
   else if (is.environment(x)) return(x)
+  else if (is.list(x) && length(x) == 0) return(NULL)
+  else if (is.list(x)) return(list2env(x))
   else stop("Don't know what to do with x. Expected types are list, environment or NULL.")
 }
