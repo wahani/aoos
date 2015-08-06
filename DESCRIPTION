@@ -14,6 +14,9 @@ Description: Another implementation of object-orientation in R. Has an
 Depends:
     methods,
     R(>= 3.2.0)
+Imports:
+    stringr,
+    magrittr
 License: GPL-3 | file LICENSE
 Suggests:
     testthat,
