@@ -2,7 +2,6 @@
 #' 
 #' This is an environment with some methods. Every class defined by \code{defineClass} will inherit from aoos. Summary will show a list of public and private members with approximated memory usage.
 #' 
-#' @import methods
 #' @exportClass aoos
 #' @rdname aoos
 setClass("aoos", contains = c("environment", "VIRTUAL"))
