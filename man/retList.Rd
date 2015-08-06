@@ -4,7 +4,7 @@
 \alias{asEnv}
 \alias{funNames}
 \alias{retList}
-\title{Return current environment as list}
+\title{Generic constructor function}
 \usage{
 retList(class = NULL, public = ls(envir), super = list(),
   superEnv = asEnv(super), mergeFun = envMerge, envir = parent.frame())
@@ -18,18 +18,18 @@ asEnv(x)
 
 \item{public}{character with the names to include.}
 
-\item{super}{a list to be extended.}
+\item{super}{a list/object to be extended.}
 
 \item{superEnv}{environment where new methods will live in.}
 
 \item{mergeFun}{function with two arguments. Knows how to join/merge environments - \code{mergeFun(envir, superEnv)}. Default: \link{envMerge}.}
 
-\item{envir}{this is the environment you want to convert to the list. Default is the environment from which the function is called.}
+\item{envir}{this is the environment you want to convert into the list. Default is the environment from which the function is called.}
 
 \item{x}{a list}
 }
 \description{
-This functions can be used to construct a list with class attribute and merged with another list called super. What merge means can be specified with the mergeFun argument. It is intended to construct the return value (S3 class inheriting from 'list') of a function.
+This functions can be used to construct a list with class attribute and merged with another list called super. The constructed list will contain (by default) all visible objects from the environment from which \code{retList} is called.
 }
 \details{
 \code{funNames} returns the names of functions in the environment from which it is called.
@@ -40,10 +40,10 @@ This functions can be used to construct a list with class attribute and merged w
 # To get a quick overview of the package:
 vignette("Introduction", "aoos")
 
-# To get more info about retList:
+# To get more infos about retList:
 vignette("retListClasses", "aoos")
 
-# To get some infos in performance:
+# To get some infos about performance:
 vignette("performance", "aoos")
 
 # A simple class with one method:

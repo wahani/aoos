@@ -8,9 +8,9 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-This package implements several ideas and utilities for object orientation inside the R language. The need for this implementation was not to implement features like encapsulation or other concepts associated with object orientation in R as they are readily available in other packages (methods, R6, R.oo, proto). However, in this package class definitions are empowered by non standard evaluation which contributes to the readability and thus maintainability of your source code which is especially important in larger projects. 
+This package implements several ideas and utilities for object orientated programming inside the R language. The need for this implementation was not to implement new features or concepts associated with object orientation in R because they are readily available in other packages (methods, R6, R.oo, proto). Instead this package implements ideas how to use object orientation and still have readable and thus maintainable code.
 
-The original implementation was the function `defineClass` and an introduction to this implementation can be found here:
+The original implementation (iteration 1) was the function `defineClass` and an introduction to this implementation can be found here:
 
 ```{r, eval=FALSE}
 vignette("aoosClasses", "aoos")
@@ -18,14 +18,16 @@ vignette("aoosClasses", "aoos")
 
 `defineClass` is an own implementation of object orientation, like `setRefClass` it uses S4, and can be considered experimental, although it has been reliable in my own work. 
 
-The function `Class` does not implement a new logic of object orientation but fixes my major critique of `setRefClass`: defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression. Very much like in `defineClass` the *evaluated expression* is then passed as argument to `setRefClass`. Also there is a class *Private* from which a reference class can inherit which adds a notion of privacy (overrides the default accessor functions) to a reference class:
+The function `defineRefClass` (iteration 2) does not implement a new system for object orientation but fixes my major critique of `setRefClass` (methods-package): defining methods and fields inside lists. It is simply a wrapper which allows to write the class definition inside an R-expression. Very much like in `defineClass` the *evaluated expression* is then passed as argument to `setRefClass`. Also there is a class *Private* from which a reference class can inherit which adds a notion of privacy (overrides the default accessor functions) to a reference class:
 
 ```{r, eval=FALSE}
 vignette("referenceClasses", "aoos")
 ```
 
-With `retList` it is made easy to play object orientation without introducing anything new but S3. It defines the return value of a function (which also serves as the constructor) which is a list. You can specify a class name and which objects you want to have in that list. Some ideas borrowed from the `setRefClass` framework are encapsulated print methods, and from `defineClass` the possibility to define encapsulated infix operators. Furthermore `retList` provides an implementation for inheritance. Since S3 does not provide a formal class definition classes inherit the properties from instances of super classes. How exactly this works reduces to the question of how you would join two environments in R. What would you do with the enclosing environment of functions? What would you do with naming conflicts? Since you may disagree with me on how this should be done, you can change it by providing a function which knows how to join two environments. 
+With `retList` (iteration 3) it is made easy to play object orientation without introducing anything new but S3 and functional programming concepts, i.e. closures. This is closest to what R already has to offer and more a convenience than a new system. The function will simply return all visible objects (in an environment) in a list and should be used to construct the return value of a constructor function. You can specify a class name and which objects you want to have in that list. Some ideas borrowed from the `setRefClass` framework are encapsulated print methods, and from `defineClass` the possibility to define encapsulated infix operators. Furthermore `retList` provides an implementation for inheritance. Since S3 does not provide a formal class definition, classes inherit the properties from instances of super classes (comparable to R6 or proto). How exactly this works reduces to the question of how you would join two environments in R because methods of an object are closures which share the same enclosing environment (like in all other implementations). What would you do with the enclosing environments of functions? What would you do with naming conflicts? Since you may disagree with me on how this should be done you can change that behaviour. Some examples can be found here: 
 
 ```{r, eval=FALSE}
 vignette("retListClasses", "aoos")
 ```
+
+

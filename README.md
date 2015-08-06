@@ -1,11 +1,11 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. Has an 
-  interface to S4 referenceClasses and two alternative new implementations. One 
-  is an experimental version built oround S4 (defineClass) and the other one 
-  (retList) makes it more convenient to work with lists returned from functions 
-  and uses only S3.
+Another implementation of object-orientation in R. Has an
+interface to S4 referenceClasses and two alternative new implementations. One
+is an experimental version built oround S4 (defineClass) and the other one
+(retList) makes it more convenient to work with lists returned from functions
+and uses only S3.
 
 ## Installation
 To install from CRAN:
@@ -82,8 +82,9 @@ Basically you define constructor functions. There is no *formal* class definitio
 
 
 ```r
+library("aoos")
 Employee <- function(.name, .salary) {
-  'Common base class for all employees'
+  "Common base class for all employees"
   
   print <- function(x, ...) {
     cat("Name  : ", .self$.name, "\nSalary: ", .self$.salary)
@@ -150,7 +151,7 @@ You can inherit methods and fields from a super class, or rather an instance, be
 
 ```r
 Manager <- function(.name, .salary, .bonus) {
-  'Extending the Employee class'
+  "Extending the Employee class"
   
   bonus <- function(x) {
     if (!missing(x)) .self$.bonus <- x
@@ -302,3 +303,5 @@ lisa
 ```
 ## My name is Lisa Schmidt !
 ```
+
+
