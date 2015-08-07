@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-08-06" />
+<meta name="date" content="2015-08-07" />
 
 <title>Performance benchmarks</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Performance benchmarks</h1>
-<h4 class="date"><em>2015-08-06</em></h4>
+<h4 class="date"><em>2015-08-07</em></h4>
 </div>
 
 
@@ -122,12 +122,12 @@ DCChild &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span 
 
 <span class="kw">print</span>(benchmark1, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>## Unit: microseconds
-##      expr    min     lq mean median     uq   max neval
-##      DC() 1156.1 1293.2 1507 1407.9 1512.9  4603   100
-##  RC$new()  207.8  244.1  743  269.4  315.5 45129   100
-##  R6$new()   36.6   51.6   63   55.3   65.1   173   100
-##      RL()   12.9   16.5   26   23.2   27.1   106   100
-##   RList()    1.8    2.6    4    3.8    4.6    15   100</code></pre>
+##      expr    min   lq   mean median   uq   max neval cld
+##      DC() 1551.8 1641 2253.8 1740.9 1892 43355   100   b
+##  RC$new()  284.7  311  396.6  333.3  380  3539   100  a 
+##  R6$new()   53.1   62   78.4   72.5   86   164   100  a 
+##      RL()   21.4   27   33.4   31.6   38    71   100  a 
+##   RList()    2.5    4    5.9    5.6    7    19   100  a</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">benchmark2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(
   <span class="kw">DCChild</span>(),
   RCChild$<span class="kw">new</span>(),
@@ -137,11 +137,11 @@ DCChild &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span 
 
 <span class="kw">print</span>(benchmark2, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre>
 <pre><code>## Unit: microseconds
-##           expr  min   lq mean median   uq  max neval
-##      DCChild() 2491 2632 3099   2733 2934 7925   100
-##  RCChild$new()  207  246  305    285  329 1436   100
-##  R6Child$new()  149  176  208    200  225  573   100
-##      RLChild()   62   80  102     96  112  334   100</code></pre>
+##           expr  min   lq mean median   uq   max neval cld
+##      DCChild() 3281 3392 3849   3510 3900 13356   100   b
+##  RCChild$new()  298  328  487    360  399  5374   100  a 
+##  R6Child$new()  223  253  521    276  308 20974   100  a 
+##      RLChild()   91  113  136    125  139   678   100  a</code></pre>
 </div>
 
 

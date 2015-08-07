@@ -56,6 +56,8 @@ deleteInParan <- . %>% gsub("\\(.*\\)", "", .)
     paste(names, defaults, sep = "=") %>% paste(collapse = " , ")
   }
   
+  getFormals <- . %>% formals %>% names %>% .[!(. == "...")]
+  
   # Preparing:
   mc <- match.call()
   lhs <- deparse(mc$lhs)
@@ -72,7 +74,7 @@ deleteInParan <- . %>% gsub("\\(.*\\)", "", .)
   args %<>% deleteEnclosingParan 
   args %<>% splitTrim(",")
   argNames <- sapply(as.list(args), . %>% splitTrim(., "=") %>% .[1])
-  namesInGeneric <- argNames %in% names(formals(setMethodArgList$f))
+  namesInGeneric <- argNames %in% getFormals(setMethodArgList$f)
   defaults <- sapply(as.list(args), . %>% splitTrim(., "=") %>% .[2])
   signature <- defaults[namesInGeneric]
   signature <- ifelse(is.na(signature), "ANY", signature)
