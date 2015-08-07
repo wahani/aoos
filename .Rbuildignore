@@ -8,6 +8,6 @@ README.R
 cran-comments.md
 ^prepareRepo.R$
 inst/web
-inst/staticsdocs
+inst/staticdocs
 travis-tool.sh
 Makefile

@@ -1,13 +1,13 @@
-#' Return current environment as list
+#' Generic constructor function
 #' 
-#' This functions can be used to construct a list with class attribute and merged with another list called super. What merge means can be specified with the mergeFun argument. It is intended to construct the return value (S3 class inheriting from 'list') of a function.
+#' This functions can be used to construct a list with class attribute and merged with another list called super. The constructed list will contain (by default) all visible objects from the environment from which \code{retList} is called. 
 #' 
 #' @param class character giving the class name.
 #' @param public character with the names to include.
-#' @param super a list to be extended.
+#' @param super a list/object to be extended.
 #' @param superEnv environment where new methods will live in.
 #' @param mergeFun function with two arguments. Knows how to join/merge environments - \code{mergeFun(envir, superEnv)}. Default: \link{envMerge}.
-#' @param envir this is the environment you want to convert to the list. Default is the environment from which the function is called.
+#' @param envir this is the environment you want to convert into the list. Default is the environment from which the function is called.
 #' 
 #' @seealso \link{ls}, \link{+.Infix}, \link{print.Print}
 #' @rdname retList
@@ -17,10 +17,10 @@
 #' # To get a quick overview of the package:
 #' vignette("Introduction", "aoos")
 #' 
-#' # To get more info about retList:
+#' # To get more infos about retList:
 #' vignette("retListClasses", "aoos")
 #' 
-#' # To get some infos in performance:
+#' # To get some infos about performance:
 #' vignette("performance", "aoos")
 #' 
 #' # A simple class with one method:

@@ -23,11 +23,11 @@ wahaniMiscs::getLocalPackageUpdates("aoos")
 
 ## Material
 
-- [Introduction Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/Introduction.html): Is an overview of the things in this package.
-- [retList](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/retListClasses.html): Is what I would recommend to use from this package.
-- [Performace Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/performance.html): If this is an issue for you.
-- [aoosClasses Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/aoosClasses.html)
-- [referenceClasses Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/referenceClasses.html)
+- [Introduction Vignette](http://wahani.github.io/aoos/vignettes/Introduction.html): Is an overview of the things in this package.
+- [retList](http://wahani.github.io/aoos/vignettes/retListClasses.html): Is what I would recommend to use from this package.
+- [Performace Vignette](http://wahani.github.io/aoos/vignettes/performance.html): If this is an issue for you.
+- [aoosClasses Vignette](http://wahani.github.io/aoos/vignettes/aoosClasses.html)
+- [referenceClasses Vignette](http://wahani.github.io/aoos/vignettes/referenceClasses.html)
 
 ## Posts
 
