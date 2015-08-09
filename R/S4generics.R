@@ -32,9 +32,12 @@
   
 }
 
-deleteBeforeParan <- . %>% sub("(^.*\\()", "", .) %>% paste0("(", .)
+deleteBeforeParan <- . %>% splitTrim("\\(") %>% { .[1] <- ""; . } %>% paste0(collapse = "(")
 deleteEnclosingParan <- . %>% sub("\\)$", "", .) %>% sub("^\\(", "", .)
 deleteInParan <- . %>% gsub("\\(.*\\)", "", .)
+splitTrim <- function(x, pattern) {
+  strsplit(x, pattern) %>% unlist %>% trimws
+}
 "%p0%" <- function(lhs, rhs) paste0(lhs, rhs)
 "%p%" <- function(lhs, rhs) paste(lhs, rhs)
 
@@ -48,10 +51,6 @@ deleteInParan <- . %>% gsub("\\(.*\\)", "", .)
     eval(parse(text = genericName), envir = envir)
   }
 
-  splitTrim <- function(x, pattern) {
-    strsplit(x, pattern) %>% unlist %>% trimws
-  }
-  
   collapseArgumentList <- function(names, defaults) {
     paste(names, defaults, sep = "=") %>% paste(collapse = " , ")
   }

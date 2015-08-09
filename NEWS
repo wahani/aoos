@@ -1,3 +1,6 @@
+Version 0.3.2
+- New wrapper around setClass: %types% to be used as a subset of S4 classes. It mimics the pattern of "setClass(...); setMethod("initialize", ...)" and captures most of the needed features.
+
 Version 0.3.1
 - New wrappers (%g% and %m%) around setGeneric and setMethod from the methods package. They provide an alternative approach to define (S4) generic functions and methods putting an emphasis on readability.
 
