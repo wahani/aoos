@@ -51,4 +51,9 @@ test_that("generics and methods", {
   expect_equal(generic("a"), "ab")
   expect_equal(generic("", 2), "2")
   
+  # return class
+  character : generic(x) %g% x
+  expect_error(generic(1))
+  expect_equal(generic(""), "")
+  
 })

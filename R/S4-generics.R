@@ -12,7 +12,10 @@
   mc <- match.call()
   lhs <- deparse(mc$lhs)
   setGenericArgList <- list()
-  setGenericArgList$name <- deleteInParan(lhs)
+  
+  classes <- rev(splitTrim(deleteInParan(lhs), ":"))
+  setGenericArgList$name <- classes[1]
+  setGenericArgList$valueClass <- if (is.na(classes[2])) character() else classes[2]
   setGenericArgList$where <- parent.frame()
   setGenericArgList$def <- {
     defCall <- "function" %p0% deleteBeforeParan(lhs) %p0% " 1" # template fun
