@@ -12,7 +12,6 @@ test_that("Class wrapper", {
       
       doSomething <- function() {
         .self$y <- y + 1
-        cat(x, "\n")
         invisible(.self)
       }
       

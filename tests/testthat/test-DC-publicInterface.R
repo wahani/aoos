@@ -41,7 +41,7 @@ test_that("Handling of reference classes as public member", {
   
   ro <- refObj2()
   
-  ro$refObj$method()
+  # ro$refObj$method()
   ro$refObj$value()
   ro$refObj$value(2)
   ro$refObj$value()

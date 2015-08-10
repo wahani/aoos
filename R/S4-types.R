@@ -28,6 +28,7 @@
   
   mc <- match.call()
   lhs <- deparse(mc$lhs)
+  envir <- parent.frame()
   
   # Name of class and super:
   classes <- rev(splitTrim(deleteInParan(lhs), ":"))
@@ -41,25 +42,29 @@
   initBody[1] <- initBody[1] %p0% "\n.Object <- callNextMethod()"
   initCall <- parse(text = initCall %p% "%m%" %p% paste(initBody, collapse = "\n"))
   
-  # slots & prototype:
-  slotsCall <- deleteBeforeParan(lhs) %>% deleteEnclosingParan
-  slotsCall %<>% splitTrim(",")
+  # slots & prototype & constructor:
+  slotsCall <- deleteBeforeParan(lhs) %>% deleteEnclosingParan %>% splitTrim(",")
   ind <- grepl("=", slotsCall)
   slotsCall[!ind] <- slotsCall[!ind] %p0% " = NULL"
-  slotsCall <- "list(" %p0% paste(slotsCall, collapse = ",") %p0% ")"
-  proto <- eval(parse(text = slotsCall), envir = parent.frame())
+  slotsCall <- "(" %p0% paste(slotsCall, collapse = ", ") %p0% ")"
+  proto <- eval(parse(text = "list" %p0% slotsCall), envir = parent.frame())
   slots <- vapply(proto, function(slot) if (is.null(slot)) "ANY" else class(slot)[1], character(1))
   slots <- slots[names(slots) != "..."]
+  argsInConst <- if (length(proto) == 0) "" else ("," %p% 
+    paste(names(proto) %p% "=" %p% names(proto), collapse = ", "))
+  constCall <- "function" %p0% slotsCall %p% 
+    "new('" %p0% className %p0% "'" %p0% argsInConst %p0% ")"
+  const <- eval(parse(text = constCall), envir = envir)
   
   # class:
-  const <- setClass(className, contains = super, prototype = proto, slots = slots, where = parent.frame())
+  setClass(className, contains = super, prototype = proto, slots = slots, where = parent.frame())
   
   # init-method
-  eval(initCall, parent.frame())
+  eval(initCall, envir)
   
   # Return const as side effect and trick R CMD check:
-  globalVariables(c(className, names(slots)), package = topenv(parent.frame()))
-  assign(className, const, envir = parent.frame())
+  globalVariables(c(className, names(slots)), package = topenv(envir))
+  assign(className, const, envir = envir)
   invisible(const)
   
 }

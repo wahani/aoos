@@ -8,6 +8,7 @@ test_that("Type with defaults", {
   
   expect_error(Test(x = 0))
   expect_true(Test()@x == 1)
+  expect_true(Test(2)@x == 2)
   expect_true(identical(Test()@y, list()))
   expect_true(typeof(Test()) == "S4")
   
@@ -22,6 +23,13 @@ test_that("Type with ANY", {
   x <- Test()
   x@y <- Test()
   expect_true(is(x@y, "Test"))
+  
+})
+
+test_that("Class without slot", {
+  
+  Test() %type% .Object
+  expect_true(is(Test(), "Test"))
   
 })
 
