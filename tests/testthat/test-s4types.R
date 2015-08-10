@@ -1,0 +1,64 @@
+context("S4Types")
+test_that("Type with defaults", {
+  
+  Test(x = 1, y = list()) %type% {
+    stopifnot(.Object@x > 0)
+    .Object
+  }
+  
+  expect_error(Test(x = 0))
+  expect_true(Test()@x == 1)
+  expect_true(identical(Test()@y, list()))
+  expect_true(typeof(Test()) == "S4")
+  
+})
+
+test_that("Type with ANY", {
+  
+  Test(x = numeric(), y) %type% .Object
+  
+  expect_true(is.null(Test()@y))
+  expect_true(is.numeric(Test()@x))
+  x <- Test()
+  x@y <- Test()
+  expect_true(is(x@y, "Test"))
+  
+})
+
+test_that("Type inheritance", {
+  
+  Test(x = 1, y = list()) %type% {
+    stopifnot(.Object@x > 0)
+    .Object
+  }
+  
+  Test:Child(z = " ") %type% {
+    stopifnot(nchar(.Object@z) > 0)
+    .Object
+  }
+  
+  expect_error(Child(x = 0))
+  expect_true(Child()@x == 1)
+  expect_true(identical(Child()@y, list()))
+  expect_true(typeof(Test()) == "S4")
+  expect_true(is(Child(), "Child"))
+  expect_true(inherits(Child(), "Test"))
+  expect_true(identical(Child(z = "char")@z, "char"))
+  expect_error(Child(z = ""))
+  
+})
+
+test_that("Type with VIRTUAL", {
+  
+  VIRTUAL:Type() %type% .Object
+  
+  names.Type <- function(x) {
+    slotNames(x)
+  }
+  
+  Type:Test(x = 1) %type% .Object  
+  expect_true(names(Test(x = 2)) == "x")
+  expect_true(inherits(Test(), "Type"))
+  expect_error(new("Type"))
+  
+})

@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. Has an
-interface to S4 referenceClasses and two alternative new implementations. One
-is an experimental version built oround S4 (defineClass) and the other one
+Another implementation of object-orientation in R. It provides an
+interface to S4 reference classes and two alternative new implementations. One
+is an experimental version built around S4 (defineClass) and the other one
 (retList) makes it more convenient to work with lists returned from functions
 and uses only S3.
 
@@ -23,51 +23,23 @@ install_github("wahani/aoos")
 
 
 ```
-## Version on CRAN: 0.2.0 
-## Development Version: 0.2.6 
+## Version on CRAN: 0.3.0 
+## Development Version: 0.3.1 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
 ## 
-## Changes in version 0.2.6:
+## Changes in version 0.3.1:
 ## 
-##     o   Renaming Class -> defineRefClass
-## 
-## Changes in version 0.2.5:
-## 
-##     o   retList: renamed argument 'exports' to 'public'.
-## 
-##     o   Possible to define encapsulated unary operators.
-## 
-##     o   Vignette on classes with reList.
-## 
-##     o   Vignette on performance.
-## 
-## Changes in version 0.2.4:
-## 
-##     o   retList has now an object called .self referring to itself.
-## 
-## Changes in version 0.2.3:
-## 
-##     o   retList can now 'inherit' from another list. An extra argument superEnv can be used to really extend a class definition in this framework.
-## 
-##     o   retList has new arguments to control inheritance. 
-## 
-## Changes in version 0.2.2:
-## 
-##     o   New classes Infix and Print which enable encapsulated definitions of infix operators and print methods for S3 classes.
-## 
-## Changes in version 0.2.1:
-## 
-##     o   New functions retList and funNames to work with closures as objects
+##     o   New wrappers (%g% and %m%) around setGeneric and setMethod from the methods package. They provide an alternative approach to define (S4) generic functions and methods putting an emphasis on readability.
 ```
 
 ## Material
 
-- [Introduction Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/Introduction.html): Is an overview of the things in this package.
-- [retList](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/retListClasses.html): Is what I would recommend to use from this package.
-- [Performace Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/performance.html): If this is an issue for you.
-- [aoosClasses Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/aoosClasses.html)
-- [referenceClasses Vignette](http://htmlpreview.github.io/?https://github.com/wahani/aoos/blob/master/inst/doc/referenceClasses.html)
+- [Introduction Vignette](http://wahani.github.io/aoos/vignettes/Introduction.html): Is an overview of the things in this package.
+- [retList](http://wahani.github.io/aoos/vignettes/retListClasses.html): Is what I would recommend to use from this package.
+- [Performace Vignette](http://wahani.github.io/aoos/vignettes/performance.html): If this is an issue for you.
+- [aoosClasses Vignette](http://wahani.github.io/aoos/vignettes/aoosClasses.html)
+- [referenceClasses Vignette](http://wahani.github.io/aoos/vignettes/referenceClasses.html)
 
 ## Posts
 
@@ -203,7 +175,148 @@ julia
 ## Bonus: 10
 ```
 
-### More 
+### Generic functions and polymorphism
+
+As of version 0.3.1 there exist two binary operators, `%g%` and `%m%`, which link to the S4 system for genric functions. They provide (hopefully) concise alternatives to `methods::setGeneric` and `methods::setMethod`:
+
+
+```r
+# Standard definition for a generic without default:
+strLength(x = 2, ...) %g% standardGeneric("strLength")
+
+# A method for x:character
+strLength(x = character, ...) %m% { nchar(x) }
+
+# Kind of the default method for x:ANY
+strLength(x = ANY, ...) %m% { strLength(as.character(x)) }
+
+# Check that it works:
+strLength(123)
+```
+
+```
+## [1] 3
+```
+
+```r
+strLength("ab")
+```
+
+```
+## [1] 2
+```
+
+A bit tricky and unwise is that the generic has a default value of 2 which means that as long the ANY-method is not defined the default is not working, but I needed to illustrate default values. In S4, methods can have defaults for arguments which are not formals of the generic. Otherwise the defaults of the generic are passed down to its methods. This is not changed: Define defaults for the generic. If a method has more arguments than its generic you can define defaults for them. For the *shared* argument names provide a class name. One exception to the rule are `...` on which S4 cannot dispatch.
+
+
+```r
+strLength()
+```
+
+```
+## [1] 1
+```
+
+An important difference to `methods::setGeneric` and `methods::setMethod` is that methods and generics are stored in the environment where they are created and not in the top environment. That means you can define generics which are local to a function or closure and this extends the `retList`-idea of representing objects in *R* as demonstrated here:
+
+
+```r
+Class <- function() {
+  
+  overloaded(x) %g% { 
+    cat("This is the default ... \n")
+    x 
+  } 
+  
+  overloaded(x = numeric) %m% {
+    cat("This is the method for 'numeric' values ... \n")
+    x
+  }
+  
+  retList("Class")
+}
+
+instance <- Class()
+instance$overloaded(1)
+```
+
+```
+## This is the method for 'numeric' values ...
+```
+
+```
+## [1] 1
+```
+
+```r
+instance$overloaded("a")
+```
+
+```
+## This is the default ...
+```
+
+```
+## [1] "a"
+```
+
+The next question is how to inherit or extend an existing generic which is a member of a class? I am not entirely happy with how this works at the moment, but this is one way to approach it (which works...):
+
+
+```r
+Child <- function() {
+  
+  # Normally you would make the call to the parents constructor in the call
+  # to retList. But here we need to access the elements directly during init...
+  .super <- Class()
+  
+  # This points %m% to the generic (in .super) which should be extended:
+  .super$overloaded(x = integer) %m% {
+    cat("This is the method for 'integer' values ... \n")
+    x
+  }
+  
+  retList("Child", super = .super)
+  
+}
+
+instance <- Child()
+instance$overloaded(1)
+```
+
+```
+## This is the method for 'numeric' values ...
+```
+
+```
+## [1] 1
+```
+
+```r
+instance$overloaded("a")
+```
+
+```
+## This is the default ...
+```
+
+```
+## [1] "a"
+```
+
+```r
+instance$overloaded(1L)
+```
+
+```
+## This is the method for 'integer' values ...
+```
+
+```
+## [1] 1
+```
+
+### More on `retList`
 
 Something you have to keep in mind is that returned objects are of class *list*. If you want to have a public field you have to define get and set methods, because you will see a copy of those fields in the object, they behave more like an attribute.
 
@@ -233,7 +346,7 @@ obj$name
 ## [1] "Noah"
 ```
 
-After all this framework is very flexible (as is `R`) and we can do more abstract representations of *things*. In this example I want to create a constructor object which also keeps track of how many instances exist, or rather have been created so far. Also every instance should know how many siblings it has, or in other words all instances share the reference to a field accessible by all of them.
+We can do more abstract representations of *things*. In this example I want to create a constructor object which keeps track of how many instances it created. Also every instance should know how many siblings it has, or in other words all instances share a reference to a field accessible by all of them.
 
 
 ```r

@@ -10,3 +10,4 @@ cran-comments.md
 inst/web
 inst/staticdocs
 travis-tool.sh
+Makefile
