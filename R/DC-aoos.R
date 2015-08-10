@@ -58,7 +58,7 @@ setMethod("$<-", signature = c(x = "aoos"),
             privacy <- !any(sapply(envirSearch(list(parent.frame())), 
                                    identical, y = parent.env(x)))
             
-            if(privacy) {
+            if (privacy) {
               stop("If you need to extend object, modify class definition.")
             } else {
               assign(name, value = value, envir = parent.env(x))
@@ -71,14 +71,13 @@ setMethod("$<-", signature = c(x = "aoos"),
 #' @param object object
 #' @param ... arguments passed to method (not used).
 #' @export
-setMethod("summary", signature = c(object = "aoos"),
-          function(object, ...) {
-            out <- envSize(parent.env(object))
-            rownames(out) <- NULL
-            out
-          })
+summary.aoos <- function(object, ...) {
+  out <- envSize(parent.env(object))
+  rownames(out) <- NULL
+  out
+}
 
-envSize <- function (env) {
+envSize <- function(env) {
   
   napply <- function(names, fn) sapply(names, function(x) fn(get(x, pos = env)))
   
@@ -90,7 +89,7 @@ envSize <- function (env) {
   obj.size <- napply(names, object.size)
 
   obj.subsizes <- napply(names, function(x) {
-    if(inherits(x, "publicFunction") && !identical(environment(x), env))
+    if (inherits(x, "publicFunction") && !identical(environment(x), env))
       envSize(environment(x))
   })
   obj.subsizes <- do.call(rbind, obj.subsizes)

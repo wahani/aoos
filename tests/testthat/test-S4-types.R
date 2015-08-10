@@ -12,6 +12,8 @@ test_that("Type with defaults", {
   expect_true(identical(Test()@y, list()))
   expect_true(typeof(Test()) == "S4")
   
+  removeClass("Test")
+  
 })
 
 test_that("Type with ANY", {
@@ -24,12 +26,16 @@ test_that("Type with ANY", {
   x@y <- Test()
   expect_true(is(x@y, "Test"))
   
+  removeClass("Test")
+  
 })
 
 test_that("Class without slot", {
   
   Test() %type% .Object
   expect_true(is(Test(), "Test"))
+  
+  removeClass("Test")
   
 })
 
@@ -54,6 +60,9 @@ test_that("Type inheritance", {
   expect_true(identical(Child(z = "char")@z, "char"))
   expect_error(Child(z = ""))
   
+  removeClass("Child")
+  removeClass("Test")
+  
 })
 
 test_that("Type with VIRTUAL", {
@@ -65,8 +74,12 @@ test_that("Type with VIRTUAL", {
   }
   
   Type:Test(x = 1) %type% .Object  
+  
   expect_true(names(Test(x = 2)) == "x")
   expect_true(inherits(Test(), "Type"))
   expect_error(new("Type"))
+  
+  removeClass("Test")
+  removeClass("Type")
   
 })

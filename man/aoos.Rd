@@ -7,7 +7,7 @@
 \alias{aoos-class}
 \alias{as.environment,aoos-method}
 \alias{show,aoos-method}
-\alias{summary,aoos-method}
+\alias{summary.aoos}
 \title{Class aoos}
 \usage{
 \S4method{show}{aoos}(object)
@@ -16,7 +16,7 @@
 
 \S4method{$}{aoos}(x, name) <- value
 
-\S4method{summary}{aoos}(object, ...)
+\method{summary}{aoos}(object, ...)
 
 \S4method{as.environment}{aoos}(x)
 }
