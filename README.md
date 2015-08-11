@@ -3,8 +3,8 @@
 # Another object orientation system in R
 Another implementation of object-orientation in R. It provides an
 interface to S4 reference classes and two alternative new implementations. One
-is an experimental version built around S4 (defineClass) and the other one
-(retList) makes it more convenient to work with lists returned from functions
+is an experimental version built around S4 ('defineClass') and the other one
+('retList') makes it more convenient to work with lists returned from functions
 and uses only S3.
 
 ## Installation
@@ -24,9 +24,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.3.0 
-## Development Version: 0.3.1 
+## Development Version: 0.3.2 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.3.2:
+## 
+##     o   New wrapper around setClass: %types% to be used as a subset of S4 classes. It mimics the pattern of "setClass(...); setMethod("initialize", ...)" and captures most of the needed features.
 ## 
 ## Changes in version 0.3.1:
 ## 
@@ -48,7 +52,7 @@ install_github("wahani/aoos")
 
 ## Examples:
 
-### Simple class:
+### retList:
 
 Basically you define constructor functions. There is no *formal* class definition. The function body will define what members an object will have. You quit the function defining the return value using `retList` which is a *generic* constructor function. By default it will look at the environment from which it is called and convert that environment into a list. That list is returned and is an object. Names with a "." are not part of the constructed *list* (by default).
 
@@ -116,7 +120,7 @@ peter$print()
 ```
 
 
-### Inheritance:
+### retList + Inheritance:
 
 You can inherit methods and fields from a super class, or rather an instance, because there is no *formal* calls definition. Methods and fields can be replaced in the child, all member from the parent are also available for the methods of the child.
 
@@ -175,7 +179,7 @@ julia
 ## Bonus: 10
 ```
 
-### Generic functions and polymorphism
+### retList + S4 generics
 
 As of version 0.3.1 there exist two binary operators, `%g%` and `%m%`, which link to the S4 system for genric functions. They provide (hopefully) concise alternatives to `methods::setGeneric` and `methods::setMethod`:
 
@@ -315,6 +319,64 @@ instance$overloaded(1L)
 ```
 ## [1] 1
 ```
+
+### S4 Types
+
+The following presents the function `%type%` which is a link to S4s `setClass`. When using `setClass` in many scenarios redundancy (of information) in the code is introduced. `%type%` tries to abstract a typical scenario of using `setClass`. Here is an example, first the S4 approach which is usefull in a scenario where inheritance is relevant. `.Object <- callNextMethod()` is important so that all init-methods are called. The prototype is usefull to have default values on init:
+
+
+```r
+Test <- setClass("Test", 
+                 slots = list(x = "numeric", y = "list"),
+                 prototype = list(x = 1, y = list()))
+
+setMethod("initialize", 
+          "Test", 
+          function(.Object, ...) {
+            .Object <- callNextMethod()
+            stopifnot(.Object@x > 0)
+            .Object
+          })
+
+Child <- setClass("Child", contains = "Test",
+                  slots = c(z = "character"),
+                  prototype = list(z = " "))
+
+setMethod("initialize", 
+          "Child", 
+          function(.Object, ...) {
+            .Object <- callNextMethod()
+            stopifnot(nchar(.Object@z) > 0)
+            .Object
+          })
+
+Test() # works
+Test(2) # won't work. What we want is to say x = 2 on init
+Test(x = 2) # works
+Child() # has 3 slots with defaults as in the prototype
+```
+
+Looking at the source code it is hard to see how many slots are involved and what exactly is going on with these two classes. It just looks complicated. The next snippet does more or less the same thing:
+
+
+```r
+Test(x = 1, y = list()) %type% {
+  stopifnot(.Object@x > 0)
+  .Object
+}
+
+Test : Child(z = " ") %type% {
+  stopifnot(nchar(.Object@z) > 0)
+  .Object
+}
+
+Test() # works
+Test(2) # works
+Test(x = 2) # works
+Child("Hej", x = 2) # works
+```
+
+Three things are happening on a call to `%type%`. `setClass` is called with prototype and slots derived from the prototype. `setMethod` for `initialize` with `.Object` and `...` as arguments; and `.Object <- callNextMethod()` as first line so that init allways works correct; and the rhs expression as body. And finally a constructor function is assigned to the types name (with arguments and defaults).
 
 ### More on `retList`
 
