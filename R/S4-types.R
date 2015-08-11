@@ -50,10 +50,11 @@
   proto <- eval(parse(text = "list" %p0% slotsCall), envir = parent.frame())
   slots <- vapply(proto, function(slot) if (is.null(slot)) "ANY" else class(slot)[1], character(1))
   slots <- slots[names(slots) != "..."]
-  argsInConst <- if (length(proto) == 0) "" else ("," %p% 
+  argsInNew <- if (length(proto) == 0) "" else (", " %p0%
     paste(names(proto) %p% "=" %p% names(proto), collapse = ", "))
-  constCall <- "function" %p0% slotsCall %p% 
-    "new('" %p0% className %p0% "'" %p0% argsInConst %p0% ")"
+  argsInConst <- sub("\\)$", if (length(proto) == 0) "...)" else ", ...)", slotsCall)
+  constCall <- "function" %p0% argsInConst %p% 
+    "new('" %p0% className %p0% "'" %p0% argsInNew %p0% ", ...)"
   const <- eval(parse(text = constCall), envir = envir)
   
   # class:

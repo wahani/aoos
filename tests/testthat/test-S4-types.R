@@ -59,6 +59,7 @@ test_that("Type inheritance", {
   expect_true(inherits(Child(), "Test"))
   expect_true(identical(Child(z = "char")@z, "char"))
   expect_error(Child(z = ""))
+  expect_equal(Child(x = 5)@x, 5)
   
   removeClass("Child")
   removeClass("Test")
