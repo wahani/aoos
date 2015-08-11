@@ -66,6 +66,28 @@ test_that("Type inheritance", {
   
 })
 
+test_that("Types can inherit S3 classes", {
+  
+  numeric : Test(x = 1, .Data = 2) %type% {
+    .Object
+  }
+  
+  expect_true(Test() == 2)
+  expect_true(Test(4, 3) == 3)
+  
+  numeric : Test(x = 1, .Data=2) %type% {
+    .Object
+  }
+  
+  expect_true(Test() == 2)
+  expect_true(Test(4, 3) == 3)
+  
+  numeric : Test(x = 1) %type% .Object
+  expect_equal(Test()@.Data, numeric())
+  expect_true(Test(4, 3) == 3)
+  
+})
+
 test_that("Type with VIRTUAL", {
   
   VIRTUAL:Type() %type% .Object

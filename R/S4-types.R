@@ -26,6 +26,8 @@
     else x
   }
   
+  evalInParent <- function(text) eval(parse(text = text), envir = envir)
+  
   mc <- match.call()
   lhs <- deparse(mc$lhs)
   envir <- parent.frame()
@@ -46,16 +48,18 @@
   slotsCall <- deleteBeforeParan(lhs) %>% deleteEnclosingParan %>% splitTrim(",")
   ind <- grepl("=", slotsCall)
   slotsCall[!ind] <- slotsCall[!ind] %p0% " = NULL"
-  slotsCall <- "(" %p0% paste(slotsCall, collapse = ", ") %p0% ")"
-  proto <- eval(parse(text = "list" %p0% slotsCall), envir = parent.frame())
-  slots <- vapply(proto, function(slot) if (is.null(slot)) "ANY" else class(slot)[1], character(1))
-  slots <- slots[names(slots) != "..."]
-  argsInNew <- if (length(proto) == 0) "" else (", " %p0%
-    paste(names(proto) %p% "=" %p% names(proto), collapse = ", "))
-  argsInConst <- sub("\\)$", if (length(proto) == 0) "...)" else ", ...)", slotsCall)
+  allArgs <- "(" %p0% paste(slotsCall, collapse = ", ") %p0% ")"
+  protoArgs <- sub(".Data( )?\\=", "", allArgs)
+  constArgs <- "(" %p0% paste(slotsCall[!grepl("^.Data( )?\\=|\\.\\.\\.", slotsCall)], collapse = ", ") %p0% ")"
+  proto <- evalInParent("prototype" %p0% protoArgs)
+  protoAsList <- evalInParent("list" %p0% constArgs)
+  slots <- vapply(protoAsList, function(slot) if (is.null(slot)) "ANY" else class(slot)[1], character(1))
+  argsInNew <- if (length(protoAsList) == 0) "" else (", " %p0%
+    paste(names(protoAsList) %p% "=" %p% names(protoAsList), collapse = ", "))
+  argsInConst <- sub("\\)$", if (length(protoAsList) == 0) "...)" else ", ...)", constArgs)
   constCall <- "function" %p0% argsInConst %p% 
     "new('" %p0% className %p0% "'" %p0% argsInNew %p0% ", ...)"
-  const <- eval(parse(text = constCall), envir = envir)
+  const <- evalInParent(constCall)
   
   # class:
   setClass(className, contains = super, prototype = proto, slots = slots, where = parent.frame())
