@@ -106,3 +106,11 @@ test_that("Type with VIRTUAL", {
   removeClass("Type")
   
 })
+
+test_that("Type with quoted class names", {
+  
+  'numeric' : "Test"(names = character()) %type% .Object
+  expect_true(inherits(Test(), "numeric"))
+  expect_is(Test(), "Test")
+  
+})

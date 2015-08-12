@@ -202,7 +202,9 @@ setMethod("initialize",
           })
 
 Test() # works
-Test(2) # won't work. What we want is to say x = 2 on init
+# If you want to have something else than '...', e.g. named arguments you have 
+# to define 'Test' yourself:
+Test(2) # won't work.
 Test(x = 2) # works
 Child() # has 3 slots with defaults as in the prototype
 ```
@@ -223,7 +225,7 @@ Test : Child(z = " ") %type% {
 Test() # works
 Test(2) # works
 Test(x = 2) # works
-Child("Hej", x = 2) # works
+Child("Hej", x = 2) # works: Child <- function(z, ...) new('Child', z = z, ...)
 ```
 
 Three things are happening on a call to `%type%`. `setClass` is called with prototype and slots derived from the prototype. `setMethod` for `initialize` with `.Object` and `...` as arguments; and `.Object <- callNextMethod()` as first line so that init allways works correct; and the rhs expression as body. And finally a constructor function is assigned to the types name (with arguments and defaults).

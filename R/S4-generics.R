@@ -13,7 +13,7 @@
   lhs <- deparse(mc$lhs)
   setGenericArgList <- list()
   
-  classes <- rev(splitTrim(deleteInParan(lhs), ":"))
+  classes <- deleteInParan(lhs) %>% splitTrim(":") %>% deleteQuotes %>% rev
   setGenericArgList$name <- classes[1]
   setGenericArgList$valueClass <- if (is.na(classes[2])) character() else classes[2]
   setGenericArgList$where <- parent.frame()
@@ -35,6 +35,7 @@
   
 }
 
+deleteQuotes <- . %>% sub("^[\"\']", "", .) %>% sub("[\"\']$", "", .)
 deleteBeforeParan <- . %>% splitTrim("\\(") %>% { .[1] <- ""; . } %>% paste0(collapse = "(")
 deleteEnclosingParan <- . %>% sub("\\)$", "", .) %>% sub("^\\(", "", .)
 deleteInParan <- . %>% gsub("\\(.*\\)", "", .)
@@ -50,7 +51,7 @@ splitTrim <- function(x, pattern) {
   
   # Some helpers:
   findGenericFunction <- function(lhs, envir) {
-    genericName <- deleteInParan(lhs)
+    genericName <- deleteInParan(lhs) %>% deleteQuotes
     eval(parse(text = genericName), envir = envir)
   }
 
@@ -80,6 +81,7 @@ splitTrim <- function(x, pattern) {
   defaults <- sapply(as.list(args), . %>% splitTrim(., "=") %>% .[2])
   signature <- defaults[namesInGeneric]
   signature <- ifelse(is.na(signature), "ANY", signature)
+  signature <- deleteQuotes(signature)
   setMethodArgList$signature <- signature
   
   # The function/method
