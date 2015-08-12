@@ -32,7 +32,9 @@ test_that("Type with ANY", {
 
 test_that("Class without slot", {
   
-  Test() %type% .Object
+  setClass("Empty", prototype = prototype(), where = environment())
+  
+  Empty : Test() %type% .Object
   expect_true(is(Test(), "Test"))
   
   removeClass("Test")

@@ -34,6 +34,9 @@
     else x
   }
   
+  protoIsGood <- function(proto) 
+    proto@dataPart || !identical(proto@slots, character())
+  
   evalInParent <- function(text) eval(parse(text = text), envir = envir)
   
   mc <- match.call()
@@ -70,7 +73,14 @@
   const <- evalInParent(constCall)
   
   # class:
-  setClass(className, contains = super, prototype = proto, slots = slots, where = parent.frame())
+  argList <- list()
+  argList$Class <- className
+  argList$contains <- super
+  argList$prototype <- if (protoIsGood(proto)) proto else NULL
+  argList$slots <- slots
+  argList$where <- envir
+  
+  do.call(setClass, argList)
   
   # init-method
   eval(initCall, envir)
