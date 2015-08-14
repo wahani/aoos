@@ -64,6 +64,16 @@ test_that("Type inheritance", {
   removeClass("Child")
   removeClass("Test")
   
+  # inheriting from more than one thing
+  Test2(z = "") %type% .Object
+  Test : Test2 : Child() %type% .Object
+  
+  expect_true(Child()@x == 1)
+  expect_true(identical(Child()@y, list()))
+  expect_true(inherits(Child(), "Test"))
+  expect_true(inherits(Child(), "Test2"))
+  expect_true(identical(Child(z = "char")@z, "char"))
+  
 })
 
 test_that("Types can inherit S3 classes", {

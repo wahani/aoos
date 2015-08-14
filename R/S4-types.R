@@ -35,7 +35,7 @@
   # Name of class and super:
   classes <- rev(splitTrim(deleteInParan(lhs), ":"))
   className <- classes[1]
-  super <- if (is.na(classes[2])) character() else classes[2]
+  super <- if (is.na(classes[2])) character() else classes[2:length(classes)]
   
   # Init-method call:
   initCall <- "initialize(.Object = " %p0% className %p0% ", ...)"
