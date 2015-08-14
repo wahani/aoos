@@ -1,12 +1,12 @@
 #' Types
 #' 
-#' This function can be used to define new S4-classes which are called Type - although they are simply S4-classes. They have an initialize method and in the introduced syntax init-method and S4-class definition build a unit, hence a type. This simply captures a typical \code{setClass} then \code{setMethod("initialize", ...)} pattern where often some redundancy is introduced. The function has side effects due to calling \code{setClass}, \code{setMethod} and assigning the constructor function to the types name. Furthermore a call to \link{globalVariables} for the name of the type and the slots is performed.
+#' This function can be used to define new S4-classes which are called Type. They have an initialize method and in the introduced syntax init-method and S4-class definition build a unit, hence a type. This simply captures a typical \code{setClass} then \code{setMethod("initialize", ...)} pattern where often some redundancy is introduced. The function has side effects due to calling \code{setClass}, \code{setMethod} and assigning the constructor function to the types name.
 #' 
 #' @param lhs an expression of the form: \cr\code{[<parent-name>:]<type-name>([<slots>])}
 #' \cr - <parent-name> optional, the name of the S4-class/type to inherit from.
-#' \cr - <type-name> the name for the new S4-class/type and constructor function.
+#' \cr - <type-name> the name for the new type and constructor function.
 #' \cr - <slots> optional, \code{name = value} expressions. They will be used to construct the prototype. The values will also be used to infer the class of the slots. If no value is supplied, \code{ANY} is assumed.
-#' @param rhs the body of the initialize method as expression. It will be called with \code{.Object} and \code{...} as arguments. \code{.Object} should be the return value and it is the instance on which assertions can be formulated or whatever it is you want. Prior to the body (rhs) \code{.Object <- callNextMethod()} will be evaluated which enables proper initialization if your type and its inherited fields. See \link[methods]{initialize} for details.
+#' @param rhs the body of the initialize method as expression. It will be called with \code{.Object} and \code{...} as arguments. \code{.Object} should be the return value. With \code{.Object} there is an instance of the type on which assertions can be formulated. Prior to the body (rhs) \code{.Object <- callNextMethod()} will be evaluated which enables proper initialization if your type and its inherited fields. See \link[methods]{initialize} for details.
 #' 
 #' @examples 
 #' # This will create an S4-class named 'Test' with two slots; x = "numeric"
@@ -17,7 +17,15 @@
 #'   stopifnot(.Object@@x > 0)
 #'   .Object
 #' }
-#'
+#' 
+#' # This will create an S4-class named 'Numeric' with a slot and some tests.
+#' 
+#' numeric : Numeric(metaInfo = character()) %type% {
+#'   stopifnot(length(.Object) > 0)
+#'   stopifnot(all(.Object > 0))
+#'   .Object
+#' }
+#' 
 #' @export
 "%type%" <- function(lhs, rhs) {
   
@@ -26,6 +34,9 @@
     else x
   }
   
+  protoIsGood <- function(proto) 
+    proto@dataPart || !identical(proto@slots, character())
+  
   evalInParent <- function(text) eval(parse(text = text), envir = envir)
   
   mc <- match.call()
@@ -33,7 +44,7 @@
   envir <- parent.frame()
   
   # Name of class and super:
-  classes <- rev(splitTrim(deleteInParan(lhs), ":"))
+  classes <- deleteInParan(lhs) %>% splitTrim(":") %>% deleteQuotes %>% rev
   className <- classes[1]
   super <- if (is.na(classes[2])) character() else classes[2:length(classes)]
   
@@ -62,7 +73,14 @@
   const <- evalInParent(constCall)
   
   # class:
-  setClass(className, contains = super, prototype = proto, slots = slots, where = parent.frame())
+  argList <- list()
+  argList$Class <- className
+  argList$contains <- super
+  argList$prototype <- if (protoIsGood(proto)) proto else NULL
+  argList$slots <- slots
+  argList$where <- envir
+  
+  do.call(setClass, argList)
   
   # init-method
   eval(initCall, envir)

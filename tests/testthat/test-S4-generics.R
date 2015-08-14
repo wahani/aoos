@@ -56,4 +56,16 @@ test_that("generics and methods", {
   expect_error(generic(1))
   expect_equal(generic(""), "")
   
+  # quoted names
+  "character" : 'generic'(x) %g% x
+  expect_error(generic(1))
+  expect_equal(generic(""), "")
+  
+  'generic'(x = "numeric") %m% as.character(x)
+  expect_equal(generic(1), "1")
+  
+  'generic'(x = 'raw') %m% as.character(x)
+  expect_equal(generic(raw(1)), "00")
+  
+  
 })

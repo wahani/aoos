@@ -32,7 +32,9 @@ test_that("Type with ANY", {
 
 test_that("Class without slot", {
   
-  Test() %type% .Object
+  setClass("Empty", prototype = prototype(), where = environment())
+  
+  Empty : Test() %type% .Object
   expect_true(is(Test(), "Test"))
   
   removeClass("Test")
@@ -114,5 +116,13 @@ test_that("Type with VIRTUAL", {
   
   removeClass("Test")
   removeClass("Type")
+  
+})
+
+test_that("Type with quoted class names", {
+  
+  'numeric' : "Test"(names = character()) %type% .Object
+  expect_true(inherits(Test(), "numeric"))
+  expect_is(Test(), "Test")
   
 })
