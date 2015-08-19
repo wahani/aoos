@@ -1,11 +1,11 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. It provides an
-interface to S4 reference classes and two alternative new implementations. One
-is an experimental version built around S4 ('defineClass') and the other one
-('retList') makes it more convenient to work with lists returned from functions
-and uses only S3.
+Another implementation of object-orientation in R. It provides an 
+  interface to S4 reference classes and two alternative new implementations. One 
+  is an experimental version built around S4 ('defineClass') and the other one 
+  ('retList') makes it more convenient to work with lists returned from functions 
+  and uses only S3.
 
 ## Installation
 To install from CRAN:
@@ -24,9 +24,15 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.3.0 
-## Development Version: 0.3.2 
+## Development Version: 0.3.3 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.3.3:
+## 
+##     o   Linking the interfaces to the S4 class system to the roxygen2 documentation facilities. It is now possible to document generics, methods and types in the same way as you would using only the methods package.
+## 
+##     o   New functions parser_%m%, parser_%g% and parser_%type% to be used by roxygen2
 ## 
 ## Changes in version 0.3.2:
 ## 
@@ -351,7 +357,9 @@ setMethod("initialize",
           })
 
 Test() # works
-Test(2) # won't work. What we want is to say x = 2 on init
+# If you want to have something else than '...', e.g. named arguments you have 
+# to define 'Test' yourself:
+Test(2) # won't work.
 Test(x = 2) # works
 Child() # has 3 slots with defaults as in the prototype
 ```
@@ -373,7 +381,7 @@ Test : Child(z = " ") %type% {
 Test() # works
 Test(2) # works
 Test(x = 2) # works
-Child("Hej", x = 2) # works
+Child("Hej", x = 2) # works: Child <- function(z, ...) new('Child', z = z, ...)
 ```
 
 Three things are happening on a call to `%type%`. `setClass` is called with prototype and slots derived from the prototype. `setMethod` for `initialize` with `.Object` and `...` as arguments; and `.Object <- callNextMethod()` as first line so that init allways works correct; and the rhs expression as body. And finally a constructor function is assigned to the types name (with arguments and defaults).
