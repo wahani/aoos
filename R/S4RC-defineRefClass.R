@@ -75,7 +75,6 @@ defineRefClass <- function(expr) {
 
 }
 
-
 combineListElements <- function(l, ind, name) {
   ind <- as.logical(ind)
   newElement <- l[ind]

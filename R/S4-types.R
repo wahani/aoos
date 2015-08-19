@@ -88,6 +88,6 @@
   # Return const as side effect and trick R CMD check:
   globalVariables(c(className, names(slots)), package = topenv(envir))
   assign(className, const, envir = envir)
-  invisible(const)
+  invisible(getClass(className, where = envir))
   
 }

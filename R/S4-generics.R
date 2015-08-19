@@ -31,7 +31,8 @@
     names(formals(setGenericArgList$def))), topenv(setGenericArgList$where)
     )
   
-  invisible(do.call("setGeneric", setGenericArgList))
+  do.call("setGeneric", setGenericArgList)
+  invisible(getGeneric(setGenericArgList$name, where = setGenericArgList$where))
   
 }
 
@@ -102,6 +103,7 @@ splitTrim <- function(x, pattern) {
   # Fix for R CMD check:
   globalVariables(argNames, topenv(setMethodArgList$where))
   
-  invisible(do.call("setMethod", setMethodArgList))
+  do.call("setMethod", setMethodArgList)
+  invisible(getMethod(setMethodArgList$f, setMethodArgList$signature))
   
 }

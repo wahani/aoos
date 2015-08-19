@@ -1,3 +1,7 @@
+Version 0.3.3
+- Linking the interfaces to the S4 class system to the roxygen2 documentation facilities. It is now possible to document generics, methods and types in the same way as you would using only the methods package.
+- New functions parser_%m%, parser_%g% and parser_%type% to be used by roxygen2
+
 Version 0.3.2
 - New wrapper around setClass: %types% to be used as a subset of S4 classes. It mimics the pattern of "setClass(...); setMethod("initialize", ...)" and captures most of the needed features.
 

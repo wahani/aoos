@@ -1,7 +1,7 @@
 Package: aoos
 Type: Package
 Title: Another Object Orientation System
-Version: 0.3.2
+Version: 0.3.3
 Date: 2015-08-06
 Authors@R: person("Sebastian", "Warnholz", role = c("aut", "cre"),
                   email = "wahani@gmail.com")
@@ -16,7 +16,8 @@ Depends:
     R(>= 3.2.0)
 Imports:
     magrittr,
-    utils
+    utils,
+    roxygen2
 License: GPL-3 | file LICENSE
 Suggests:
     testthat,
