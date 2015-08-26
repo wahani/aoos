@@ -1,41 +1,116 @@
 #' Wrapper for writing S4 generics and methods
 #' 
-#' These are two wrappers around \code{setGeneric} and \code{setMethod}. A relevant difference is that generics and methods are stored in the environment in which  \code{\%g\%} and \code{\%m\%} are called and not in the top-environment. Furthermore both functions have side effects in that they will call \code{\link{globalVariables}} for the arguments and name of the generic.
+#' These are two wrappers around \code{setGeneric} and \code{setMethod}. A
+#' relevant difference is that generics and methods are stored in the
+#' environment in which  \code{\%g\%} and \code{\%m\%} are called and not in the
+#' top-environment. Furthermore both functions have side effects in that they
+#' will call \code{\link{globalVariables}} for the arguments and name of the
+#' generic.
 #' 
-#' @param lhs an expression like \code{genericName(<argList>)} for \code{\%g\%} and \code{genericName(<args = signature>, <argList>)} for \code{\%m\%}.
+#' @param lhs an expression like \code{genericName(<argList>)} for \code{\%g\%}
+#'   and \code{genericName(<args = signature>, <argList>)} for \code{\%m\%}.
 #' @param rhs the body as an expression.
 #' 
 #' @export
 #' @rdname S4generics
 "%g%" <- function(lhs, rhs) {
   
-  mc <- match.call()
-  lhs <- deparse(mc$lhs)
-  setGenericArgList <- list()
-  
-  classes <- deleteInParan(lhs) %>% splitTrim(":") %>% deleteQuotes %>% rev
-  setGenericArgList$name <- classes[1]
-  setGenericArgList$valueClass <- if (is.na(classes[2])) character() else classes[2]
-  setGenericArgList$where <- parent.frame()
-  setGenericArgList$def <- {
-    defCall <- "function" %p0% deleteBeforeParan(lhs) %p0% " 1" # template fun
-    generic <- eval(parse(text = defCall))
-    environment(generic) <- parent.frame()
-    body(generic) <- mc$rhs
-    generic
-  }
+  argList <- GenericExpressionTree(match.call(), parent.frame())
   
   # Fix for R CMD check:
   globalVariables(c(
-    setGenericArgList$name, 
-    names(formals(setGenericArgList$def))), topenv(setGenericArgList$where)
-    )
+    argList$name, 
+    names(formals(argList$def))), 
+    topenv(argList$where)
+  )
   
-  do.call("setGeneric", setGenericArgList)
-  invisible(getGeneric(setGenericArgList$name, where = setGenericArgList$where))
+  do.call("setGeneric", argList)
+  invisible(getGeneric(argList$name, where = argList$where))
   
 }
 
+GenericExpressionTree <- function(.mc, where) {
+  
+  .exprTree <- ExpressionTree(.mc)
+  name <- .exprTree$names[1]
+  valueClass <- if (is.na(.exprTree$names[2])) character() else .exprTree$names[2]
+  def <- makeFunDef(.exprTree$args, .exprTree$body, where)
+  
+  retList("GenericExpressionTree")
+  
+}
+
+ExpressionTree <- function(.mc) {
+  
+  .lhs <- deparse(.mc$lhs) %>% paste(collapse = "") %>% sub("\\n", "", .)
+  body <- deparse(.mc$rhs)
+  names <- deleteInParan(.lhs) %>% splitTrim(":") %>% deleteQuotes %>% rev
+  args <- deleteBeforeParan(.lhs) %>% deleteEnclosingParan %>% splitTrim(",") 
+  
+  retList("ExpressionTree")
+  
+}
+
+makeFunDef <- function(args, body, envir) {
+  
+  args <- if (is.character(args)) 
+    "(" %p0% paste(args, collapse = ", ") %p0% ")" else 
+      stop(args, "is a ", class(args))
+  
+  body <- if (is.character(body)) 
+    paste(body, collapse = "\n") else 
+      stop(body, "is a", class(body))
+  
+  defCall <- "function" %p0% args %p0% body
+  eval(parse(text = defCall), envir = envir)
+  
+}
+
+#' @export
+#' @rdname S4generics
+"%m%" <- function(lhs, rhs) {
+  
+  argList <- MethodExpressionTree(match.call(), parent.frame())
+  
+  # Fix for R CMD check:
+  globalVariables(
+    names(formals(argList$definition)), 
+    topenv(argList$where)
+  )
+  
+  do.call("setMethod", argList)
+  invisible(getMethod(argList$f, argList$signature))
+  
+}
+
+MethodExpressionTree <- function(.mc, where) {
+  
+  .exprTree <- ExpressionTree(.mc)
+  f <- eval(parse(text = .exprTree$names[1]), envir = where)
+  
+  .genericArgNames <- names(formals(f)) %without% "..."
+  .argsSplitted <- lapply(.exprTree$args, splitTrim, pattern = "=")
+  .argNames <- sapply(.argsSplitted, `[`, 1)
+  
+  signature <- ifelse(.argNames %in% .genericArgNames, .argsSplitted, "")
+  signature %<>% .[!sapply(., identical, "")]
+  signature %<>% {
+    classes <- sapply(., `[`, 2) %>% deleteQuotes
+    names(classes) <- sapply(., `[`, 1)
+    classes[!is.na(classes)]
+  }
+  
+  .args <- ifelse(.argNames %in% .genericArgNames, 
+                  sapply(.argsSplitted, `[`, 1),
+                  sapply(.argsSplitted, paste, collapse = " = "))
+  
+  definition <- makeFunDef(.args, .exprTree$body, where)
+  
+  retList("MethodExpressionTree")
+  
+}
+
+# Helpers:
 deleteQuotes <- . %>% sub("^[\"\']", "", .) %>% sub("[\"\']$", "", .)
 deleteBeforeParan <- . %>% splitTrim("\\(") %>% { .[1] <- ""; . } %>% paste0(collapse = "(")
 deleteEnclosingParan <- . %>% sub("\\)$", "", .) %>% sub("^\\(", "", .)
@@ -45,65 +120,4 @@ splitTrim <- function(x, pattern) {
 }
 "%p0%" <- function(lhs, rhs) paste0(lhs, rhs)
 "%p%" <- function(lhs, rhs) paste(lhs, rhs)
-
-#' @export
-#' @rdname S4generics
-"%m%" <- function(lhs, rhs) {
-  
-  # Some helpers:
-  findGenericFunction <- function(lhs, envir) {
-    genericName <- deleteInParan(lhs) %>% deleteQuotes
-    eval(parse(text = genericName), envir = envir)
-  }
-
-  collapseArgumentList <- function(names, defaults) {
-    paste(names, defaults, sep = "=") %>% paste(collapse = " , ")
-  }
-  
-  getFormals <- . %>% formals %>% names %>% .[!(. == "...")]
-  
-  # Preparing:
-  mc <- match.call()
-  lhs <- deparse(mc$lhs)
-  
-  # This list will be used in a do.call for setMethod:
-  setMethodArgList <- list()
-  setMethodArgList$where <- parent.frame()
-  
-  # The generic function
-  setMethodArgList$f <- findGenericFunction(lhs, setMethodArgList$where)
-  
-  # The signature:
-  args <- deleteBeforeParan(lhs)
-  args %<>% deleteEnclosingParan 
-  args %<>% splitTrim(",")
-  argNames <- sapply(as.list(args), . %>% splitTrim(., "=") %>% .[1])
-  namesInGeneric <- argNames %in% getFormals(setMethodArgList$f)
-  defaults <- sapply(as.list(args), . %>% splitTrim(., "=") %>% .[2])
-  signature <- defaults[namesInGeneric]
-  signature <- ifelse(is.na(signature), "ANY", signature)
-  signature <- deleteQuotes(signature)
-  setMethodArgList$signature <- signature
-  
-  # The function/method
-  defaults <- ifelse(is.na(defaults), "", defaults)
-  defaults <- ifelse(namesInGeneric, "", defaults)
-  
-  templateFun <- function() 1
-  
-  formals(templateFun) <- 
-    "alist(" %p0% collapseArgumentList(argNames, defaults) %p0% ")" %>%
-    parse(text = .) %>%
-    eval
-  
-  body(templateFun) <- mc$rhs
-  environment(templateFun) <- setMethodArgList$where
-  setMethodArgList$definition <- templateFun
-  
-  # Fix for R CMD check:
-  globalVariables(argNames, topenv(setMethodArgList$where))
-  
-  do.call("setMethod", setMethodArgList)
-  invisible(getMethod(setMethodArgList$f, setMethodArgList$signature))
-  
-}
+"%without%" <- function(lhs, rhs) lhs[!(lhs %in% rhs)]
