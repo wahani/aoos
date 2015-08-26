@@ -30,6 +30,8 @@
 }
 
 GenericExpressionTree <- function(.mc, where) {
+  # .mc is a match.call() from %g% and where the parent frame
+  # This function will construct a list of arguments for a call to setGeneric
   
   .exprTree <- ExpressionTree(.mc)
   name <- .exprTree$names[1]
@@ -41,6 +43,9 @@ GenericExpressionTree <- function(.mc, where) {
 }
 
 ExpressionTree <- function(.mc) {
+  # The systax is as follows:
+  # [name1 : ... : nameN-1 : ] nameN([<argList>]) %<>% expr
+  # name1 to nameN will be the names. <argList> the args and body is expr
   
   .lhs <- deparse(.mc$lhs) %>% paste(collapse = "") %>% sub("\\n", "", .)
   body <- deparse(.mc$rhs)
@@ -52,7 +57,8 @@ ExpressionTree <- function(.mc) {
 }
 
 makeFunDef <- function(args, body, envir) {
-  
+  # args and body are expected to be character which will then be parsed to
+  # R-Code
   args <- if (is.character(args)) 
     "(" %p0% paste(args, collapse = ", ") %p0% ")" else 
       stop(args, "is a ", class(args))
@@ -112,12 +118,20 @@ MethodExpressionTree <- function(.mc, where) {
 
 # Helpers:
 deleteQuotes <- . %>% sub("^[\"\']", "", .) %>% sub("[\"\']$", "", .)
-deleteBeforeParan <- . %>% splitTrim("\\(") %>% { .[1] <- ""; . } %>% paste0(collapse = "(")
+
+deleteBeforeParan <- . %>% splitTrim("\\(") %>% { .[1] <- ""; . } %>% 
+  paste0(collapse = "(")
+
 deleteEnclosingParan <- . %>% sub("\\)$", "", .) %>% sub("^\\(", "", .)
+
 deleteInParan <- . %>% gsub("\\(.*\\)", "", .)
+
 splitTrim <- function(x, pattern) {
   strsplit(x, pattern) %>% unlist %>% trimws
 }
+
 "%p0%" <- function(lhs, rhs) paste0(lhs, rhs)
+
 "%p%" <- function(lhs, rhs) paste(lhs, rhs)
+
 "%without%" <- function(lhs, rhs) lhs[!(lhs %in% rhs)]

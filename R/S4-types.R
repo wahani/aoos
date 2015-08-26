@@ -28,66 +28,107 @@
 #' 
 #' @export
 "%type%" <- function(lhs, rhs) {
+ 
+  .exprTree <- ExpressionTree(match.call())
+  .classExprTree <- ClassExpressionTree(match.call(), parent.frame())
+  .initExprTree <- InitMethodExpressionTree(match.call(), parent.frame())
+  .constExprTree <- ConstExpressionTree(match.call(), parent.frame())
   
-  wrapInCurlyBraces <- function(x) {
+  do.call(setClass, .classExprTree)
+  do.call(setMethod, .initExprTree)
+  const <- do.call(makeFunDef, .constExprTree)
+  assign(.exprTree$names[1], const, envir = parent.frame())
+  
+  globalVariables(c(
+    .exprTree$names[1], 
+    names(.classExprTree$slots)), 
+    package = topenv(parent.frame())
+  )
+  
+  invisible(getClass(.exprTree$names[1], where = parent.frame()))
+  
+}
+
+ClassExpressionTree <- function(.mc, where) {
+  
+  .makeExpression <- function(funName, args) {
+    parse(text = paste0(
+      funName, "(", paste(args, collapse = ", "), ")"
+    ))
+  }
+  
+  .protoIsGood <- function(proto) 
+    proto@dataPart || !identical(proto@slots, character())
+  
+  .localEval <- function(expr) eval(expr, envir = where)
+  
+  .exprTree <- ExpressionTree(.mc)
+  .slotExprTree <- SlotExpressionTree(.mc)
+  
+  Class <- .exprTree$names[1]
+  contains <- if (is.na(.exprTree$names[2])) 
+    character() else 
+      .exprTree$names[2:length(.exprTree$names)]
+  
+  slots <- .localEval(.makeExpression("list", .slotExprTree$slots)) %>% sapply(class)
+  slots <- ifelse(slots == "NULL", "ANY", slots)
+  if (length(slots) == 0) rm("slots")
+  proto <- .localEval(.makeExpression("prototype", .slotExprTree$proto))
+  if (!.protoIsGood(proto)) rm("proto")
+  
+  retList("ClassExpressionTree")
+
+}
+
+SlotExpressionTree <- function(.mc, where) {
+  
+  .exprTree <- ExpressionTree(.mc)
+  
+  .argsSplitted <- lapply(.exprTree$args, splitTrim, pattern = "=")
+  .argNames <- sapply(.argsSplitted, `[`, 1)
+  
+  .allArgs <- .argsSplitted[!(.argNames %in% c("..."))] %>%
+    ifelse(sapply(., length) == 1, lapply(., inset, 2, "NULL"), .) %>%
+    sapply(paste, collapse = " = ")
+  
+  proto <- .allArgs %>% sub(".Data( )?\\=", "", .)
+  slots <- .allArgs[!grepl(".Data", .allArgs)]
+  const <- unlist(c(slots, "..."))
+  .slotNames <- .argNames %without% c(".Data", "...")
+  constNew <- if(length(.slotNames) == 0) "..." else c(.slotNames %p% "=" %p% .slotNames, "...")
+  constNew <- c(paste0("'", .exprTree$names[1], "'"), constNew)
+  
+  retList("SlotExpressionTree")
+  
+}
+
+InitMethodExpressionTree <- function(.mc, where) {
+  
+  .wrapInCurlyBraces <- function(x) {
     if (length(x) == 1) c("{", gsub("^\\{|\\}$", "", x), "}")
     else x
   }
   
-  protoIsGood <- function(proto) 
-    proto@dataPart || !identical(proto@slots, character())
+  .exprTree <- ExpressionTree(.mc)
+  .body <- .wrapInCurlyBraces(.exprTree$body)
+  .body[1] <- .body[1] %p0% "\n.Object <- callNextMethod()"
   
-  evalInParent <- function(text) eval(parse(text = text), envir = envir)
+  f <- getGeneric("initialize", where = where)
+  signature <- c(.Object = .exprTree$names[1])
+  definition <- makeFunDef(c(".Object", "..."), .body, where)
   
-  mc <- match.call()
-  lhs <- deparse(mc$lhs)
-  envir <- parent.frame()
+  retList("MethodExpressionTree")
   
-  # Name of class and super:
-  classes <- deleteInParan(lhs) %>% splitTrim(":") %>% deleteQuotes %>% rev
-  className <- classes[1]
-  super <- if (is.na(classes[2])) character() else classes[2:length(classes)]
+}
+
+ConstExpressionTree <- function(.mc, envir) {
   
-  # Init-method call:
-  initCall <- "initialize(.Object = " %p0% className %p0% ", ...)"
-  initBody <- deparse(mc$rhs)
-  initBody <- wrapInCurlyBraces(initBody)
-  initBody[1] <- initBody[1] %p0% "\n.Object <- callNextMethod()"
-  initCall <- parse(text = initCall %p% "%m%" %p% paste(initBody, collapse = "\n"))
+  .exprTree <- ExpressionTree(.mc)
+  .slotExprTree <- SlotExpressionTree(.mc)
   
-  # slots & prototype & constructor:
-  slotsCall <- deleteBeforeParan(lhs) %>% deleteEnclosingParan %>% splitTrim(",")
-  ind <- grepl("=", slotsCall)
-  slotsCall[!ind] <- slotsCall[!ind] %p0% " = NULL"
-  allArgs <- "(" %p0% paste(slotsCall, collapse = ", ") %p0% ")"
-  protoArgs <- sub(".Data( )?\\=", "", allArgs)
-  constArgs <- "(" %p0% paste(slotsCall[!grepl("^.Data( )?\\=|\\.\\.\\.", slotsCall)], collapse = ", ") %p0% ")"
-  proto <- evalInParent("prototype" %p0% protoArgs)
-  protoAsList <- evalInParent("list" %p0% constArgs)
-  slots <- vapply(protoAsList, function(slot) if (is.null(slot)) "ANY" else class(slot)[1], character(1))
-  argsInNew <- if (length(protoAsList) == 0) "" else (", " %p0%
-    paste(names(protoAsList) %p% "=" %p% names(protoAsList), collapse = ", "))
-  argsInConst <- sub("\\)$", if (length(protoAsList) == 0) "...)" else ", ...)", constArgs)
-  constCall <- "function" %p0% argsInConst %p% 
-    "new('" %p0% className %p0% "'" %p0% argsInNew %p0% ", ...)"
-  const <- evalInParent(constCall)
+  args <- .slotExprTree$const
+  body <- c("new(", paste(.slotExprTree$constNew, collapse = ", "), ")")
   
-  # class:
-  argList <- list()
-  argList$Class <- className
-  argList$contains <- super
-  argList$prototype <- if (protoIsGood(proto)) proto else NULL
-  argList$slots <- slots
-  argList$where <- envir
-  
-  do.call(setClass, argList)
-  
-  # init-method
-  eval(initCall, envir)
-  
-  # Return const as side effect and trick R CMD check:
-  globalVariables(c(className, names(slots)), package = topenv(envir))
-  assign(className, const, envir = envir)
-  invisible(getClass(className, where = envir))
+  retList("ConstExpressionTree")
   
 }
