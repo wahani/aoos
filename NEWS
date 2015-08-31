@@ -1,3 +1,6 @@
+Version 0.3.4
+- The class Show is not a reference class anymore but an ordinary S4 class. This should not make a difference since it is virtual.
+
 Version 0.3.3
 - Linking the interfaces to the S4 class system to the roxygen2 documentation facilities. It is now possible to document generics, methods and types in the same way as you would using only the methods package.
 - New functions parser_%m%, parser_%g% and parser_%type% to be used by roxygen2

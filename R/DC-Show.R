@@ -12,7 +12,7 @@
 #' })
 #' 
 #' ClassWithShowMethod()
-setRefClass("Show", contains = "VIRTUAL")
+setClass("Show", contains = "VIRTUAL")
 
 #' @export
 #' @rdname Show

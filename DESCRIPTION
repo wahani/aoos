@@ -1,7 +1,7 @@
 Package: aoos
 Type: Package
 Title: Another Object Orientation System
-Version: 0.3.3
+Version: 0.3.4
 Date: 2015-08-06
 Authors@R: person("Sebastian", "Warnholz", role = c("aut", "cre"),
                   email = "wahani@gmail.com")
