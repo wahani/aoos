@@ -24,9 +24,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.3.0 
-## Development Version: 0.3.3 
+## Development Version: 0.3.4 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.3.4:
+## 
+##     o   The class Show is not a reference class anymore but an ordinary S4 class. This should not make a difference since it is virtual.
 ## 
 ## Changes in version 0.3.3:
 ## 
@@ -60,7 +64,12 @@ install_github("wahani/aoos")
 
 ### retList:
 
-Basically you define constructor functions. There is no *formal* class definition. The function body will define what members an object will have. You quit the function defining the return value using `retList` which is a *generic* constructor function. By default it will look at the environment from which it is called and convert that environment into a list. That list is returned and is an object. Names with a "." are not part of the constructed *list* (by default).
+Basically you define constructor functions. There is no *formal* class
+definition. The function body will define what members an object will have. You
+quit the function defining the return value using `retList` which is a *generic*
+constructor function. By default it will look at the environment from which it
+is called and convert that environment into a list. That list is returned and is
+an object. Names with a "." are not part of the constructed *list* (by default).
 
 
 ```r
@@ -104,7 +113,9 @@ peter$getSalary()
 ## [1] 5
 ```
 
-Here every instance is of class *Employee* and also inherits from class *Print*. This enables us to define the print method in the functions body and is equivalent to invoking the print method directly:
+Here every instance is of class *Employee* and also inherits from class *Print*.
+This enables us to define the print method in the functions body and is
+equivalent to invoking the print method directly:
 
 
 ```r
@@ -128,7 +139,10 @@ peter$print()
 
 ### retList + Inheritance:
 
-You can inherit methods and fields from a super class, or rather an instance, because there is no *formal* calls definition. Methods and fields can be replaced in the child, all member from the parent are also available for the methods of the child.
+You can inherit methods and fields from a super class, or rather an instance,
+because there is no *formal* calls definition. Methods and fields can be
+replaced in the child, all member from the parent are also available for the
+methods of the child.
 
 
 ```r
@@ -187,7 +201,9 @@ julia
 
 ### retList + S4 generics
 
-As of version 0.3.1 there exist two binary operators, `%g%` and `%m%`, which link to the S4 system for genric functions. They provide (hopefully) concise alternatives to `methods::setGeneric` and `methods::setMethod`:
+As of version 0.3.1 there exist two binary operators, `%g%` and `%m%`, which
+link to the S4 system for genric functions. They provide (hopefully) concise
+alternatives to `methods::setGeneric` and `methods::setMethod`:
 
 
 ```r
@@ -216,7 +232,14 @@ strLength("ab")
 ## [1] 2
 ```
 
-A bit tricky and unwise is that the generic has a default value of 2 which means that as long the ANY-method is not defined the default is not working, but I needed to illustrate default values. In S4, methods can have defaults for arguments which are not formals of the generic. Otherwise the defaults of the generic are passed down to its methods. This is not changed: Define defaults for the generic. If a method has more arguments than its generic you can define defaults for them. For the *shared* argument names provide a class name. One exception to the rule are `...` on which S4 cannot dispatch.
+A bit tricky and unwise is that the generic has a default value of 2 which means
+that as long the ANY-method is not defined the default is not working, but I
+needed to illustrate default values. In S4, methods can have defaults for
+arguments which are not formals of the generic. Otherwise the defaults of the
+generic are passed down to its methods. This is not changed: Define defaults for
+the generic. If a method has more arguments than its generic you can define
+defaults for them. For the *shared* argument names provide a class name. One
+exception to the rule are `...` on which S4 cannot dispatch.
 
 
 ```r
@@ -227,7 +250,11 @@ strLength()
 ## [1] 1
 ```
 
-An important difference to `methods::setGeneric` and `methods::setMethod` is that methods and generics are stored in the environment where they are created and not in the top environment. That means you can define generics which are local to a function or closure and this extends the `retList`-idea of representing objects in *R* as demonstrated here:
+An important difference to `methods::setGeneric` and `methods::setMethod` is
+that methods and generics are stored in the environment where they are created
+and not in the top environment. That means you can define generics which are
+local to a function or closure and this extends the `retList`-idea of
+representing objects in *R* as demonstrated here:
 
 
 ```r
@@ -270,7 +297,9 @@ instance$overloaded("a")
 ## [1] "a"
 ```
 
-The next question is how to inherit or extend an existing generic which is a member of a class? I am not entirely happy with how this works at the moment, but this is one way to approach it (which works...):
+The next question is how to inherit or extend an existing generic which is a
+member of a class? I am not entirely happy with how this works at the moment,
+but this is one way to approach it (which works...):
 
 
 ```r
@@ -328,7 +357,13 @@ instance$overloaded(1L)
 
 ### S4 Types
 
-The following presents the function `%type%` which is a link to S4s `setClass`. When using `setClass` in many scenarios redundancy (of information) in the code is introduced. `%type%` tries to abstract a typical scenario of using `setClass`. Here is an example, first the S4 approach which is usefull in a scenario where inheritance is relevant. `.Object <- callNextMethod()` is important so that all init-methods are called. The prototype is usefull to have default values on init:
+The following presents the function `%type%` which is a link to S4s `setClass`.
+When using `setClass` in many scenarios redundancy (of information) in the code
+is introduced. `%type%` tries to abstract a typical scenario of using
+`setClass`. Here is an example, first the S4 approach which is usefull in a
+scenario where inheritance is relevant. `.Object <- callNextMethod()` is
+important so that all init-methods are called. The prototype is usefull to have
+default values on init:
 
 
 ```r
@@ -364,7 +399,9 @@ Test(x = 2) # works
 Child() # has 3 slots with defaults as in the prototype
 ```
 
-Looking at the source code it is hard to see how many slots are involved and what exactly is going on with these two classes. It just looks complicated. The next snippet does more or less the same thing:
+Looking at the source code it is hard to see how many slots are involved and
+what exactly is going on with these two classes. It just looks complicated. The
+next snippet does more or less the same thing:
 
 
 ```r
@@ -384,11 +421,62 @@ Test(x = 2) # works
 Child("Hej", x = 2) # works: Child <- function(z, ...) new('Child', z = z, ...)
 ```
 
-Three things are happening on a call to `%type%`. `setClass` is called with prototype and slots derived from the prototype. `setMethod` for `initialize` with `.Object` and `...` as arguments; and `.Object <- callNextMethod()` as first line so that init allways works correct; and the rhs expression as body. And finally a constructor function is assigned to the types name (with arguments and defaults).
+Three things are happening on a call to `%type%`. `setClass` is called with
+slots derived from the prototype. `setMethod` for `initialize` with `.Object`
+and `...` as arguments; and `.Object <- callNextMethod()` as first line so that
+init allways works correct; and the rhs expression as body. And finally a
+constructor function is assigned to the types name (with arguments and
+defaults).
+
+These ideas can be combined to construct something object like in S4 with fields
+as slots and methods contained in a list (other patterns can be thought of...):
+
+
+```r
+# Some extra stuff to make the instance on which a method is invoked available
+# during the call.
+setClass("Self", contains = "VIRTUAL")
+
+setMethod("$", "Self", function(x, name) {
+  function(...) x[[name]](.Object = x, ...)
+})
+```
+
+```
+## [1] "$"
+```
+
+```r
+Self : Show : Test : list : Super() %type% {
+  method <- function(.Object) .Object@x * 2
+  show <- function(.Object) cat("Value for x:", .Object@x)
+  S3Part(.Object) <- retList(super = .Object)
+  .Object
+}
+
+x <- Super(x = 2)
+x
+```
+
+```
+## Value for x: 2
+```
+
+```r
+x$method()
+```
+
+```
+## [1] 4
+```
+
 
 ### More on `retList`
 
-Something you have to keep in mind is that returned objects are of class *list*. If you want to have a public field you have to define get and set methods, because you will see a copy of those fields in the object, they behave more like an attribute.
+Something you have to keep in mind is that returned objects are of class *list*.
+If you want to have a public field you have to define get and set methods,
+because you will see a copy of those fields in the object, they behave more like
+an attribute.
 
 
 ```r
@@ -416,7 +504,10 @@ obj$name
 ## [1] "Noah"
 ```
 
-We can do more abstract representations of *things*. In this example I want to create a constructor object which keeps track of how many instances it created. Also every instance should know how many siblings it has, or in other words all instances share a reference to a field accessible by all of them.
+We can do more abstract representations of *things*. In this example I want to
+create a constructor object which keeps track of how many instances it created.
+Also every instance should know how many siblings it has, or in other words all
+instances share a reference to a field accessible by all of them.
 
 
 ```r
