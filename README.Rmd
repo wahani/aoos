@@ -80,7 +80,7 @@ peter$print()
 ### retList + Inheritance:
 
 You can inherit methods and fields from a super class, or rather an instance,
-because there is no *formal* calls definition. Methods and fields can be
+because there is no *formal* class definition. Methods and fields can be
 replaced in the child, all member from the parent are also available for the
 methods of the child.
 
