@@ -7,15 +7,30 @@
 lhs \%type\% rhs
 }
 \arguments{
-\item{lhs}{an expression of the form: \cr\code{[<parent-name>:]<type-name>([<slots>])}
+\item{lhs}{an expression of the form:
+  \cr\code{[<parent-name>:]<type-name>([<slots>])}
 \cr - <parent-name> optional, the name of the S4-class/type to inherit from.
 \cr - <type-name> the name for the new type and constructor function.
-\cr - <slots> optional, \code{name = value} expressions. They will be used to construct the prototype. The values will also be used to infer the class of the slots. If no value is supplied, \code{ANY} is assumed.}
+\cr - <slots> optional, \code{name = value} expressions. They will be used to
+construct the prototype. The values will also be used to infer the class of
+the slots. If no value is supplied, \code{ANY} is assumed.}
 
-\item{rhs}{the body of the initialize method as expression. It will be called with \code{.Object} and \code{...} as arguments. \code{.Object} should be the return value. With \code{.Object} there is an instance of the type on which assertions can be formulated. Prior to the body (rhs) \code{.Object <- callNextMethod()} will be evaluated which enables proper initialization if your type and its inherited fields. See \link[methods]{initialize} for details.}
+\item{rhs}{the body of the initialize method as expression. It will be called
+  with \code{.Object} and \code{...} as arguments. \code{.Object} should be
+  the return value. With \code{.Object} there is an instance of the type on
+  which assertions can be formulated. Prior to the body (rhs) \code{.Object
+  <- callNextMethod()} will be evaluated which enables proper initialization
+  if your type and its inherited fields. See \link[methods]{initialize} for
+  details.}
 }
 \description{
-This function can be used to define new S4-classes which are called Type. They have an initialize method and in the introduced syntax init-method and S4-class definition build a unit, hence a type. This simply captures a typical \code{setClass} then \code{setMethod("initialize", ...)} pattern where often some redundancy is introduced. The function has side effects due to calling \code{setClass}, \code{setMethod} and assigning the constructor function to the types name.
+This function can be used to define new S4-classes which are called Type.
+They have an initialize method and in the introduced syntax init-method and
+S4-class definition build a unit, hence a type. This simply captures a
+typical \code{setClass} then \code{setMethod("initialize", ...)} pattern
+where often some redundancy is introduced. The function has side effects due
+to calling \code{setClass}, \code{setMethod} and assigning the constructor
+function to the types name.
 }
 \examples{
 # This will create an S4-class named 'Test' with two slots; x = "numeric"
