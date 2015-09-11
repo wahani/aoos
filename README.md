@@ -323,7 +323,7 @@ Child <- function() {
   .super <- Class()
   
   # This points %m% to the generic (in .super) which should be extended:
-  .super$overloaded(x = integer) %m% {
+  .super$overloaded(x ~ integer) %m% {
     cat("This is the method for 'integer' values ... \n")
     x
   }
@@ -349,7 +349,7 @@ instance$overloaded("a")
 ```
 
 ```
-## This is the method for 'integer' values ...
+## This is the default ...
 ```
 
 ```
@@ -361,7 +361,7 @@ instance$overloaded(1L)
 ```
 
 ```
-## This is the method for 'numeric' values ...
+## This is the method for 'integer' values ...
 ```
 
 ```
