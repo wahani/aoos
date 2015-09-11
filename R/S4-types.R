@@ -65,7 +65,7 @@
 }
 
 ClassExpressionTree <- function(.mc, where) {
-  
+
   .makeExpression <- function(funName, args) {
     parse(text = paste0(
       funName, "(", paste(args, collapse = ", "), ")"
@@ -96,6 +96,11 @@ ClassExpressionTree <- function(.mc, where) {
 }
 
 SlotExpressionTree <- function(.mc, where) {
+  browser()
+  
+  .makeArgList <- function(x) {
+    ifelse(is.na(x), names(x), paste(names(x), x, sep = " = "))
+  }
   
   .exprTree <- ExpressionTree(.mc)
   
@@ -106,10 +111,13 @@ SlotExpressionTree <- function(.mc, where) {
     ifelse(sapply(., length) == 1, lapply(., inset, 2, "NULL"), .) %>%
     sapply(paste, collapse = " = ")
   
-  proto <- .allArgs %>% sub(".Data( )?\\=", "", .)
-  slots <- .allArgs[!grepl(".Data", .allArgs)]
-  const <- unlist(c(slots, "..."))
-  .slotNames <- .argNames %without% c(".Data", "...")
+  proto <- .exprTree$argDefaults %>% na.omit %>% .makeArgList %>% sub(".Data( )?\\=", "", .) 
+  slots <- .exprTree$argClasses
+  slots <- slots[!grepl(".Data", names(slots))]
+  slots[is.na(slots)] <- "ANY"
+  
+  const <- c(.makeArgList(.exprTree$argDefaults) %>% sub(".Data( )?\\=", "", .), "...")
+  .slotNames <- .exprTree$argNames %without% c(".Data", "...")
   constNew <- if(length(.slotNames) == 0) "..." else c(.slotNames %p% "=" %p% .slotNames, "...")
   constNew <- c(paste0("'", .exprTree$names[1], "'"), constNew)
   
