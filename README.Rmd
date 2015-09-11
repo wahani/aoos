@@ -120,10 +120,10 @@ alternatives to `methods::setGeneric` and `methods::setMethod`:
 strLength(x = 2, ...) %g% standardGeneric("strLength")
 
 # A method for x:character
-strLength(x = character, ...) %m% { nchar(x) }
+strLength(x ~ character, ...) %m% { nchar(x) }
 
 # Kind of the default method for x:ANY
-strLength(x = ANY, ...) %m% { strLength(as.character(x)) }
+strLength(x ~ ANY, ...) %m% { strLength(as.character(x)) }
 
 # Check that it works:
 strLength(123)
@@ -157,7 +157,7 @@ Class <- function() {
     x 
   } 
   
-  overloaded(x = numeric) %m% {
+  overloaded(x ~ numeric) %m% {
     cat("This is the method for 'numeric' values ... \n")
     x
   }

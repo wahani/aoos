@@ -126,3 +126,20 @@ test_that("Type with quoted class names", {
   expect_is(Test(), "Test")
   
 })
+
+# test_that("Type with explicit class names", {
+#   
+#   Test(x ~ numeric, y = list, z) %type% .Object
+#   
+#   expect_error(Test(x = 0)) # y is missing
+#   expect_true(Test(1, list())@x == 1)
+#   expect_true(identical(Test(1, list())@y, list()))
+#   expect_true(typeof(Test(1, list())) == "S4")
+#   
+#   removeClass("Test")
+#   
+# })
+
+
+
+

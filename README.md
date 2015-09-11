@@ -24,27 +24,40 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.3.0 
-## Development Version: 0.3.4 
+## Development Version: 0.3.5 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
 ## 
+## Changes in version 0.3.5:
+## 
+##     o   %m% now supports 'type expressions', i.e. the signature is expressed as
+## 	'varName ~ typeName'. Using '=' for specifying the signature is not supported
+## 	anymore.
+## 
 ## Changes in version 0.3.4:
 ## 
-##     o   The class Show is not a reference class anymore but an ordinary S4 class. This should not make a difference since it is virtual.
+##     o   The class Show is not a reference class anymore but an ordinary S4 class. This
+## 	should not make a difference since it is virtual.
 ## 
 ## Changes in version 0.3.3:
 ## 
-##     o   Linking the interfaces to the S4 class system to the roxygen2 documentation facilities. It is now possible to document generics, methods and types in the same way as you would using only the methods package.
+##     o   Linking the interfaces to the S4 class system to the roxygen2 documentation
+## 	facilities. It is now possible to document generics, methods and types in the
+## 	same way as you would using only the methods package.
 ## 
 ##     o   New functions parser_%m%, parser_%g% and parser_%type% to be used by roxygen2
 ## 
 ## Changes in version 0.3.2:
 ## 
-##     o   New wrapper around setClass: %types% to be used as a subset of S4 classes. It mimics the pattern of "setClass(...); setMethod("initialize", ...)" and captures most of the needed features.
+##     o   New wrapper around setClass: %types% to be used as a subset of S4 classes. It
+## 	mimics the pattern of "setClass(...); setMethod("initialize", ...)" and captures
+## 	most of the needed features.
 ## 
 ## Changes in version 0.3.1:
 ## 
-##     o   New wrappers (%g% and %m%) around setGeneric and setMethod from the methods package. They provide an alternative approach to define (S4) generic functions and methods putting an emphasis on readability.
+##     o   New wrappers (%g% and %m%) around setGeneric and setMethod from the methods
+## 	package. They provide an alternative approach to define (S4) generic functions
+## 	and methods putting an emphasis on readability.
 ```
 
 ## Material
@@ -140,7 +153,7 @@ peter$print()
 ### retList + Inheritance:
 
 You can inherit methods and fields from a super class, or rather an instance,
-because there is no *formal* calls definition. Methods and fields can be
+because there is no *formal* class definition. Methods and fields can be
 replaced in the child, all member from the parent are also available for the
 methods of the child.
 
@@ -211,10 +224,10 @@ alternatives to `methods::setGeneric` and `methods::setMethod`:
 strLength(x = 2, ...) %g% standardGeneric("strLength")
 
 # A method for x:character
-strLength(x = character, ...) %m% { nchar(x) }
+strLength(x ~ character, ...) %m% { nchar(x) }
 
 # Kind of the default method for x:ANY
-strLength(x = ANY, ...) %m% { strLength(as.character(x)) }
+strLength(x ~ ANY, ...) %m% { strLength(as.character(x)) }
 
 # Check that it works:
 strLength(123)
@@ -265,7 +278,7 @@ Class <- function() {
     x 
   } 
   
-  overloaded(x = numeric) %m% {
+  overloaded(x ~ numeric) %m% {
     cat("This is the method for 'numeric' values ... \n")
     x
   }
@@ -336,7 +349,7 @@ instance$overloaded("a")
 ```
 
 ```
-## This is the default ...
+## This is the method for 'integer' values ...
 ```
 
 ```
@@ -348,7 +361,7 @@ instance$overloaded(1L)
 ```
 
 ```
-## This is the method for 'integer' values ...
+## This is the method for 'numeric' values ...
 ```
 
 ```

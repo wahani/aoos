@@ -43,14 +43,27 @@ GenericExpressionTree <- function(.mc, where) {
 }
 
 ExpressionTree <- function(.mc) {
+  
   # The systax is as follows:
   # [name1 : ... : nameN-1 : ] nameN([<argList>]) %<>% expr
   # name1 to nameN will be the names. <argList> the args and body is expr
+  
+  .seperate <- function(x, delim) {
+    lArgs <- lapply(x, . %>% splitTrim(delim) %>% 
+        {c(.[1], deleteQuotes(.[2]))}
+    )
+    args <- sapply(lArgs, . %>% .[2])
+    names(args) <- argNames
+    args
+  }
   
   .lhs <- deparse(.mc$lhs) %>% paste(collapse = "") %>% sub("\\n", "", .)
   body <- deparse(.mc$rhs)
   names <- deleteInParan(.lhs) %>% splitTrim(":") %>% deleteQuotes %>% rev
   args <- deleteBeforeParan(.lhs) %>% deleteEnclosingParan %>% splitTrim(",") 
+  argNames <- sapply(args, . %>% splitTrim("=|~") %>% .[1], USE.NAMES = FALSE)
+  argDefaults <- args %>% .seperate("=")
+  argClasses <- args %>% .seperate("~")
   
   retList("ExpressionTree")
   
@@ -90,25 +103,18 @@ makeFunDef <- function(args, body, envir) {
 }
 
 MethodExpressionTree <- function(.mc, where) {
-  
+ 
   .exprTree <- ExpressionTree(.mc)
   f <- eval(parse(text = .exprTree$names[1]), envir = where)
-  
   .genericArgNames <- names(formals(f)) %without% "..."
-  .argsSplitted <- lapply(.exprTree$args, splitTrim, pattern = "=")
-  .argNames <- sapply(.argsSplitted, `[`, 1)
   
-  signature <- ifelse(.argNames %in% .genericArgNames, .argsSplitted, "")
-  signature %<>% .[!sapply(., identical, "")]
-  signature %<>% {
-    classes <- sapply(., `[`, 2) %>% deleteQuotes
-    names(classes) <- sapply(., `[`, 1)
-    classes[!is.na(classes)]
-  }
+  signature <- .exprTree$argClasses[!is.na(.exprTree$argClasses)]
   
-  .args <- ifelse(.argNames %in% .genericArgNames, 
-                  sapply(.argsSplitted, `[`, 1),
-                  sapply(.argsSplitted, paste, collapse = " = "))
+  .args <- ifelse(
+    .exprTree$argNames %in% .genericArgNames, 
+    .exprTree$argNames,
+    .exprTree$args
+  )
   
   definition <- makeFunDef(.args, .exprTree$body, where)
   

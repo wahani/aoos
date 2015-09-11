@@ -28,7 +28,7 @@
 #' 
 #' @export
 "%type%" <- function(lhs, rhs) {
- 
+  
   .exprTree <- ExpressionTree(match.call())
   .classExprTree <- ClassExpressionTree(match.call(), parent.frame())
   .initExprTree <- InitMethodExpressionTree(match.call(), parent.frame())
@@ -68,7 +68,7 @@ ClassExpressionTree <- function(.mc, where) {
   Class <- .exprTree$names[1]
   contains <- if (is.na(.exprTree$names[2])) 
     character() else 
-      .exprTree$names[2:length(.exprTree$names)]
+      .exprTree$names[-1]
   
   slots <- .localEval(.makeExpression("list", .slotExprTree$slots)) %>% sapply(class)
   slots <- ifelse(slots == "NULL", "ANY", slots)
