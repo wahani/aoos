@@ -18,7 +18,7 @@ test_that("Type with defaults", {
 
 test_that("Type with ANY", {
   
-  Test(x = numeric(), y) %type% .Object
+  Test(x = numeric(), y = NULL) %type% .Object
   
   expect_true(is.null(Test()@y))
   expect_true(is.numeric(Test()@x))
@@ -80,10 +80,7 @@ test_that("Type inheritance", {
 
 test_that("Types can inherit S3 classes", {
   
-  numeric : Test(
-    x = 1, 
-    .Data = 2
-  ) %type% {
+  numeric : Test(x = 1, .Data = 2) %type% {
     .Object
   }
   
@@ -130,18 +127,18 @@ test_that("Type with quoted class names", {
   
 })
 
-# test_that("Type with explicit class names", {
-#   
-#   Test(x ~ numeric, y = list(), z) %type% .Object
-#   
-#   expect_error(Test(x = 0)) # y is missing
-#   expect_true(Test(1, list())@x == 1)
-#   expect_true(identical(Test(1, list())@y, list()))
-#   expect_true(typeof(Test(1, list())) == "S4")
-#   
-#   removeClass("Test")
-#   
-# })
+test_that("Type with explicit class names", {
+  
+  Test(x ~ numeric, y = list(), z) %type% .Object
+  
+  expect_error(Test(x = 0)) # z is missing
+  expect_true(Test(1, list(), NULL)@x == 1)
+  expect_true(identical(Test(1, list(), NULL)@y, list()))
+  expect_true(typeof(Test(1, list(), NULL)) == "S4")
+  
+  removeClass("Test")
+  
+})
 
 
 

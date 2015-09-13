@@ -43,7 +43,7 @@
 #' 
 #' @export
 "%type%" <- function(lhs, rhs) {
- 
+  
   .exprTree <- ExpressionTree(match.call())
   .classExprTree <- ClassExpressionTree(match.call(), parent.frame())
   .initExprTree <- InitMethodExpressionTree(match.call(), parent.frame())
@@ -94,6 +94,7 @@ ClassExpressionTree <- function(.mc, where) {
   .mergeProtoClasses <- function(slots, proto) {
     protoClasses <- sapply(attributes(proto@object), . %>% class %>% `[`(1))
     slots[names(protoClasses)] <- protoClasses[names(protoClasses)]
+    slots[slots == "name"] <- "ANY"
     slots
   }
  
@@ -115,7 +116,7 @@ ClassExpressionTree <- function(.mc, where) {
 SlotExpressionTree <- function(.mc, where) {
   
   .exprTree <- ExpressionTree(.mc)
-  
+
   .argsSplitted <- lapply(.exprTree$args, splitTrim, pattern = "=")
   .argNames <- sapply(.argsSplitted, `[`, 1)
   
@@ -154,12 +155,25 @@ InitMethodExpressionTree <- function(.mc, where) {
 }
 
 ConstExpressionTree <- function(.mc, envir) {
-  
+ 
   .exprTree <- ExpressionTree(.mc)
   .slotExprTree <- SlotExpressionTree(.mc)
   
-  args <- .slotExprTree$const
-  body <- c("new(", paste(.slotExprTree$constNew, collapse = ", "), ")")
+  .getConstArgs <- function(.exprTree) {
+    args <- .exprTree$argDefaults[names(.exprTree$argDefaults) %without% ".Data"]
+    args <- ifelse(is.na(args), 
+                   names(args), 
+                   paste(names(args), .exprTree$argDefaults, sep = "="))
+    c(args, "...")
+  }
+  
+  .getConstArgsNew <- function(.exprTree) {
+    args <- names(.exprTree$argDefaults) %without% ".Data"
+    c("'" %p0% .exprTree$names[1] %p0% "'", paste(args, args, sep = "="), "...")
+  } 
+  
+  args <- .getConstArgs(.exprTree)
+  body <- c("new(", paste(.getConstArgsNew(.exprTree), collapse = ", "), ")")
   
   retList("ConstExpressionTree")
   
