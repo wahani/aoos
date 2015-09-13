@@ -139,7 +139,3 @@ test_that("Type with explicit class names", {
   removeClass("Test")
   
 })
-
-
-
-

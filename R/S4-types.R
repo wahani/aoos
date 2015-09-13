@@ -45,9 +45,9 @@
 "%type%" <- function(lhs, rhs) {
   
   .exprTree <- ExpressionTree(match.call())
-  .classExprTree <- ClassExpressionTree(match.call(), parent.frame())
-  .initExprTree <- InitMethodExpressionTree(match.call(), parent.frame())
-  .constExprTree <- ConstExpressionTree(match.call(), parent.frame())
+  .classExprTree <- ClassExpressionTree(.exprTree, parent.frame())
+  .initExprTree <- InitMethodExpressionTree(.exprTree, parent.frame())
+  .constExprTree <- ConstExpressionTree(.exprTree, parent.frame())
   
   do.call(setClass, .classExprTree)
   do.call(setMethod, .initExprTree)
@@ -64,7 +64,7 @@
   
 }
 
-ClassExpressionTree <- function(.mc, where) {
+ClassExpressionTree <- function(.exprTree, where) {
  
   .makeExpression <- function(funName, args) {
     parse(text = paste0(
@@ -98,7 +98,6 @@ ClassExpressionTree <- function(.mc, where) {
     slots
   }
  
-  .exprTree <- ExpressionTree(.mc)
   slots <- .getExplicitClass(.exprTree)
   proto <- .getPrototype(.exprTree)
   slots <- .mergeProtoClasses(slots, proto)
@@ -113,36 +112,13 @@ ClassExpressionTree <- function(.mc, where) {
 
 }
 
-SlotExpressionTree <- function(.mc, where) {
-  
-  .exprTree <- ExpressionTree(.mc)
-
-  .argsSplitted <- lapply(.exprTree$args, splitTrim, pattern = "=")
-  .argNames <- sapply(.argsSplitted, `[`, 1)
-  
-  .allArgs <- .argsSplitted[!(.argNames %in% c("..."))] %>%
-    ifelse(sapply(., length) == 1, lapply(., inset, 2, "NULL"), .) %>%
-    sapply(paste, collapse = " = ")
-  
-  proto <- .allArgs %>% sub(".Data( )?\\=", "", .)
-  slots <- .allArgs[!grepl(".Data", .allArgs)]
-  const <- unlist(c(slots, "..."))
-  .slotNames <- .argNames %without% c(".Data", "...")
-  constNew <- if(length(.slotNames) == 0) "..." else c(.slotNames %p% "=" %p% .slotNames, "...")
-  constNew <- c(paste0("'", .exprTree$names[1], "'"), constNew)
-  
-  retList("SlotExpressionTree")
-  
-}
-
-InitMethodExpressionTree <- function(.mc, where) {
+InitMethodExpressionTree <- function(.exprTree, where) {
   
   .wrapInCurlyBraces <- function(x) {
     if (length(x) == 1) c("{", gsub("^\\{|\\}$", "", x), "}")
     else x
   }
   
-  .exprTree <- ExpressionTree(.mc)
   .body <- .wrapInCurlyBraces(.exprTree$body)
   .body[1] <- .body[1] %p0% "\n.Object <- callNextMethod()"
   
@@ -154,11 +130,8 @@ InitMethodExpressionTree <- function(.mc, where) {
   
 }
 
-ConstExpressionTree <- function(.mc, envir) {
+ConstExpressionTree <- function(.exprTree, envir) {
  
-  .exprTree <- ExpressionTree(.mc)
-  .slotExprTree <- SlotExpressionTree(.mc)
-  
   .getConstArgs <- function(.exprTree) {
     args <- .exprTree$argDefaults[names(.exprTree$argDefaults) %without% ".Data"]
     args <- ifelse(is.na(args), 
