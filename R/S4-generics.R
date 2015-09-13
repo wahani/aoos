@@ -7,9 +7,34 @@
 #' will call \code{\link{globalVariables}} for the arguments and name of the
 #' generic.
 #' 
-#' @param lhs an expression like \code{genericName(<argList>)} for \code{\%g\%}
-#'   and \code{genericName(<args = signature>, <argList>)} for \code{\%m\%}.
+#' @param lhs see details
+#' 
 #' @param rhs the body as an expression.
+#' 
+#' @details 
+#' The Syntax for the left hand side:
+#'   \cr\code{[<valueClass>:]<genericName>(<argList>)}
+#'   \cr - \code{valueClass} optional, is the class of the return value (see
+#'   \link{setGeneric})
+#'   \cr - \code{genericName} the name of the generic function
+#'   \cr - \code{argList} are \code{name = value} or \code{name ~ type}
+#'   expressions. Name-Value expressions are just like in a function definition.
+#'   Name-Type expressions are used to define the signature of a method (see
+#'   \link{setMethod}).
+#' 
+#' @examples 
+#' # A new generic function and a method:
+#' numeric : generic(x) %g% standardGeneric("generic") 
+#' generic(x ~ numeric) %m% x
+#' generic(1)
+#' 
+#' # Polymorphic methods in an object:
+#' Object <- function() {
+#'   numeric : generic(x) %g% standardGeneric("generic") 
+#'   generic(x ~ numeric) %m% x
+#'   retList("Object")
+#' }
+#' Object()$generic(1)
 #' 
 #' @export
 #' @rdname S4generics
@@ -43,10 +68,16 @@ GenericExpressionTree <- function(.mc, where) {
 }
 
 ExpressionTree <- function(.mc) {
-  
+  # Function to construct the central language object. Will be processed to be
+  # used to construct argument lists for S4s set-functions (setClass,
+  # setGeneric, setMethod)
   # The systax is as follows:
-  # [name1 : ... : nameN-1 : ] nameN([<argList>]) %<>% expr
-  # name1 to nameN will be the names. <argList> the args and body is expr
+  # [name1 : ... : nameN-1 : ] nameN([<argList>]) %<fun>% expr
+  # name1 to nameN will be the names of the generic / type and inheritance
+  #   structure
+  # <argList> the arguments. Can be usual argument expressions (argName =
+  # defaultValue) or 'type expressions' (argName ~ typeName).
+  # expr is the function body. 
   
   .seperate <- function(x, delim) {
     lArgs <- lapply(x, . %>% splitTrim(delim))
@@ -101,7 +132,7 @@ makeFunDef <- function(args, body, envir) {
 }
 
 MethodExpressionTree <- function(.mc, where) {
- 
+  # Constructs the argument list for method::setMethod
   .exprTree <- ExpressionTree(.mc)
   f <- eval(parse(text = .exprTree$names[1]), envir = where)
   .genericArgNames <- names(formals(f)) %without% "..."

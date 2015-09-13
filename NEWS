@@ -2,6 +2,8 @@ Version 0.3.5
 - %m% now supports 'type expressions', i.e. the signature is expressed as
 'varName ~ typeName'. Using '=' for specifying the signature is not supported
 anymore.
+- %type% supports 'type expressions', i.e. classes of slots can be expressed
+without default values in the type constructor.
 
 Version 0.3.4
 - The class Show is not a reference class anymore but an ordinary S4 class. This

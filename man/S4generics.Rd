@@ -10,8 +10,7 @@ lhs \%g\% rhs
 lhs \%m\% rhs
 }
 \arguments{
-\item{lhs}{an expression like \code{genericName(<argList>)} for \code{\%g\%}
-and \code{genericName(<args = signature>, <argList>)} for \code{\%m\%}.}
+\item{lhs}{see details}
 
 \item{rhs}{the body as an expression.}
 }
@@ -22,5 +21,26 @@ environment in which  \code{\%g\%} and \code{\%m\%} are called and not in the
 top-environment. Furthermore both functions have side effects in that they
 will call \code{\link{globalVariables}} for the arguments and name of the
 generic.
+}
+\details{
+The Syntax for the left hand side:
+  \cr\code{[<valueClass>:]<genericName>(<argList>)}
+  \cr - \code{valueClass} optional, is the class of the return value (see \link{setGeneric})
+  \cr - \code{genericName} the name of the generic function
+  \cr - \code{argList} are \code{name = value} or \code{name ~ type} expressions. Name-Value expressions are just like in a function definition. Name-Type expressions are used to define the signature of a method (see \link{setMethod}).
+}
+\examples{
+# A new generic function and a method:
+numeric : generic(x) \%g\% standardGeneric("generic")
+generic(x ~ numeric) \%m\% x
+generic(1)
+
+# Polymorphic methods in an object:
+Object <- function() {
+  numeric : generic(x) \%g\% standardGeneric("generic")
+  generic(x ~ numeric) \%m\% x
+  retList("Object")
+}
+Object()$generic(1)
 }
 

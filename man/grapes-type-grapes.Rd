@@ -9,18 +9,21 @@ lhs \%type\% rhs
 \arguments{
 \item{lhs}{an expression of the form:
   \cr\code{[<parent-name>:]<type-name>([<slots>])}
-\cr - <parent-name> optional, the name of the S4-class/type to inherit from.
-\cr - <type-name> the name for the new type and constructor function.
-\cr - <slots> optional, \code{name = value} expressions. They will be used to
-construct the prototype. The values will also be used to infer the class of
-the slots. If no value is supplied, \code{ANY} is assumed.}
+  \cr - <parent-name> optional, the name of the S4-class/type to inherit from,
+seperated by \code{:}
+  \cr - <type-name> the name for the new type and constructor function.
+  \cr - <slots> optional, \code{name = value} or \code{name ~ type}
+expressions. Name-Value expressions are used to construct a prototype. From
+the prototype the class of the slot will be inferred. They are also the
+defaults in the type constructor. Name-Type expressions define the classes of
+the slots. If no value (or type) is supplied, \code{ANY} is assumed.}
 
 \item{rhs}{the body of the initialize method as expression. It will be called
   with \code{.Object} and \code{...} as arguments. \code{.Object} should be
   the return value. With \code{.Object} there is an instance of the type on
   which assertions can be formulated. Prior to the body (rhs) \code{.Object
   <- callNextMethod()} will be evaluated which enables proper initialization
-  if your type and its inherited fields. See \link[methods]{initialize} for
+  of your type and its inherited fields. See \link[methods]{initialize} for
   details.}
 }
 \description{
@@ -48,6 +51,14 @@ numeric : Numeric(metaInfo = character()) \%type\% {
   stopifnot(length(.Object) > 0)
   stopifnot(all(.Object > 0))
   .Object
+}
+
+# This will create an S4-class with slots, where the constructor function has
+# no defaults. All slots will allow for ANY class.
+
+Anything(x, y ~ ANY, z = NULL) \%type\% .Object
+\dontrun{
+  Anything() # error because x and y are missing
 }
 }
 
