@@ -43,7 +43,7 @@
 #' 
 #' @export
 "%type%" <- function(lhs, rhs) {
-  
+ 
   .exprTree <- ExpressionTree(match.call())
   .classExprTree <- ClassExpressionTree(match.call(), parent.frame())
   .initExprTree <- InitMethodExpressionTree(match.call(), parent.frame())
@@ -65,7 +65,7 @@
 }
 
 ClassExpressionTree <- function(.mc, where) {
-  
+ 
   .makeExpression <- function(funName, args) {
     parse(text = paste0(
       funName, "(", paste(args, collapse = ", "), ")"
@@ -77,19 +77,36 @@ ClassExpressionTree <- function(.mc, where) {
   
   .localEval <- function(expr) eval(expr, envir = where)
   
-  .exprTree <- ExpressionTree(.mc)
-  .slotExprTree <- SlotExpressionTree(.mc)
+  .getExplicitClass <- function(.exprTree) {
+    slots <- .exprTree$argClasses
+    slots[is.na(slots)] <- "ANY"
+    slots <- slots[!(names(slots) == ".Data")]
+    slots
+  }
   
+  .getPrototype <- function(.exprTree) {
+    args <- .exprTree$argDefaults[!is.na(.exprTree$argDefaults)]
+    args <- paste(names(args), args, sep = "=")
+    args %<>% sub(".Data( )?\\=", "", .)
+    .localEval(.makeExpression("prototype", args))
+  }
+  
+  .mergeProtoClasses <- function(slots, proto) {
+    protoClasses <- sapply(attributes(proto@object), . %>% class %>% `[`(1))
+    slots[names(protoClasses)] <- protoClasses[names(protoClasses)]
+    slots
+  }
+ 
+  .exprTree <- ExpressionTree(.mc)
+  slots <- .getExplicitClass(.exprTree)
+  proto <- .getPrototype(.exprTree)
+  slots <- .mergeProtoClasses(slots, proto)
+  if (!.protoIsGood(proto)) rm("proto")
+
   Class <- .exprTree$names[1]
   contains <- if (is.na(.exprTree$names[2])) 
     character() else 
       .exprTree$names[-1]
-  
-  slots <- .localEval(.makeExpression("list", .slotExprTree$slots)) %>% sapply(class)
-  slots <- ifelse(slots == "NULL", "ANY", slots)
-  if (length(slots) == 0) rm("slots")
-  proto <- .localEval(.makeExpression("prototype", .slotExprTree$proto))
-  if (!.protoIsGood(proto)) rm("proto")
   
   retList("ClassExpressionTree")
 

@@ -132,7 +132,7 @@ test_that("Type with quoted class names", {
 
 # test_that("Type with explicit class names", {
 #   
-#   Test(x ~ numeric, y = list, z) %type% .Object
+#   Test(x ~ numeric, y = list(), z) %type% .Object
 #   
 #   expect_error(Test(x = 0)) # y is missing
 #   expect_true(Test(1, list())@x == 1)

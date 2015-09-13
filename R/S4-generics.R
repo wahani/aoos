@@ -49,9 +49,7 @@ ExpressionTree <- function(.mc) {
   # name1 to nameN will be the names. <argList> the args and body is expr
   
   .seperate <- function(x, delim) {
-    lArgs <- lapply(x, . %>% splitTrim(delim) %>% 
-        {c(.[1], deleteQuotes(.[2]))}
-    )
+    lArgs <- lapply(x, . %>% splitTrim(delim))
     args <- sapply(lArgs, . %>% .[2])
     names(args) <- argNames
     args

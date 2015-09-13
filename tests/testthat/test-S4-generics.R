@@ -61,11 +61,8 @@ test_that("generics and methods", {
   expect_error(generic(1))
   expect_equal(generic(""), "")
   
-  'generic'(x ~ "numeric") %m% as.character(x)
+  'generic'(x ~ numeric) %m% as.character(x)
   expect_equal(generic(1), "1")
-  
-  'generic'(x ~ 'raw') %m% as.character(x)
-  expect_equal(generic(raw(1)), "00")
   
   # args in terms of args
   someGeneric(x, ...) %g% standardGeneric("someGeneric")
