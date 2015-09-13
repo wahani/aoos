@@ -1,7 +1,7 @@
 context("S4Types")
 test_that("Type with defaults", {
   
-  Test(x = 1, y = list()) %type% {
+  Test(x = 1, y = list(x = 1)) %type% {
     stopifnot(.Object@x > 0)
     .Object
   }
@@ -9,7 +9,7 @@ test_that("Type with defaults", {
   expect_error(Test(x = 0))
   expect_true(Test()@x == 1)
   expect_true(Test(2)@x == 2)
-  expect_true(identical(Test()@y, list()))
+  expect_true(identical(Test()@y, list(x = 1)))
   expect_true(typeof(Test()) == "S4")
   
   removeClass("Test")

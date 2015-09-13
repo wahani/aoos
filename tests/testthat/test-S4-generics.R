@@ -71,7 +71,7 @@ test_that("generics and methods", {
   
   # class unions
   generic(x) %g% standardGeneric("generic")
-  generic(x ~ character | numeric) %m% x
+  generic(x ~ character|  numeric) %m% x
   expect_equal(generic(1), 1)
   expect_equal(generic(""), "")
   

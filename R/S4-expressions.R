@@ -11,7 +11,8 @@ ExpressionTree <- function(.mc, .where) {
   # expr is the function body. 
   
   .seperate <- function(x, delim) {
-    lArgs <- lapply(x, . %>% splitTrim(delim))
+    x <- sub(delim, "#", x) # this is saver because of args with defaults
+    lArgs <- lapply(x, . %>% splitTrim("#"))
     args <- sapply(lArgs, . %>% .[2])
     names(args) <- argNames
     args
@@ -20,8 +21,8 @@ ExpressionTree <- function(.mc, .where) {
   .processClassUnions <- function(nameTypeExpr) {
     sapply(nameTypeExpr, function(nte) {
       if (grepl("\\|", nte)) {
-        nameClassUnion <- gsub("( )?\\|( )?", "OR", nte)
         classes <- splitTrim(nte, "\\|")
+        nameClassUnion <- paste(classes, collapse = "OR")
         setClassUnion(nameClassUnion, classes, topenv(.where))
         nameClassUnion
       } else {
