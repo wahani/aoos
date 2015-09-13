@@ -55,7 +55,7 @@
 #' @export
 "%type%" <- function(lhs, rhs) {
   
-  .exprTree <- ExpressionTree(match.call())
+  .exprTree <- ExpressionTree(match.call(), parent.frame())
   .classExprTree <- ClassExpressionTree(.exprTree, parent.frame())
   .initExprTree <- InitMethodExpressionTree(.exprTree, parent.frame())
   .constExprTree <- ConstExpressionTree(.exprTree, parent.frame())
@@ -72,98 +72,5 @@
   )
   
   invisible(getClass(.exprTree$names[1], where = parent.frame()))
-  
-}
-
-ClassExpressionTree <- function(.exprTree, where) {
-  # Constructs the argument list for setClass
-  
-  .makeExpression <- function(funName, args) {
-    parse(text = paste0(
-      funName, "(", paste(args, collapse = ", "), ")"
-    ))
-  }
-  
-  .protoIsGood <- function(proto) 
-    proto@dataPart || !identical(proto@slots, character())
-  
-  .localEval <- function(expr) eval(expr, envir = where)
-  
-  .getExplicitClass <- function(.exprTree) {
-    slots <- .exprTree$argClasses
-    slots[is.na(slots)] <- "ANY"
-    slots <- slots[!(names(slots) == ".Data")]
-    slots
-  }
-  
-  .getPrototype <- function(.exprTree) {
-    args <- .exprTree$argDefaults[!is.na(.exprTree$argDefaults)]
-    args <- paste(names(args), args, sep = "=")
-    args %<>% sub(".Data( )?\\=", "", .)
-    .localEval(.makeExpression("prototype", args))
-  }
-  
-  .mergeProtoClasses <- function(slots, proto) {
-    protoClasses <- sapply(attributes(proto@object), . %>% class %>% `[`(1))
-    slots[names(protoClasses)] <- protoClasses[names(protoClasses)]
-    slots[slots == "name"] <- "ANY"
-    slots
-  }
- 
-  slots <- .getExplicitClass(.exprTree)
-  proto <- .getPrototype(.exprTree)
-  slots <- .mergeProtoClasses(slots, proto)
-  if (!.protoIsGood(proto)) rm("proto")
-
-  Class <- .exprTree$names[1]
-  contains <- if (is.na(.exprTree$names[2])) 
-    character() else 
-      .exprTree$names[-1]
-  
-  retList("ClassExpressionTree")
-
-}
-
-InitMethodExpressionTree <- function(.exprTree, where) {
-  # Constructs the argument for setMethod for the generic 'initialize'
- 
-  .wrapInCurlyBraces <- function(x) {
-    if (length(x) == 1) c("{", gsub("^\\{|\\}$", "", x), "}")
-    else x
-  }
-  
-  .body <- .wrapInCurlyBraces(.exprTree$body)
-  .body[1] <- .body[1] %p0% "\n.Object <- callNextMethod()"
-  
-  f <- getGeneric("initialize", where = where)
-  signature <- c(.Object = .exprTree$names[1])
-  definition <- makeFunDef(c(".Object", "..."), .body, where)
-  
-  retList("MethodExpressionTree")
-  
-}
-
-ConstExpressionTree <- function(.exprTree, envir) {
-  # Constructs the argument list to construct the constructor function for the
-  # type
-  .getConstArgs <- function(.exprTree) {
-    args <- .exprTree$argDefaults[names(.exprTree$argDefaults) %without% ".Data"]
-    args <- ifelse(
-      is.na(args), 
-      names(args), 
-      paste(names(args), .exprTree$argDefaults, sep = "=")
-    )
-    c(args, "...")
-  }
-  
-  .getConstArgsNew <- function(.exprTree) {
-    args <- names(.exprTree$argDefaults) %without% ".Data"
-    c("'" %p0% .exprTree$names[1] %p0% "'", paste(args, args, sep = "="), "...")
-  } 
-  
-  args <- .getConstArgs(.exprTree)
-  body <- c("new(", paste(.getConstArgsNew(.exprTree), collapse = ", "), ")")
-  
-  retList("ConstExpressionTree")
   
 }

@@ -69,4 +69,10 @@ test_that("generics and methods", {
   someGeneric(x, y = length(x), ...) %m% { list(x, y) }
   expect_equal(someGeneric(1:10)[[2]], 10)
   
+  # class unions
+  generic(x) %g% standardGeneric("generic")
+  generic(x ~ character | numeric) %m% x
+  expect_equal(generic(1), 1)
+  expect_equal(generic(""), "")
+  
 })
