@@ -34,6 +34,9 @@ install_github("wahani/aoos")
 ## 	'varName ~ typeName'. Using '=' for specifying the signature is not supported
 ## 	anymore.
 ## 
+##     o   %type% supports 'type expressions', i.e. classes of slots can be expressed
+## 	without default values in the type constructor.
+## 
 ## Changes in version 0.3.4:
 ## 
 ##     o   The class Show is not a reference class anymore but an ordinary S4 class. This
