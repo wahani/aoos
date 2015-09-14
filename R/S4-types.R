@@ -26,6 +26,16 @@
 #'   of your type and its inherited fields. See \link[methods]{initialize} for
 #'   details.
 #' 
+#' @details 
+#' \code{Name-Type} expressions are also used in \link{\%m\%}. Besides this you
+#' can formulate type unions in type expressions or the inheritance structure.
+#' This has a side effect in that \link{setClassUnion} is called. Whenever you
+#' write a type you can replace the name by an expression of the form:
+#' \code{type1 | type2}. Outside the slots or argument list of a method these
+#' expressions have to be quoted. In this example the following expression is
+#' evaluated for you: \code{setClassUnion("type1ORtype2", c("type1", "type2"))}.
+#' 
+#' 
 #' @examples 
 #' # This will create an S4-class named 'Test' with two slots; x = "numeric"
 #' # and y = "list"; prototype: list(x = 1, y = list()); and an initialize
@@ -45,12 +55,16 @@
 #' }
 #' 
 #' # This will create an S4-class with slots, where the constructor function has
-#' # no defaults. All slots will allow for ANY class.
+#' # no defaults. All slots will allow for ANY type.
 #' 
 #' Anything(x, y ~ ANY, z = NULL) %type% .Object
 #' \dontrun{
 #'   Anything() # error because x and y are missing
 #' }
+#' 
+#' # Type Unions:
+#' 'character | numeric' : Either(either ~ character | numeric) %type% .Object
+#' Either("", 1)
 #' 
 #' @export
 "%type%" <- function(lhs, rhs) {

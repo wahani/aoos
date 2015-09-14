@@ -143,7 +143,7 @@ test_that("Type with explicit class names", {
 test_that("Types can deal with class unions", {
   
   'numeric | character' : Test(
-    x ~ numeric | character | list
+    x ~ 'numeric | character | list'
   ) %type% .Object
   
   expect_is(Test(1, 2)@x, "numeric")

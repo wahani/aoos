@@ -25,9 +25,14 @@ generic.
 \details{
 The Syntax for the left hand side:
   \cr\code{[<valueClass>:]<genericName>(<argList>)}
-  \cr - \code{valueClass} optional, is the class of the return value (see \link{setGeneric})
+  \cr - \code{valueClass} optional, is the class of the return value (see
+  \link{setGeneric})
   \cr - \code{genericName} the name of the generic function
-  \cr - \code{argList} are \code{name = value} or \code{name ~ type} expressions. Name-Value expressions are just like in a function definition. Name-Type expressions are used to define the signature of a method (see \link{setMethod}).
+  \cr - \code{argList} are \code{name = value} or \code{name ~ type}
+  expressions. Name-Value expressions are just like in a function definition.
+  Name-Type expressions are used to define the signature of a method (see
+  \link{setMethod}). See \link{\%type\%} and the examples how to work with
+  them.
 }
 \examples{
 # A new generic function and a method:
@@ -42,5 +47,14 @@ Object <- function() {
   retList("Object")
 }
 Object()$generic(1)
+
+# Class Unions:
+## This generic allows for return values of type numeric or character:
+'numeric | character' : generic(x) \%g\% standardGeneric("generic")
+
+## This method also allows for numeric or character as argument:
+generic(x ~ character | numeric) \%m\% x
+generic(1)
+generic("")
 }
 
