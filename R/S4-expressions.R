@@ -19,9 +19,9 @@ ExpressionTree <- function(.mc, .where) {
   }
   
   .processClassUnions <- function(nameTypeExpr) {
-    sapply(nameTypeExpr, function(nte) {
-      if (grepl("\\|", nte)) {
-        classes <- splitTrim(nte, "\\|")
+    sapply(nameTypeExpr, USE.NAMES = FALSE, function(nte) {
+      if (grepl("#", nte)) {
+        classes <- splitTrim(nte, "#")
         nameClassUnion <- paste(classes, collapse = "OR")
         setClassUnion(nameClassUnion, classes, topenv(.where))
         nameClassUnion
@@ -33,12 +33,13 @@ ExpressionTree <- function(.mc, .where) {
   
   .lhs <- deparse(.mc$lhs) %>% paste(collapse = "") %>% sub("\\n", "", .)
   body <- deparse(.mc$rhs)
-  names <- deleteInParan(.lhs) %>% splitTrim(":") %>% deleteQuotes %>% rev
+  names <- deleteInParan(.lhs) %>% gsub("\\|", "#", .) %>% splitTrim(":")
+  names <- deleteQuotes(names) %>% rev %>% .processClassUnions
   args <- deleteBeforeParan(.lhs) %>% deleteEnclosingParan %>% splitTrim(",") 
   argNames <- sapply(args, . %>% splitTrim("=|~") %>% .[1], USE.NAMES = FALSE)
   argDefaults <- args %>% .seperate("=")
-  argClasses <- args %>% .seperate("~")
-  argClasses <- .processClassUnions(argClasses)
+  argClasses <- args %>% .seperate("~") %>% deleteQuotes
+  argClasses <- gsub("\\|", "#", argClasses) %>% .processClassUnions
   
   retList("ExpressionTree")
   

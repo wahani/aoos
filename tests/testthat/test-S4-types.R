@@ -142,14 +142,17 @@ test_that("Type with explicit class names", {
 
 test_that("Types can deal with class unions", {
   
-  Test(x ~ numeric | character | list) %type% .Object
+  'numeric | character' : Test(
+    x ~ numeric | character | list
+  ) %type% .Object
   
-  expect_is(Test(1)@x, "numeric")
-  expect_is(Test("")@x, "character")
+  expect_is(Test(1, 2)@x, "numeric")
+  expect_is(Test("", "")@x, "character")
   expect_is(Test(list())@x, "list")
   
   removeClass("Test")
   removeClass("numericORcharacter")
+  removeClass("numericORcharacterORlist")
   
 })
 
