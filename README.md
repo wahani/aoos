@@ -37,6 +37,9 @@ install_github("wahani/aoos")
 ##     o   %type% supports 'type expressions', i.e. classes of slots can be expressed
 ## 	without default values in the type constructor.
 ## 
+##     o   type expressions: name ~ type, where a type is the unquoted name of a type
+## 	/ S4-Class or a class union of the form 'type1 | type2 [| ...]'
+## 
 ## Changes in version 0.3.4:
 ## 
 ##     o   The class Show is not a reference class anymore but an ordinary S4 class. This
