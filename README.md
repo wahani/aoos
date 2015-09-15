@@ -251,7 +251,7 @@ strLength("ab")
 ## [1] 2
 ```
 
-You may have noticed, that we also constrained the return value of any method
+You may have noticed that we also constrained the return value of any method
 belonging to the generic `strLength` to be a *numeric*. There exist methods
 for objects of type *character* and *ANY* type.
 
@@ -269,10 +269,10 @@ The following presents the function `%type%` which is a link to S4s `setClass`.
 
 In the following We define two types. One is *Test* which has two fields, *x*
 and *y*. *x* is of type *numeric*, *y* is a *list*. Notice that you can either
-define a prototype (a default) for a field, for which the class is inferred, or
+define a prototype (a default) for a field (for which the class is inferred), or
 you state the class explicitly using `~`.
 
-The second is *Child* which inherits all properties from *Test*. This it has
+The second is *Child* and inherits the properties from *Test*. Thus it has
 also two fields, *x* and *y*, and in addition we say it inherits from type
 *character*. So *Child* is basically a character vector with two attributes:
 
@@ -314,10 +314,9 @@ Child("Hej", x = 2)
 
 Notice that the right hand side of the expression is more or less the definition
 of the initialization method for a type. Arbitrary oprations can be made during 
-init, in the above example we formulate some assertions we have for data of 
-class *Test* (x > 0 and scalar). The init methdod for type *Child* just returns 
-the object itself named `.Object` (see the help page for `methods::initialize`
-to understand the naming).
+init, in the above example we formulate some assertions (x > 0 and scalar). The
+init methdod for type *Child* just returns the object itself named `.Object`
+(see the help page for `methods::initialize` to understand the naming).
 
 ### S4 Type Unions
 
