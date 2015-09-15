@@ -109,7 +109,7 @@ julia$bonus(10)
 julia
 ```
 
-### retList + S4 generics
+### S4 generics
 
 As of version 0.3.1 there exist two binary operators, `%g%` and `%m%`, which
 link to the S4 system for genric functions. They provide (hopefully) concise
@@ -117,7 +117,7 @@ alternatives to `methods::setGeneric` and `methods::setMethod`:
 
 ```{r}
 # Standard definition for a generic without default:
-strLength(x = 2, ...) %g% standardGeneric("strLength")
+numeric : strLength(x, ...) %g% standardGeneric("strLength")
 
 # A method for x:character
 strLength(x ~ character, ...) %m% { nchar(x) }
@@ -130,24 +130,88 @@ strLength(123)
 strLength("ab")
 ```
 
-A bit tricky and unwise is that the generic has a default value of 2 which means
-that as long the ANY-method is not defined the default is not working, but I
-needed to illustrate default values. In S4, methods can have defaults for
-arguments which are not formals of the generic. Otherwise the defaults of the
-generic are passed down to its methods. This is not changed: Define defaults for
-the generic. If a method has more arguments than its generic you can define
-defaults for them. For the *shared* argument names provide a class name. One
-exception to the rule are `...` on which S4 cannot dispatch.
+You may have noticed, that we also constrained the return value of any method
+belonging to the generic `strLength` to be a *numeric*. There exist methods
+for objects of type *character* and *ANY* type.
+
+In S4, methods can have defaults for arguments which are not formals of the
+generic. Otherwise the defaults of the generic are passed down to its methods.
+This is not changed: Define defaults for the generic. If a method has more
+arguments than its generic you can define defaults for them. For the *shared*
+argument names provide a class name. One exception to the rule is `...` which
+can have no type. 
+
+### S4 Types
+
+The following presents the function `%type%` which is a link to S4s `setClass`. 
+`%type%` tries to abstract a typical scenario of using `setClass`. 
+
+In the following We define two types. One is *Test* which has two fields, *x*
+and *y*. *x* is of type *numeric*, *y* is a *list*. Notice that you can either
+define a prototype (a default) for a field, for which the class is inferred, or
+you state the class explicitly using `~`.
+
+The second is *Child* which inherits all properties from *Test*. This it has
+also two fields, *x* and *y*, and in addition we say it inherits from type
+*character*. So *Child* is basically a character vector with two attributes:
 
 ```{r}
-strLength()
+Test(x ~ numeric, y = list()) %type% {
+  stopifnot(length(.Object@x) == 1)
+  stopifnot(.Object@x > 0)
+  .Object
+}
+
+Test : character : Child() %type% .Object
+
+Test(2)
+Child("Hej", x = 2)
 ```
 
-An important difference to `methods::setGeneric` and `methods::setMethod` is
-that methods and generics are stored in the environment where they are created
-and not in the top environment. That means you can define generics which are
-local to a function or closure and this extends the `retList`-idea of
-representing objects in *R* as demonstrated here:
+Notice that the right hand side of the expression is more or less the definition
+of the initialization method for a type. Arbitrary oprations can be made during 
+init, in the above example we formulate some assertions we have for data of 
+class *Test* (x > 0 and scalar). The init methdod for type *Child* just returns 
+the object itself named `.Object` (see the help page for `methods::initialize`
+to understand the naming).
+
+### S4 Type Unions
+
+S4 provides also the possibility to construct type unions which are useful to
+allow a type to inherit from different types at the same time, e.g. a type which
+can either be a *numeric* or *character*. This feature is not yet complete, but
+here are some ways you can use it. For the definition of a type:
+
+```{r}
+'numeric | character' : Either() %type% .Object
+Either(1)
+Either("Hello World!")
+```
+
+In the definition of a field:
+
+```{r}
+Either(x ~ numeric | character) %type% .Object
+Either(1)
+Either("Hello World!")
+```
+
+In the definition of a generic or method:
+
+```{r}
+'numeric | character' : complicatedFunction(x = 1) %g% as.character(x)
+complicatedFunction(x ~ character | integer) %m% as.numeric(x)
+complicatedFunction()
+complicatedFunction("1")
+complicatedFunction(1L)
+```
+
+### Polymorphic Methods in Objects
+
+In contrast to the defaults in S4, `%g%` and `%m%` have side effects in the
+environment they are called in. That means you can define generics which are 
+local to a function or closure. Nice all by itself but it also extends the
+`retList`-idea of representing objects in *R* as demonstrated here:
 
 ```{r}
 Class <- function() {
@@ -197,103 +261,7 @@ instance$overloaded("a")
 instance$overloaded(1L)
 ```
 
-### S4 Types
-
-The following presents the function `%type%` which is a link to S4s `setClass`.
-When using `setClass` in many scenarios redundancy (of information) in the code
-is introduced. `%type%` tries to abstract a typical scenario of using
-`setClass`. Here is an example, first the S4 approach which is usefull in a
-scenario where inheritance is relevant. `.Object <- callNextMethod()` is
-important so that all init-methods are called. The prototype is usefull to have
-default values on init:
-
-```{r, eval=FALSE}
-Test <- setClass("Test", 
-                 slots = list(x = "numeric", y = "list"),
-                 prototype = list(x = 1, y = list()))
-
-setMethod("initialize", 
-          "Test", 
-          function(.Object, ...) {
-            .Object <- callNextMethod()
-            stopifnot(.Object@x > 0)
-            .Object
-          })
-
-Child <- setClass("Child", contains = "Test",
-                  slots = c(z = "character"),
-                  prototype = list(z = " "))
-
-setMethod("initialize", 
-          "Child", 
-          function(.Object, ...) {
-            .Object <- callNextMethod()
-            stopifnot(nchar(.Object@z) > 0)
-            .Object
-          })
-
-Test() # works
-# If you want to have something else than '...', e.g. named arguments you have 
-# to define 'Test' yourself:
-Test(2) # won't work.
-Test(x = 2) # works
-Child() # has 3 slots with defaults as in the prototype
-```
-
-Looking at the source code it is hard to see how many slots are involved and
-what exactly is going on with these two classes. It just looks complicated. The
-next snippet does more or less the same thing:
-
-```{r results='hide'}
-Test(x = 1, y = list()) %type% {
-  stopifnot(.Object@x > 0)
-  .Object
-}
-
-Test : Child(z = " ") %type% {
-  stopifnot(nchar(.Object@z) > 0)
-  .Object
-}
-
-Test() # works
-Test(2) # works
-Test(x = 2) # works
-Child("Hej", x = 2) # works: Child <- function(z, ...) new('Child', z = z, ...)
-```
-
-Three things are happening on a call to `%type%`. `setClass` is called with
-slots derived from the prototype. `setMethod` for `initialize` with `.Object`
-and `...` as arguments; and `.Object <- callNextMethod()` as first line so that
-init allways works correct; and the rhs expression as body. And finally a
-constructor function is assigned to the types name (with arguments and
-defaults).
-
-These ideas can be combined to construct something object like in S4 with fields
-as slots and methods contained in a list (other patterns can be thought of...):
-
-```{r}
-# Some extra stuff to make the instance on which a method is invoked available
-# during the call.
-setClass("Self", contains = "VIRTUAL")
-
-setMethod("$", "Self", function(x, name) {
-  function(...) x[[name]](.Object = x, ...)
-})
-
-Self : Show : Test : list : Super() %type% {
-  method <- function(.Object) .Object@x * 2
-  show <- function(.Object) cat("Value for x:", .Object@x)
-  S3Part(.Object) <- retList(super = .Object)
-  .Object
-}
-
-x <- Super(x = 2)
-x
-x$method()
-```
-
-
-### More on `retList`
+### More unsorted ideas
 
 Something you have to keep in mind is that returned objects are of class *list*.
 If you want to have a public field you have to define get and set methods,
@@ -355,4 +323,27 @@ sandra
 lisa
 ```
 
+These ideas can be combined to construct something object like in S4 with fields
+as slots and methods contained in a list (other patterns can be thought of...):
+
+```{r}
+# Some extra stuff to make the instance on which a method is invoked available
+# during the call.
+setClass("Self", contains = "VIRTUAL")
+
+setMethod("$", "Self", function(x, name) {
+  function(...) x[[name]](.Object = x, ...)
+})
+
+Self : Show : Test : list : Super() %type% {
+  method <- function(.Object) .Object@x * 2
+  show <- function(.Object) cat("Value for x:", .Object@x)
+  S3Part(.Object) <- retList(super = .Object)
+  .Object
+}
+
+x <- Super(x = 2)
+x
+x$method()
+```
 
