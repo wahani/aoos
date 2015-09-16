@@ -31,11 +31,32 @@ ExpressionTree <- function(.mc, .where) {
     })
   }
   
+  .collapseMatchingParen <- function(x) {
+    # collapses elements of x, if they have matching parenthesis. There is only
+    # nice code comming in because the R parser won't allow for anything else.
+    parenComplete <- function(x) {
+      sapply(strsplit(x, ""), function(x) sum(x == "(") == sum(x == ")"))
+    }
+    
+    collapseTwoElements <- function(x) {
+      pos <- Position(Negate(parenComplete), x)
+      x[pos] <- paste(x[pos:(pos + 1)], collapse = ", ")
+      x[-(pos+1)]
+    }
+    
+    if (all(parenComplete(x))) {
+      x
+    } else {
+      Recall(collapseTwoElements(x))
+    }
+  }
+  
   .lhs <- deparse(.mc$lhs) %>% paste(collapse = "") %>% sub("\\n", "", .)
   body <- deparse(.mc$rhs)
   names <- deleteInParan(.lhs) %>% gsub("\\|", "#", .) %>% splitTrim(":")
   names <- deleteQuotes(names) %>% rev %>% .processClassUnions
-  args <- deleteBeforeParan(.lhs) %>% deleteEnclosingParan %>% splitTrim(",") 
+  args <- deleteBeforeParan(.lhs) %>% 
+    deleteEnclosingParan %>% splitTrim(",") %>% .collapseMatchingParen
   argNames <- sapply(args, . %>% splitTrim("=|~") %>% .[1], USE.NAMES = FALSE)
   argDefaults <- args %>% .seperate("=")
   argClasses <- args %>% .seperate("~") %>% deleteQuotes
