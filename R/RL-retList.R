@@ -79,7 +79,7 @@ retList <- function(class = NULL, public = ls(envir), super = list(), superEnv =
   classes <- c(class, class(super))
   if (!is.null(superEnv)) envir <- mergeFun(envir, superEnv)
   envir$.self <- envir
-  out <- as.list(envir)[public]
+  out <- as.list(envir, all.names = TRUE)[public]
   attr(out, ".self") <- envir
   class(out) <- classes
   out

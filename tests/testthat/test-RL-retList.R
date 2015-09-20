@@ -121,3 +121,14 @@ test_that("... are processed in retList", {
   expect_equal(child$getx(), 1)
   
 })
+
+test_that(".private member can be exported", {
+  
+  RLA <- function(.x) {
+    x <- function() .x
+    retList(".public", c(".x", "x"))
+  }
+  
+  expect_equal(names(RLA(1)), c(".x", "x"))
+
+})

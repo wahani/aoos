@@ -1,3 +1,6 @@
+Version 0.3.6
+- Bugfix in retList: make ".private" public was not possible.
+
 Version 0.3.5
 - %m% now supports 'type expressions', i.e. the signature is expressed as
 'varName ~ typeName'. Using '=' for specifying the signature is not supported
