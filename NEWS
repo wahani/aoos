@@ -1,3 +1,7 @@
+Version 0.3.7
+- Bugfix for roxygen2 parser functions. The formals of a S4 method have not been
+correctly identified.
+
 Version 0.3.6
 - Bugfix in retList: make ".private" public was not possible.
 

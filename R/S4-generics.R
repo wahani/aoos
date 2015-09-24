@@ -52,12 +52,15 @@
   
   argList <- GenericExpressionTree(match.call(), parent.frame())
   
-  # Fix for R CMD check:
-  globalVariables(c(
-    argList$name, 
-    names(formals(argList$def))), 
-    topenv(argList$where)
-  )
+  # Fix for R CMD check. This can result in an error, if you use local generics
+  # or methods.
+  try(silent = TRUE, {
+    globalVariables(c(
+      argList$name, 
+      names(formals(argList$def))), 
+      topenv(argList$where)
+    )
+  })
   
   do.call("setGeneric", argList)
   invisible(getGeneric(argList$name, where = argList$where))
@@ -70,11 +73,14 @@
   
   argList <- MethodExpressionTree(match.call(), parent.frame())
   
-  # Fix for R CMD check:
-  globalVariables(
-    names(formals(argList$definition)), 
-    topenv(argList$where)
-  )
+  # Fix for R CMD check. This can result in an error, if you use local generics
+  # or methods.
+  try(silent = TRUE, {
+    globalVariables(
+      names(formals(argList$definition)), 
+      topenv(argList$where)
+    )
+  })
   
   do.call("setMethod", argList)
   invisible(getMethod(argList$f, argList$signature))
