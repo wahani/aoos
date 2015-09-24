@@ -1,11 +1,7 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. It provides an 
-  interface to S4 reference classes and two alternative new implementations. One 
-  is an experimental version built around S4 ('defineClass') and the other one 
-  ('retList') makes it more convenient to work with lists returned from functions 
-  and uses only S3.
+Another implementation of object-orientation in R. It provides an interface to S4 reference classes and two alternative new implementations. One is an experimental version built around S4 ('defineClass') and the other one ('retList') makes it more convenient to work with lists returned from functions and uses only S3.
 
 ## Installation
 To install from CRAN:
@@ -24,9 +20,18 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.3.0 
-## Development Version: 0.3.5 
+## Development Version: 0.3.7 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.3.7:
+## 
+##     o   Bugfix for roxygen2 parser functions. The formals of a S4 method have not been
+## 	correctly identified.
+## 
+## Changes in version 0.3.6:
+## 
+##     o   Bugfix in retList: make ".private" public was not possible.
 ## 
 ## Changes in version 0.3.5:
 ## 
@@ -221,7 +226,7 @@ julia
 ### S4 generics
 
 As of version 0.3.1 there exist two binary operators, `%g%` and `%m%`, which
-link to the S4 system for genric functions. They provide (hopefully) concise
+link to the S4 system for generic functions. They provide (hopefully) concise
 alternatives to `methods::setGeneric` and `methods::setMethod`:
 
 
@@ -313,9 +318,9 @@ Child("Hej", x = 2)
 ```
 
 Notice that the right hand side of the expression is more or less the definition
-of the initialization method for a type. Arbitrary oprations can be made during 
+of the initialization method for a type. Arbitrary operations can be made during 
 init, in the above example we formulate some assertions (x > 0 and scalar). The
-init methdod for type *Child* just returns the object itself named `.Object`
+init method for type *Child* just returns the object itself named `.Object`
 (see the help page for `methods::initialize` to understand the naming).
 
 ### S4 Type Unions
