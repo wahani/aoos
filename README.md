@@ -20,9 +20,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.3.0 
-## Development Version: 0.3.7 
+## Development Version: 0.3.8 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.3.8:
+## 
+##     o   New function stripSelf to use retList without the attribute .self.
 ## 
 ## Changes in version 0.3.7:
 ## 
@@ -71,7 +75,7 @@ install_github("wahani/aoos")
 ## 	and methods putting an emphasis on readability.
 ```
 
-## Material
+## Vignettes
 
 - [Introduction Vignette](http://wahani.github.io/aoos/vignettes/Introduction.html): Is an overview of the things in this package.
 - [retList](http://wahani.github.io/aoos/vignettes/retListClasses.html): Is what I would recommend to use from this package.
@@ -83,6 +87,10 @@ install_github("wahani/aoos")
 
 - [Introducing v0.1.0](http://wahani.github.io/2015/01/Introducing-Another-Object-Orientation-System/)
 - [Introducing v0.2.0](http://wahani.github.io/2015/05/Introducing-Another-Object-Orientation-System-2/)
+- [Introducing >v0.3.0](http://wahani.github.io/2015/09/Introducing-Another-Object-Orientation-System-3/)
+- [Lists as Objects](http://wahani.github.io/2015/09/Working-with-lists-as-Objects-in-R/)
+- [Performance](http://wahani.github.io/2015/09/On-Performance-Issues-in-aoos/)
+- [On Reference Classes in R](http://wahani.github.io/2015/05/On-Reference-Classes-in-R-and-aoos/)
 
 ## Examples:
 
