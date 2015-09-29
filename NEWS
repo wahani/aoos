@@ -1,3 +1,6 @@
+Version 0.3.8
+- New function stripSelf to use retList without the attribute .self.
+
 Version 0.3.7
 - Bugfix for roxygen2 parser functions. The formals of a S4 method have not been
 correctly identified.

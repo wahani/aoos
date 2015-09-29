@@ -108,3 +108,10 @@ asEnv <- function(x) {
   else if (is.list(x)) return(list2env(x))
   else stop("Don't know what to do with x. Expected types are list, environment or NULL.")
 }
+
+#' @rdname retList
+#' @export
+stripSelf <- function(x) {
+  attr(x, ".self") <- NULL
+  x
+}

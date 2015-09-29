@@ -4,6 +4,7 @@
 \alias{asEnv}
 \alias{funNames}
 \alias{retList}
+\alias{stripSelf}
 \title{Generic constructor function}
 \usage{
 retList(class = NULL, public = ls(envir), super = list(),
@@ -12,6 +13,8 @@ retList(class = NULL, public = ls(envir), super = list(),
 funNames(envir = parent.frame())
 
 asEnv(x)
+
+stripSelf(x)
 }
 \arguments{
 \item{class}{character giving the class name.}
