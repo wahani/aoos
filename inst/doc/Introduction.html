@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-08-07" />
+<meta name="date" content="2015-10-08" />
 
 <title>Introduction</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Introduction</h1>
-<h4 class="date"><em>2015-08-07</em></h4>
+<h4 class="date"><em>2015-10-08</em></h4>
 </div>
 
 
@@ -64,6 +64,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;referenceClasses&quot;</span>, <span class="st">&quot;aoos&quot;</span>)</code></pre>
 <p>With <code>retList</code> (iteration 3) it is made easy to play object orientation without introducing anything new but S3 and functional programming concepts, i.e. closures. This is closest to what R already has to offer and more a convenience than a new system. The function will simply return all visible objects (in an environment) in a list and should be used to construct the return value of a constructor function. You can specify a class name and which objects you want to have in that list. Some ideas borrowed from the <code>setRefClass</code> framework are encapsulated print methods, and from <code>defineClass</code> the possibility to define encapsulated infix operators. Furthermore <code>retList</code> provides an implementation for inheritance. Since S3 does not provide a formal class definition, classes inherit the properties from instances of super classes (comparable to R6 or proto). How exactly this works reduces to the question of how you would join two environments in R because methods of an object are closures which share the same enclosing environment (like in all other implementations). What would you do with the enclosing environments of functions? What would you do with naming conflicts? Since you may disagree with me on how this should be done you can change that behaviour. Some examples can be found here:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;retListClasses&quot;</span>, <span class="st">&quot;aoos&quot;</span>)</code></pre>
+<p>In addition to the above there are a couple of wrappers around the S4-class system (iteration 4). These functions add some syntactic sugar for defining S4 generic, methods and classes which are called type. See the vignette and examples therein.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;S4SyntacticSugar&quot;</span>, <span class="st">&quot;aoos&quot;</span>)</code></pre>
 
 
 

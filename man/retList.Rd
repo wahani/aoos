@@ -25,19 +25,28 @@ stripSelf(x)
 
 \item{superEnv}{environment where new methods will live in.}
 
-\item{mergeFun}{function with two arguments. Knows how to join/merge environments - \code{mergeFun(envir, superEnv)}. Default: \link{envMerge}.}
+\item{mergeFun}{function with two arguments. Knows how to join/merge
+environments - \code{mergeFun(envir, superEnv)}. Default: \link{envMerge}.}
 
-\item{envir}{this is the environment you want to convert into the list. Default is the environment from which the function is called.}
+\item{envir}{this is the environment you want to convert into the list.
+  Default is the environment from which the function is called.}
 
 \item{x}{a list}
 }
 \description{
-This functions can be used to construct a list with class attribute and merged with another list called super. The constructed list will contain (by default) all visible objects from the environment from which \code{retList} is called.
+This functions can be used to construct a list with class attribute and
+merged with another list called super. The constructed list will contain (by
+default) all visible objects from the environment from which \code{retList}
+is called.
 }
 \details{
-\code{funNames} returns the names of functions in the environment from which it is called.
+\code{funNames} returns the names of functions in the environment
+  from which it is called.
 
-\code{asEnv} trys to find an environment for x. If x is NULL or an empty list, the function returns \code{NULL}. (Else) If x has an attribute called \code{.self} it is this attribute which is returned. (Else) If x is a list it is converted to an environment.
+\code{asEnv} trys to find an environment for x. If x is NULL or an
+  empty list, the function returns \code{NULL}. (Else) If x has an attribute
+  called \code{.self} it is this attribute which is returned. (Else) If x is
+  a list it is converted to an environment.
 }
 \examples{
 # To get a quick overview of the package:
