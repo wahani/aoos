@@ -9,7 +9,7 @@
 #' 
 #' @param lhs see details
 #' 
-#' @param rhs the body as an expression.
+#' @param rhs the body as an expression
 #' 
 #' @details 
 #' The Syntax for the left hand side:

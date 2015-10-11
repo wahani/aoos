@@ -12,7 +12,7 @@ lhs \%m\% rhs
 \arguments{
 \item{lhs}{see details}
 
-\item{rhs}{the body as an expression.}
+\item{rhs}{the body as an expression}
 }
 \description{
 These are two wrappers around \code{setGeneric} and \code{setMethod}. A

@@ -7,3 +7,6 @@
 ## ---- eval=FALSE---------------------------------------------------------
 #  vignette("retListClasses", "aoos")
 
+## ---- eval=FALSE---------------------------------------------------------
+#  vignette("S4SyntacticSugar", "aoos")
+
