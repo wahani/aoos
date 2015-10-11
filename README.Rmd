@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
+[![CRAN Version](http://www.r-pkg.org/badges/version/aoos)](http://cran.rstudio.com/web/packages/aoos)
+![](http://cranlogs.r-pkg.org/badges/aoos)
 
 # Another object orientation system in R
 ```{r, results='asis', echo=FALSE}
