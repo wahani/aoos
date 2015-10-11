@@ -23,7 +23,9 @@ ExpressionTree <- function(.mc, .where) {
       if (grepl("#", nte)) {
         classes <- splitTrim(nte, "#")
         nameClassUnion <- paste(classes, collapse = "OR")
-        setClassUnion(nameClassUnion, classes, topenv(.where))
+        try(silent = TRUE,
+            setClassUnion(nameClassUnion, classes, topenv(.where))
+        )
         nameClassUnion
       } else {
         nte

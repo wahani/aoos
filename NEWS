@@ -1,3 +1,6 @@
+Version 0.3.9
+- try handler for setClassUnion in type expressions.
+
 Version 0.3.8
 - New function stripSelf to use retList without the attribute .self.
 

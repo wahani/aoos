@@ -1,16 +1,16 @@
 Package: aoos
 Type: Package
 Title: Another Object Orientation System
-Version: 0.3.8
+Version: 0.3.9
 Date: 2015-08-06
 Authors@R: person("Sebastian", "Warnholz", role = c("aut", "cre"),
                   email = "wahani@gmail.com")
 BugReports: https://github.com/wahani/aoos/issues
-Description: Another implementation of object-orientation in R. It provides an
-    interface to S4 reference classes and two alternative new implementations. One
-    is an experimental version built around S4 ('defineClass') and the other one
-    ('retList') makes it more convenient to work with lists returned from functions
-    and uses only S3.
+Description: Another implementation of object-orientation in R. It provides
+    syntactic sugar for the S4 class system and two alternative new
+    implementations. One is an experimental version built around S4
+    ('defineClass') and the other one ('retList') makes it more convenient to
+    work with lists as objects.
 Depends:
     methods,
     R(>= 3.2.0)

@@ -3,7 +3,11 @@
 ![](http://cranlogs.r-pkg.org/badges/aoos)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. It provides an interface to S4 reference classes and two alternative new implementations. One is an experimental version built around S4 ('defineClass') and the other one ('retList') makes it more convenient to work with lists returned from functions and uses only S3.
+Another implementation of object-orientation in R. It provides
+syntactic sugar for the S4 class system and two alternative new
+implementations. One is an experimental version built around S4
+('defineClass') and the other one ('retList') makes it more convenient to
+work with lists as objects.
 
 ## Installation
 To install from CRAN:
@@ -22,9 +26,13 @@ install_github("wahani/aoos")
 
 ```
 ## Version on CRAN: 0.3.0 
-## Development Version: 0.3.8 
+## Development Version: 0.3.9 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
+## 
+## Changes in version 0.3.9:
+## 
+##     o   try handler for setClassUnion in type expressions.
 ## 
 ## Changes in version 0.3.8:
 ## 
