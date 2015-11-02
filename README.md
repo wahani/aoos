@@ -19,60 +19,10 @@ install_github("wahani/aoos")
 
 
 ```
-## Version on CRAN: 0.3.0 
+## Version on CRAN: 0.4.0 
 ## Development Version: 0.3.8 
 ## 
 ## Updates in package NEWS-file since last release to CRAN:
-## 
-## Changes in version 0.3.8:
-## 
-##     o   New function stripSelf to use retList without the attribute .self.
-## 
-## Changes in version 0.3.7:
-## 
-##     o   Bugfix for roxygen2 parser functions. The formals of a S4 method have not been
-## 	correctly identified.
-## 
-## Changes in version 0.3.6:
-## 
-##     o   Bugfix in retList: make ".private" public was not possible.
-## 
-## Changes in version 0.3.5:
-## 
-##     o   %m% now supports 'type expressions', i.e. the signature is expressed as
-## 	'varName ~ typeName'. Using '=' for specifying the signature is not supported
-## 	anymore.
-## 
-##     o   %type% supports 'type expressions', i.e. classes of slots can be expressed
-## 	without default values in the type constructor.
-## 
-##     o   type expressions: name ~ type, where a type is the unquoted name of a type
-## 	/ S4-Class or a class union of the form 'type1 | type2 [| ...]'
-## 
-## Changes in version 0.3.4:
-## 
-##     o   The class Show is not a reference class anymore but an ordinary S4 class. This
-## 	should not make a difference since it is virtual.
-## 
-## Changes in version 0.3.3:
-## 
-##     o   Linking the interfaces to the S4 class system to the roxygen2 documentation
-## 	facilities. It is now possible to document generics, methods and types in the
-## 	same way as you would using only the methods package.
-## 
-##     o   New functions parser_%m%, parser_%g% and parser_%type% to be used by roxygen2
-## 
-## Changes in version 0.3.2:
-## 
-##     o   New wrapper around setClass: %types% to be used as a subset of S4 classes. It
-## 	mimics the pattern of "setClass(...); setMethod("initialize", ...)" and captures
-## 	most of the needed features.
-## 
-## Changes in version 0.3.1:
-## 
-##     o   New wrappers (%g% and %m%) around setGeneric and setMethod from the methods
-## 	package. They provide an alternative approach to define (S4) generic functions
-## 	and methods putting an emphasis on readability.
 ```
 
 ## Vignettes
