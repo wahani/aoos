@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>print.Print. aoos 0.4.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">aoos 0.4.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>S3 helper classes</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>"print"(x, ...)</div>
+<div>"+"(e1, e2)</div>
+<div>"-"(e1, e2)</div>
+<div>"/"(e1, e2)</div>
+<div>"%%"(e1, e2)</div>
+<div>"^"(e1, e2)</div>
+<div>"<"(e1, e2)</div>
+<div>">"(e1, e2)</div>
+<div>"=="(e1, e2)</div>
+<div>">="(e1, e2)</div>
+<div>"<="(e1, e2)</div>
+<div>"&"(e1, e2)</div>
+<div>"!"(x)</div>
+<div>"as.environment"(x)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an object</dd>
+      <dt>...</dt>
+      <dd>arguments passed to the local print method.</dd>
+      <dt>e1</dt>
+      <dd>lhs operand</dd>
+      <dt>e2</dt>
+      <dd>rhs operand</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>There is no formal class definition for S3. Simply add 'Infix' or 'Print' to the class attribute and it inherits the methods. It is the same as <code><a href='Binary.html'>Binary-class</a></code> or <code><a href='Show.html'>Show-class</a></code> just for S3. This is inteded to be used with <code><a href='retList.html'>retList</a></code>.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p>The lhs is coerced with <code>as.environment</code> and in that environment the binary operators must be found and named as <code>.<binaryOperator></code> (see the example for <code><a href='retList.html'>retList</a></code>). This is implemented for the following operators: <code>+, -, *, /, %%, ^, <, >, ==, >=, <=, &</code>. Also part of the operators you can implement with Infix is <code>!</code>, although it is unary.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>!.Infix</li><li>&amp;.Infix</li><li>+.Infix</li><li>-.Infix</li><li>/.Infix</li><li>&lt;.Infix</li><li>&lt;=.Infix</li><li>==.Infix</li><li>&gt;.Infix</li><li>&gt;=.Infix</li><li>%%.Infix</li><li>^.Infix</li><li>as.environment.Infix</li><li>print.Print</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<a href='Binary.html'>Binary-class</a>, <a href='retList.html'>retList</a>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

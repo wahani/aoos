@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Index. aoos 0.4.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">aoos 0.4.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <div class="row">
+  <div class="span8">
+    <p><a href="https://travis-ci.org/wahani/aoos"><img src="https://travis-ci.org/wahani/aoos.png?branch=master" alt="Build Status"/></a>
+<a href="http://cran.rstudio.com/web/packages/aoos"><img src="http://www.r-pkg.org/badges/version/aoos" alt="CRAN Version"/></a>
+<img src="http://cranlogs.r-pkg.org/badges/aoos" alt=""/>
+<a href="https://codecov.io/github/wahani/aoos?branch=master"><img src="https://codecov.io/github/wahani/aoos/coverage.svg?branch=master" alt="codecov.io"/></a></p>
+
+<h1>Another object orientation system in R</h1>
+
+<p>Another implementation of object-orientation in R. It provides syntactic sugar for the S4 class system and two alternative new implementations. One is an experimental version built around S4 and the other one makes it more convenient to work with lists as objects.</p>
+
+<h2>Installation</h2>
+
+<p>To install from CRAN:</p>
+
+<pre><code class="r">install.packages(&quot;aoos&quot;)
+</code></pre>
+
+<p>To install from this repo:</p>
+
+<pre><code class="r">library(devtools)
+install_github(&quot;wahani/aoos&quot;)
+</code></pre>
+
+<pre><code>## Version on CRAN: 0.4.0 
+## Development Version: 0.4.0 
+## 
+## Updates in package NEWS-file since last release to CRAN:
+</code></pre>
+
+<h2>Vignettes</h2>
+
+<ul>
+<li><a href="http://wahani.github.io/aoos/vignettes/Introduction.html">Introduction Vignette</a>: Is an overview of the things in this package.</li>
+<li><a href="http://wahani.github.io/aoos/vignettes/retListClasses.html">retList</a>: Is what I would recommend to use from this package.</li>
+<li><a href="http://wahani.github.io/aoos/vignettes/performance.html">Performace Vignette</a>: If this is an issue for you.</li>
+<li><a href="http://wahani.github.io/aoos/vignettes/aoosClasses.html">aoosClasses Vignette</a></li>
+<li><a href="http://wahani.github.io/aoos/vignettes/referenceClasses.html">referenceClasses Vignette</a></li>
+</ul>
+
+<h2>Posts</h2>
+
+<ul>
+<li><a href="http://wahani.github.io/2015/01/Introducing-Another-Object-Orientation-System/">Introducing v0.1.0</a></li>
+<li><a href="http://wahani.github.io/2015/05/Introducing-Another-Object-Orientation-System-2/">Introducing v0.2.0</a></li>
+<li><a href="http://wahani.github.io/2015/09/Introducing-Another-Object-Orientation-System-3/">Introducing &gt;v0.3.0</a></li>
+<li><a href="http://wahani.github.io/2015/09/Working-with-lists-as-Objects-in-R/">Lists as Objects</a></li>
+<li><a href="http://wahani.github.io/2015/09/On-Performance-Issues-in-aoos/">Performance</a></li>
+<li><a href="http://wahani.github.io/2015/05/On-Reference-Classes-in-R-and-aoos/">On Reference Classes in R</a></li>
+</ul>
+
+<h2>Examples:</h2>
+
+<h3>retList:</h3>
+
+<p>Basically you define constructor functions. There is no <em>formal</em> class
+definition. The function body will define what members an object will have. You
+quit the function defining the return value using <code>retList</code> which is a <em>generic</em>
+constructor function. By default it will look at the environment from which it
+is called and convert that environment into a list. That list is returned and is
+an object. Names with a &ldquo;.&rdquo; are not part of the constructed <em>list</em> (by default).</p>
+
+<pre><code class="r">library(&quot;aoos&quot;)
+Employee &lt;- function(.name, .salary) {
+  &quot;Common base class for all employees&quot;
+
+  print &lt;- function(x, ...) {
+    cat(&quot;Name  : &quot;, .self$.name, &quot;\nSalary: &quot;, .self$.salary)
+  }
+
+  getName &lt;- function() .name
+  getSalary &lt;- function() .self$.salary
+
+  retList(c(&quot;Employee&quot;, &quot;Print&quot;))
+
+}
+
+peter &lt;- Employee(&quot;Peter&quot;, 5)
+peter
+</code></pre>
+
+<pre><code>## Name  :  Peter 
+## Salary:  5
+</code></pre>
+
+<pre><code class="r">peter$getName()
+</code></pre>
+
+<pre><code>## [1] &quot;Peter&quot;
+</code></pre>
+
+<pre><code class="r">peter$getSalary()
+</code></pre>
+
+<pre><code>## [1] 5
+</code></pre>
+
+<p>Here every instance is of class <em>Employee</em> and also inherits from class <em>Print</em>.
+This enables us to define the print method in the functions body and is
+equivalent to invoking the print method directly:</p>
+
+<pre><code class="r">peter
+</code></pre>
+
+<pre><code>## Name  :  Peter 
+## Salary:  5
+</code></pre>
+
+<pre><code class="r">peter$print()
+</code></pre>
+
+<pre><code>## Name  :  Peter 
+## Salary:  5
+</code></pre>
+
+<h3>retList + Inheritance:</h3>
+
+<p>You can inherit methods and fields from a super class, or rather an instance,
+because there is no <em>formal</em> class definition. Methods and fields can be
+replaced in the child, all member from the parent are also available for the
+methods of the child.</p>
+
+<pre><code class="r">Manager &lt;- function(.name, .salary, .bonus) {
+  &quot;Extending the Employee class&quot;
+
+  bonus &lt;- function(x) {
+    if (!missing(x)) .self$.bonus &lt;- x
+    .self$.bonus
+  }
+
+  print &lt;- function(x, ...) {
+    cat(&quot;Name  : &quot;, .self$.name, &quot;\nSalary: &quot;, .self$.salary, 
+        &quot;\nBonus:&quot;, .self$.bonus)
+  }
+
+  retList(&quot;Manager&quot;, super = Employee(.name, .salary))
+
+}
+
+julia &lt;- Manager(&quot;Julia&quot;, 5, 5 * 1e6)
+julia
+</code></pre>
+
+<pre><code>## Name  :  Julia 
+## Salary:  5 
+## Bonus: 5e+06
+</code></pre>
+
+<pre><code class="r">julia$getSalary()
+</code></pre>
+
+<pre><code>## [1] 5
+</code></pre>
+
+<pre><code class="r">julia$bonus(10)
+</code></pre>
+
+<pre><code>## [1] 10
+</code></pre>
+
+<pre><code class="r">julia
+</code></pre>
+
+<pre><code>## Name  :  Julia 
+## Salary:  5 
+## Bonus: 10
+</code></pre>
+
+<h3>S4 generics</h3>
+
+<p>As of version 0.3.1 there exist two binary operators, <code>%g%</code> and <code>%m%</code>, which
+link to the S4 system for generic functions. They provide (hopefully) concise
+alternatives to <code>methods::setGeneric</code> and <code>methods::setMethod</code>:</p>
+
+<pre><code class="r"># Standard definition for a generic without default:
+numeric : strLength(x, ...) %g% standardGeneric(&quot;strLength&quot;)
+
+# A method for x:character
+strLength(x ~ character, ...) %m% { nchar(x) }
+
+# Kind of the default method for x:ANY
+strLength(x ~ ANY, ...) %m% { strLength(as.character(x)) }
+
+# Check that it works:
+strLength(123)
+</code></pre>
+
+<pre><code>## [1] 3
+</code></pre>
+
+<pre><code class="r">strLength(&quot;ab&quot;)
+</code></pre>
+
+<pre><code>## [1] 2
+</code></pre>
+
+<p>You may have noticed that we also constrained the return value of any method
+belonging to the generic <code>strLength</code> to be a <em>numeric</em>. There exist methods
+for objects of type <em>character</em> and <em>ANY</em> type.</p>
+
+<p>In S4, methods can have defaults for arguments which are not formals of the
+generic. Otherwise the defaults of the generic are passed down to its methods.
+This is not changed: Define defaults for the generic. If a method has more
+arguments than its generic you can define defaults for them. For the <em>shared</em>
+argument names provide a class name. One exception to the rule is <code>...</code> which
+can have no type. </p>
+
+<h3>S4 Types</h3>
+
+<p>The following presents the function <code>%type%</code> which is a link to S4s <code>setClass</code>. 
+<code>%type%</code> tries to abstract a typical scenario of using <code>setClass</code>. </p>
+
+<p>In the following We define two types. One is <em>Test</em> which has two fields, <em>x</em>
+and <em>y</em>. <em>x</em> is of type <em>numeric</em>, <em>y</em> is a <em>list</em>. Notice that you can either
+define a prototype (a default) for a field (for which the class is inferred), or
+you state the class explicitly using <code>~</code>.</p>
+
+<p>The second is <em>Child</em> and inherits the properties from <em>Test</em>. Thus it has
+also two fields, <em>x</em> and <em>y</em>, and in addition we say it inherits from type
+<em>character</em>. So <em>Child</em> is basically a character vector with two attributes:</p>
+
+<pre><code class="r">Test(x ~ numeric, y = list()) %type% {
+  stopifnot(length(.Object@x) == 1)
+  stopifnot(.Object@x &gt; 0)
+  .Object
+}
+
+Test : character : Child() %type% .Object
+
+Test(2)
+</code></pre>
+
+<pre><code>## An object of class &quot;Test&quot;
+## Slot &quot;x&quot;:
+## [1] 2
+## 
+## Slot &quot;y&quot;:
+## list()
+</code></pre>
+
+<pre><code class="r">Child(&quot;Hej&quot;, x = 2)
+</code></pre>
+
+<pre><code>## An object of class &quot;Child&quot;
+## [1] &quot;Hej&quot;
+## Slot &quot;x&quot;:
+## [1] 2
+## 
+## Slot &quot;y&quot;:
+## list()
+</code></pre>
+
+<p>Notice that the right hand side of the expression is more or less the definition
+of the initialization method for a type. Arbitrary operations can be made during 
+init, in the above example we formulate some assertions (x &gt; 0 and scalar). The
+init method for type <em>Child</em> just returns the object itself named <code>.Object</code>
+(see the help page for <code>methods::initialize</code> to understand the naming).</p>
+
+<h3>S4 Type Unions</h3>
+
+<p>S4 provides also the possibility to construct type unions which are useful to
+allow a type to inherit from different types at the same time, e.g. a type which
+can either be a <em>numeric</em> or <em>character</em>. This feature is not yet complete, but
+here are some ways you can use it. For the definition of a type:</p>
+
+<pre><code class="r">&#39;numeric | character&#39; : Either() %type% .Object
+Either(1)
+</code></pre>
+
+<pre><code>## An object of class &quot;Either&quot;
+## [1] 1
+</code></pre>
+
+<pre><code class="r">Either(&quot;Hello World!&quot;)
+</code></pre>
+
+<pre><code>## An object of class &quot;Either&quot;
+## [1] &quot;Hello World!&quot;
+</code></pre>
+
+<p>In the definition of a field:</p>
+
+<pre><code class="r">Either(x ~ numeric | character) %type% .Object
+Either(1)
+</code></pre>
+
+<pre><code>## An object of class &quot;Either&quot;
+## Slot &quot;x&quot;:
+## [1] 1
+</code></pre>
+
+<pre><code class="r">Either(&quot;Hello World!&quot;)
+</code></pre>
+
+<pre><code>## An object of class &quot;Either&quot;
+## Slot &quot;x&quot;:
+## [1] &quot;Hello World!&quot;
+</code></pre>
+
+<p>In the definition of a generic or method:</p>
+
+<pre><code class="r">&#39;numeric | character&#39; : complicatedFunction(x = 1) %g% as.character(x)
+complicatedFunction(x ~ character | integer) %m% as.numeric(x)
+complicatedFunction()
+</code></pre>
+
+<pre><code>## [1] &quot;1&quot;
+</code></pre>
+
+<pre><code class="r">complicatedFunction(&quot;1&quot;)
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<pre><code class="r">complicatedFunction(1L)
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<h3>Polymorphic Methods in Objects</h3>
+
+<p>In contrast to the defaults in S4, <code>%g%</code> and <code>%m%</code> have side effects in the
+environment they are called in. That means you can define generics which are 
+local to a function or closure. Nice all by itself but it also extends the
+<code>retList</code>-idea of representing objects in <em>R</em> as demonstrated here:</p>
+
+<pre><code class="r">Class &lt;- function() {
+
+  overloaded(x) %g% { 
+    cat(&quot;This is the default ... \n&quot;)
+    x 
+  } 
+
+  overloaded(x ~ numeric) %m% {
+    cat(&quot;This is the method for &#39;numeric&#39; values ... \n&quot;)
+    x
+  }
+
+  retList(&quot;Class&quot;)
+}
+
+instance &lt;- Class()
+instance$overloaded(1)
+</code></pre>
+
+<pre><code>## This is the method for &#39;numeric&#39; values ...
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<pre><code class="r">instance$overloaded(&quot;a&quot;)
+</code></pre>
+
+<pre><code>## This is the default ...
+</code></pre>
+
+<pre><code>## [1] &quot;a&quot;
+</code></pre>
+
+<p>The next question is how to inherit or extend an existing generic which is a
+member of a class? I am not entirely happy with how this works at the moment,
+but this is one way to approach it (which works&hellip;):</p>
+
+<pre><code class="r">Child &lt;- function() {
+
+  # Normally you would make the call to the parents constructor in the call
+  # to retList. But here we need to access the elements directly during init...
+  .super &lt;- Class()
+
+  # This points %m% to the generic (in .super) which should be extended:
+  .super$overloaded(x ~ integer) %m% {
+    cat(&quot;This is the method for &#39;integer&#39; values ... \n&quot;)
+    x
+  }
+
+  retList(&quot;Child&quot;, super = .super)
+
+}
+
+instance &lt;- Child()
+instance$overloaded(1)
+</code></pre>
+
+<pre><code>## This is the method for &#39;numeric&#39; values ...
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<pre><code class="r">instance$overloaded(&quot;a&quot;)
+</code></pre>
+
+<pre><code>## This is the default ...
+</code></pre>
+
+<pre><code>## [1] &quot;a&quot;
+</code></pre>
+
+<pre><code class="r">instance$overloaded(1L)
+</code></pre>
+
+<pre><code>## This is the method for &#39;integer&#39; values ...
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<h3>More unsorted ideas</h3>
+
+<p>Something you have to keep in mind is that returned objects are of class <em>list</em>.
+If you want to have a public field you have to define get and set methods,
+because you will see a copy of those fields in the object, they behave more like
+an attribute.</p>
+
+<pre><code class="r">ObjectWithField &lt;- function(name) {
+  getName &lt;- function() {
+    name
+  }
+  retList()
+} 
+
+obj &lt;- ObjectWithField(&quot;Alexander&quot;)
+obj$name &lt;- &quot;Noah&quot;
+obj$getName()
+</code></pre>
+
+<pre><code>## [1] &quot;Alexander&quot;
+</code></pre>
+
+<pre><code class="r">obj$name
+</code></pre>
+
+<pre><code>## [1] &quot;Noah&quot;
+</code></pre>
+
+<p>We can do more abstract representations of <em>things</em>. In this example I want to
+create a constructor object which keeps track of how many instances it created.
+Also every instance should know how many siblings it has, or in other words all
+instances share a reference to a field accessible by all of them.</p>
+
+<pre><code class="r">initFamily &lt;- function(.familyName) {
+
+  .superEnv &lt;- environment()
+  .count &lt;- 0
+
+  getCount &lt;- function() {
+    cat(&quot;There are&quot;, .self$.count, paste0(.familyName, &quot;s&quot;), &quot;out there.&quot;)
+  }
+
+  new &lt;- function(.name) {
+    # happens on init
+    .count &lt;&lt;- .count + 1
+
+    print &lt;- function(x, ...) cat(&quot;My name is&quot;, .self$.name, .familyName, &quot;!&quot;)
+    countSiblings &lt;- function() cat(&quot;I have&quot;, .count, &quot;siblings!&quot;)
+
+    # So every instance knows about .count and .familyName:
+    retList(c(&quot;Person&quot;, &quot;Print&quot;), superEnv = new.env(parent = .superEnv))
+  }
+
+  retList(&quot;ConstructorPerson&quot;)
+
+}
+
+schmidt &lt;- initFamily(&quot;Schmidt&quot;)
+schmidt$getCount()
+</code></pre>
+
+<pre><code>## There are 0 Schmidts out there.
+</code></pre>
+
+<pre><code class="r">lisa &lt;- schmidt$new(&quot;Lisa&quot;)
+
+sandra &lt;- schmidt$new(&quot;Sandra&quot;)
+schmidt$getCount()
+</code></pre>
+
+<pre><code>## There are 2 Schmidts out there.
+</code></pre>
+
+<pre><code class="r">sandra$countSiblings()
+</code></pre>
+
+<pre><code>## I have 2 siblings!
+</code></pre>
+
+<pre><code class="r">sandra
+</code></pre>
+
+<pre><code>## My name is Sandra Schmidt !
+</code></pre>
+
+<pre><code class="r">lisa
+</code></pre>
+
+<pre><code>## My name is Lisa Schmidt !
+</code></pre>
+
+<p>These ideas can be combined to construct something object like in S4 with fields
+as slots and methods contained in a list (other patterns can be thought of&hellip;):</p>
+
+<pre><code class="r"># Some extra stuff to make the instance on which a method is invoked available
+# during the call.
+setClass(&quot;Self&quot;, contains = &quot;VIRTUAL&quot;)
+
+setMethod(&quot;$&quot;, &quot;Self&quot;, function(x, name) {
+  function(...) x[[name]](.Object = x, ...)
+})
+</code></pre>
+
+<pre><code>## [1] &quot;$&quot;
+</code></pre>
+
+<pre><code class="r">Self : Show : Test : list : Super() %type% {
+  method &lt;- function(.Object) .Object@x * 2
+  show &lt;- function(.Object) cat(&quot;Value for x:&quot;, .Object@x)
+  S3Part(.Object) &lt;- retList(super = .Object)
+  .Object
+}
+
+x &lt;- Super(x = 2)
+x
+</code></pre>
+
+<pre><code>## Value for x: 2
+</code></pre>
+
+<pre><code class="r">x$method()
+</code></pre>
+
+<pre><code>## [1] 4
+</code></pre>
+
+<p>And for the S3 retList thing:</p>
+
+<pre><code class="r">&quot;$.Self&quot; &lt;- function(x, name) {
+  callIsLocal &lt;- any(sapply(aoos:::envirSearch(list(parent.frame())), 
+                            identical, y = attr(x, &quot;.self&quot;)))
+  if (callIsLocal) {
+    obj &lt;- attr(x, &quot;.self&quot;)[[name]]
+    if (inherits(obj, &quot;function&quot;)) function(...) obj(self = x, ...)
+    else obj
+  }
+  else function(...) x[[name]](self = x, ...)
+}
+
+&quot;$&lt;-.Self&quot; &lt;- function(x, name, value) {
+  callIsLocal &lt;- any(sapply(aoos:::envirSearch(list(parent.frame())), 
+                            identical, y = attr(x, &quot;.self&quot;)))
+
+  if (callIsLocal) {
+    assign(name, value = value, envir = attr(x, &quot;.self&quot;))
+  } else {
+    stop(&quot;This method has been disabled for objects of class &#39;Self&#39;.&quot;)
+  }
+
+  x
+}
+
+Self &lt;- function(.x) {
+
+  setX &lt;- function(self, val) {
+    self$.x &lt;- val 
+    invisible(self)
+  }
+
+  getX &lt;- function(self) {
+    self$.x
+  }
+
+  retList(c(&quot;Self&quot;))
+
+}
+
+inst &lt;- Self(2)
+inst$setX(3)$setX(4)
+inst$getX()
+</code></pre>
+
+<pre><code>## [1] 4
+</code></pre>
+
+<pre><code class="r">inst$.x &lt;- 2
+</code></pre>
+
+<pre><code>## Error in `$&lt;-.Self`(`*tmp*`, &quot;.x&quot;, value = 2): This method has been disabled for objects of class &#39;Self&#39;.
+</code></pre>
+
+
+    <h2>Help topics</h2>
+
+    <h3></h3>
+    
+    
+    <ul class="index">
+        
+      <li>
+        <code><a href="Accessor.html">Accessor-class</a></code>($,Accessor-method, $&lt;-,Accessor-method)<br />Accessor class</li>
+            
+      <li>
+        <code><a href="aoos.html">aoos-class</a></code>($,aoos-method, $&lt;-,aoos-method, as.environment,aoos-method, show,aoos-method, summary.aoos)<br />Class aoos</li>
+            
+      <li>
+        <code><a href="Binary.html">Binary-class</a></code><br />Binary-class</li>
+            
+      <li>
+        <code><a href="defineClass.html">defineClass</a></code>(private, private,public-method, public, public,function-method, public,private-method, public,public-method)<br />Define a new class</li>
+            
+      <li>
+        <code><a href="defineRefClass.html">defineRefClass</a></code><br />Define a Reference Class</li>
+            
+      <li>
+        <code><a href="envHelper.html">envCopy</a></code>(envMerge)<br />Helpers for environments</li>
+            
+      <li>
+        <code><a href="S4generics.html">%g%</a></code>(%m%)<br />Wrapper for writing S4 generics and methods</li>
+            
+      <li>
+        <code><a href="genericTest.html">.genericTest</a></code>(.genericTest,numeric-method)<br />Generic Test</li>
+            
+      <li>
+        <code><a href="parser.html">parser_%m%</a></code>(parser_%g%, parser_%type%)<br />Parser for roxygen documentation</li>
+            
+      <li>
+        <code><a href="Infix.html">print.Print</a></code>(!.Infix, &amp;.Infix, +.Infix, -.Infix, /.Infix, &lt;.Infix, &lt;=.Infix, ==.Infix, &gt;.Infix, &gt;=.Infix, %%.Infix, ^.Infix, as.environment.Infix)<br />S3 helper classes</li>
+            
+      <li>
+        <code><a href="Private.html">Private-class</a></code>($,Private-method, $&lt;-,Private-method, [[,Private-method, [[&lt;-,Private-method)<br />Private class</li>
+            
+      <li>
+        <code><a href="publicInterface.html">publicFunction</a></code>($,publicEnv-method, publicValue)<br />Constructors for public members</li>
+            
+      <li>
+        <code><a href="retList.html">retList</a></code>(asEnv, funNames, stripSelf)<br />Generic constructor function</li>
+            
+      <li>
+        <code><a href="Show.html">Show-class</a></code>(show,Show-method)<br />Show class</li>
+            
+      <li>
+        <code><a href="grapes-type-grapes.html">%type%</a></code><br />Types</li>
+    
+    </ul>
+  </div>
+  
+  <div class="span3 offset1">
+    <h2>Vignettes</h2>
+    <ul>
+      <li><a href="vignettes/aoosClasses.html">aoosClasses</a></li>
+      <li><a href="vignettes/Introduction.html">Introduction</a></li>
+      <li><a href="vignettes/performance.html">performance</a></li>
+      <li><a href="vignettes/referenceClasses.html">referenceClasses</a></li>
+      <li><a href="vignettes/retListClasses.html">retListClasses</a></li>
+      <li><a href="vignettes/S4SyntacticSugar.html">S4SyntacticSugar</a></li>
+    </ul>
+        
+    <h2>Dependencies</h2>
+    <ul>
+      <li><strong>Depends</strong>: methods</li>
+      <li><strong>Imports</strong>: magrittr, utils, roxygen2</li>
+      <li><strong>Suggests</strong>: testthat, knitr, microbenchmark, R6</li>
+      
+    </ul>
+    <h2>Authors</h2>
+    <ul>
+      <li><a href="mailto:wahani@gmail.com">Sebastian Warnholz</a> [aut, cre]</li>
+    </ul>
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

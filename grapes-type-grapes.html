@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>%type%. aoos 0.4.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">aoos 0.4.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Types</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>lhs %type% rhs</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>lhs</dt>
+      <dd>an expression of the form:
+  <code>[<parent-name>:]<type-name>([<slots>])</code>
+   - <parent-name> optional, the name of the S4-class/type to inherit from, 
+seperated by <code>:</code>
+   - <type-name> the name for the new type and constructor function.
+   - <slots> optional, <code>name = value</code> or <code>name ~ type</code>
+expressions. Name-Value expressions are used to construct a prototype. From
+the prototype the class of the slot will be inferred. They are also the
+defaults in the type constructor. Name-Type expressions define the classes of
+the slots. If no value (or type) is supplied, <code>ANY</code> is assumed.</dd>
+      <dt>rhs</dt>
+      <dd>the body of the initialize method as expression. It will be called
+with <code>.Object</code> and <code>...</code> as arguments. <code>.Object</code> should be
+the return value. With <code>.Object</code> there is an instance of the type on
+which assertions can be formulated. Prior to the body (rhs) <code>.Object
+<- callNextMethod()</code> will be evaluated which enables proper initialization
+of your type and its inherited fields. See <a href='http://www.inside-r.org/r-doc/methods/new'>initialize</a> for
+details.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>This function can be used to define new S4-classes which are called Type.
+They have an initialize method and in the introduced syntax init-method and
+S4-class definition build a unit, hence a type. This simply captures a
+typical <code>setClass</code> then <code>setMethod("initialize", ...)</code> pattern
+where often some redundancy is introduced. The function has side effects due
+to calling <code>setClass</code>, <code>setMethod</code> and assigning the constructor
+function to the types name.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p><code>Name-Type</code> expressions are also used in <a href='S4generics.html'>%m%</a>. Besides this you
+can formulate type unions in type expressions or the inheritance structure.
+This has a side effect in that <a href='http://www.inside-r.org/r-doc/methods/setClassUnion'>setClassUnion</a> is called. Whenever you
+write a type you can replace the name by an expression of the form:
+<code>type1 | type2</code>. Outside the slots or argument list of a method these
+expressions have to be quoted. In this example the following expression is
+evaluated for you: <code>setClassUnion("type1ORtype2", c("type1", "type2"))</code>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># This will create an S4-class named &#39;Test&#39; with two slots; x = &quot;numeric&quot;
+# and y = &quot;list&quot;; prototype: list(x = 1, y = list()); and an initialize
+# method where some checks are performed.
+
+Test(x = 1, y = list()) %type% {
+  stopifnot(.Object@x &gt; 0)
+  .Object
+}
+
+# This will create an S4-class named &#39;Numeric&#39; with a slot and some tests.
+
+numeric : Numeric(metaInfo = character()) %type% {
+  stopifnot(length(.Object) &gt; 0)
+  stopifnot(all(.Object &gt; 0))
+  .Object
+}
+
+# This will create an S4-class with slots, where the constructor function has
+# no defaults. All slots will allow for ANY type.
+
+Anything(x, y ~ ANY, z = NULL) %type% .Object
+## Not run: 
+#   Anything() # error because x and y are missing
+# ## End(Not run)
+
+# Type Unions:
+&#39;character | numeric&#39; : Either(either ~ character | numeric) %type% .Object
+</div>
+<strong class='warning'>Warning message:
+subclass &quot;Numeric&quot; of class &quot;numeric&quot; is not local and cannot be updated for new inheritance information; consider setClassUnion()</strong>
+<strong class='warning'>Warning message:
+subclass &quot;Numeric&quot; of class &quot;numeric&quot; is not local and cannot be updated for new inheritance information; consider setClassUnion()</strong>
+<div class='input'>Either(&quot;&quot;, 1)
+</div>
+<div class='output'>An object of class &quot;Either&quot;
+[1] 1
+Slot &quot;either&quot;:
+[1] &quot;&quot;
+
+</div>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>%type%</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>%g%. aoos 0.4.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">aoos 0.4.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Wrapper for writing S4 generics and methods</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>lhs %g% rhs</div>
+<div>lhs %m% rhs</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>lhs</dt>
+      <dd>see details</dd>
+      <dt>rhs</dt>
+      <dd>the body as an expression</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>These are two wrappers around <code>setGeneric</code> and <code>setMethod</code>. A
+relevant difference is that generics and methods are stored in the
+environment in which  <code>%g%</code> and <code>%m%</code> are called and not in the
+top-environment. Furthermore both functions have side effects in that they
+will call <code><a href='http://www.inside-r.org/r-doc/utils/globalVariables'>globalVariables</a></code> for the arguments and name of the
+generic.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p>The Syntax for the left hand side:
+  <code>[<valueClass>:]<genericName>(<argList>)</code>
+   - <code>valueClass</code> optional, is the class of the return value (see
+  <a href='http://www.inside-r.org/r-doc/methods/setGeneric'>setGeneric</a>)
+   - <code>genericName</code> the name of the generic function
+   - <code>argList</code> are <code>name = value</code> or <code>name ~ type</code>
+  expressions. Name-Value expressions are just like in a function definition.
+  Name-Type expressions are used to define the signature of a method (see
+  <a href='http://www.inside-r.org/r-doc/methods/setMethod'>setMethod</a>). See <a href='grapes-type-grapes.html'>%type%</a> and the examples how to work with 
+  them.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># A new generic function and a method:
+numeric : generic(x) %g% standardGeneric(&quot;generic&quot;) 
+generic(x ~ numeric) %m% x
+generic(1)
+</div>
+<div class='output'>[1] 1
+</div>
+<div class='input'>
+# Polymorphic methods in an object:
+Object &lt;- function() {
+  numeric : generic(x) %g% standardGeneric(&quot;generic&quot;) 
+  generic(x ~ numeric) %m% x
+  retList(&quot;Object&quot;)
+}
+Object()$generic(1)
+</div>
+<div class='output'>[1] 1
+</div>
+<div class='input'>
+# Class Unions:
+## This generic allows for return values of type numeric or character:
+&#39;numeric | character&#39; : generic(x) %g% standardGeneric(&quot;generic&quot;)
+</div>
+<strong class='warning'>Warning message:
+subclass &quot;Numeric&quot; of class &quot;numeric&quot; is not local and cannot be updated for new inheritance information; consider setClassUnion()</strong>
+<div class='input'>
+## This method also allows for numeric or character as argument:
+generic(x ~ character | numeric) %m% x
+</div>
+<strong class='warning'>Warning message:
+subclass &quot;Numeric&quot; of class &quot;numeric&quot; is not local and cannot be updated for new inheritance information; consider setClassUnion()</strong>
+<div class='input'>generic(1)
+</div>
+<div class='output'>[1] 1
+</div>
+<div class='input'>generic(&quot;&quot;)
+</div>
+<div class='output'>[1] &quot;&quot;
+</div>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>%g%</li><li>%m%</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

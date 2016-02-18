@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>defineRefClass. aoos 0.4.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">aoos 0.4.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Define a Reference Class</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>defineRefClass(expr)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>expr</dt>
+      <dd>an expression</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>This is a wrapper around <code><a href='http://www.inside-r.org/r-doc/methods/refClass'>setRefClass</a></code>. All arguments are defined in an expression (instead of lists) which improves readability of the code. Besides that, no additional features are added.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## Not run: 
+#   vignette(&quot;Introduction&quot;, &quot;aoos&quot;)
+# ## End(Not run)
+
+# Minimal example:
+Test &lt;- defineRefClass({
+  Class &lt;- &quot;Test&quot; # this is passed as argument to setRefClass
+  x &lt;- &quot;character&quot; # all objects which are not functions are fields
+  do &lt;- function() cat(&quot;Yes, Yes, I&#39;m working...&quot;) # a method
+})
+
+test &lt;- Test()
+</div>
+<strong class='error'>Error in stopifnot(length(.Object@x) == 1): no slot of name &quot;x&quot; for this object of class &quot;Test&quot;</strong>
+<div class='input'>test$x &lt;- &quot;a&quot;
+</div>
+<strong class='error'>Error in test$x &lt;- &quot;a&quot;: object &#39;test&#39; not found</strong>
+<div class='input'>test$do()
+</div>
+<strong class='error'>Error in eval(expr, envir, enclos): object &#39;test&#39; not found</strong>
+<div class='input'>
+# Inheritance and privacy:
+pTest &lt;- defineRefClass({
+  Class &lt;- &quot;pTest&quot;
+  # Privacy is solved by inheriting from a class &#39;Private&#39; which redefines
+  # the methods for access.
+  contains &lt;- c(&quot;Test&quot;, &quot;Private&quot;) # passed as argument to setRefClass
+
+  .y &lt;- &quot;numeric&quot; # this is going to be &#39;private&#39;
+
+  doSomething &lt;- function() {
+    .self$.y &lt;- 42
+    cat(x, .y, &quot;\n&quot;)
+    invisible(.self)
+  }
+})
+
+instance &lt;- pTest()
+</div>
+<strong class='error'>Error in stopifnot(length(.Object@x) == 1): no slot of name &quot;x&quot; for this object of class &quot;pTest&quot;</strong>
+<div class='input'>instance$x &lt;- &quot;Value of .y:&quot;
+instance$doSomething()
+</div>
+<strong class='error'>Error in eval(expr, envir, enclos): attempt to apply non-function</strong>
+<div class='input'>
+# A notion of privacy:
+stopifnot(inherits(try(instance$.y), &quot;try-error&quot;))
+</div>
+<strong class='error'>Error: inherits(try(instance$.y), &quot;try-error&quot;) is not TRUE</strong>
+<div class='input'>stopifnot(inherits(try(instance$.y &lt;- 2), &quot;try-error&quot;))
+</div>
+<strong class='error'>Error: inherits(try(instance$.y &lt;- 2), &quot;try-error&quot;) is not TRUE</strong></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>defineRefClass</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<a href='Private.html'>Private-class</a>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
