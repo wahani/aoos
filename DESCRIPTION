@@ -23,7 +23,8 @@ Suggests:
     testthat,
     knitr,
     microbenchmark,
-    R6
+    R6,
+    rmarkdown
 Encoding: UTF-8
 VignetteBuilder: knitr
 ByteCompile: TRUE
