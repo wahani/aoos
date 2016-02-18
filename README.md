@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/wahani/aoos.png?branch=master)](https://travis-ci.org/wahani/aoos)
 [![CRAN Version](http://www.r-pkg.org/badges/version/aoos)](http://cran.rstudio.com/web/packages/aoos)
 ![](http://cranlogs.r-pkg.org/badges/aoos)
+[![codecov.io](https://codecov.io/github/wahani/aoos/coverage.svg?branch=master)](https://codecov.io/github/wahani/aoos?branch=master)
 
 # Another object orientation system in R
 Another implementation of object-orientation in R. It provides syntactic sugar for the S4 class system and two alternative new implementations. One is an experimental version built around S4 and the other one makes it more convenient to work with lists as objects.
