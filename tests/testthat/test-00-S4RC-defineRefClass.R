@@ -60,8 +60,8 @@ test_that("Class wrapper", {
   expect_is(instance$xx$doSomething(), "Test")
   expect_equal(instance$xx$y, 1)
   
-  removeClass("Test")
-  removeClass("SubTest")
+  removeClass("Test", environment())
+  removeClass("SubTest", environment())
   
 })
 
@@ -93,7 +93,7 @@ test_that("Private members for refClasses", {
   expect_error(test[[".p"]])
   expect_error(test[[".p"]] <- 2)
   
-  removeClass("Test")
+  removeClass("Test", environment())
   
 })
 
@@ -109,6 +109,6 @@ test_that("refClass with empty fields", {
   
   expect_true(inherits(test, "Test3"))
   
-  removeClass("Test3")
+  removeClass("Test3", environment())
   
 })

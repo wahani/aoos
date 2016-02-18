@@ -352,3 +352,51 @@ x
 x$method()
 ```
 
+And for the S3 retList thing:
+
+```{r}
+"$.Self" <- function(x, name) {
+  callIsLocal <- any(sapply(aoos:::envirSearch(list(parent.frame())), 
+                            identical, y = attr(x, ".self")))
+  if (callIsLocal) {
+    obj <- attr(x, ".self")[[name]]
+    if (inherits(obj, "function")) function(...) obj(self = x, ...)
+    else obj
+  }
+  else function(...) x[[name]](self = x, ...)
+}
+
+"$<-.Self" <- function(x, name, value) {
+  callIsLocal <- any(sapply(aoos:::envirSearch(list(parent.frame())), 
+                            identical, y = attr(x, ".self")))
+  
+  if (callIsLocal) {
+    assign(name, value = value, envir = attr(x, ".self"))
+  } else {
+    stop("This method has been disabled for objects of class 'Self'.")
+  }
+  
+  x
+}
+
+Self <- function(.x) {
+  
+  setX <- function(self, val) {
+    self$.x <- val 
+    invisible(self)
+  }
+  
+  getX <- function(self) {
+    self$.x
+  }
+  
+  retList(c("Self"))
+
+}
+
+inst <- Self(2)
+inst$setX(3)$setX(4)
+inst$getX()
+inst$.x <- 2
+```
+

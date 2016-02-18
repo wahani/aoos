@@ -18,7 +18,7 @@ envCopy <- function(from, to) {
   for (n in eNames) {
       assign(n, get(n, envir = from, inherits = FALSE), envir = to)
   }
-  eNames
+  to
 }
 
 #' @details \code{envMerge} will merge x and with. Merge will copy all objects from x to with. Prior to that, the environment of functions are changed to be with iff functions in x have environment x; else the environment of functions are preserved.

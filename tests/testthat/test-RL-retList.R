@@ -42,7 +42,7 @@ test_that("Rational example with retList", {
     mult <- function(that) {
       RationalSub(.self$numer * that$numer, .self$denom * that$denom)
     }
-    retList("RationalSub", "mult", Rational(numer, denom))
+    retList("RationalSub", "mult", Rational(numer, denom), mergeFun = envMerge)
   }
   
   rationalSub <- RationalSub(2, 3)
@@ -83,7 +83,7 @@ test_that("Inheritance for retList", {
   inheritFrom <- function(.x) {
     statsFun <- stats::add1
     newMethod <- function() getY()
-    retList("Child", funNames(), super = Super(1))
+    retList("Child", funNames(), super = Super(1), mergeFun = envMerge)
   }
   
   super <- Super(2)

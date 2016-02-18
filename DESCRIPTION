@@ -45,3 +45,4 @@ Collate:
     'S4RC-Accessor.R'
     'S4RC-Private.R'
     'S4RC-defineRefClass.R'
+RoxygenNote: 5.0.1

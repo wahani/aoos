@@ -12,7 +12,7 @@ test_that("Type with defaults", {
   expect_true(identical(Test()@y$z, 1))
   expect_true(typeof(Test()) == "S4")
   
-  removeClass("Test")
+  removeClass("Test", environment())
   
 })
 
@@ -26,7 +26,7 @@ test_that("Type with ANY", {
   x@y <- Test()
   expect_true(is(x@y, "Test"))
   
-  removeClass("Test")
+  removeClass("Test", environment())
   
 })
 
@@ -37,18 +37,18 @@ test_that("Class without slot", {
   Empty : Test() %type% .Object
   expect_true(is(Test(), "Test"))
   
-  removeClass("Test")
+  removeClass("Test", environment())
   
 })
 
 test_that("Type inheritance", {
   
-  Test(x = 1, y = list()) %type% {
+  Test4(x = 1, y = list()) %type% {
     stopifnot(.Object@x > 0)
     .Object
   }
   
-  Test:Child(z = " ") %type% {
+  Test4:Child(z = " ") %type% {
     stopifnot(nchar(.Object@z) > 0)
     .Object
   }
@@ -56,25 +56,28 @@ test_that("Type inheritance", {
   expect_error(Child(x = 0))
   expect_true(Child()@x == 1)
   expect_true(identical(Child()@y, list()))
-  expect_true(typeof(Test()) == "S4")
+  expect_true(typeof(Test4()) == "S4")
   expect_true(is(Child(), "Child"))
-  expect_true(inherits(Child(), "Test"))
+  expect_true(inherits(Child(), "Test4"))
   expect_true(identical(Child(z = "char")@z, "char"))
   expect_error(Child(z = ""))
   expect_equal(Child(x = 5)@x, 5)
   
-  removeClass("Child")
-  removeClass("Test")
+  removeClass("Child", environment())
   
   # inheriting from more than one thing
   Test2(z = "") %type% .Object
-  Test : Test2 : Child() %type% .Object
+  Test4 : Test2 : Child() %type% .Object
   
   expect_true(Child()@x == 1)
   expect_true(identical(Child()@y, list()))
-  expect_true(inherits(Child(), "Test"))
+  expect_true(inherits(Child(), "Test4"))
   expect_true(inherits(Child(), "Test2"))
   expect_true(identical(Child(z = "char")@z, "char"))
+  
+  removeClass("Test2", environment())
+  removeClass("Test4", environment())
+  removeClass("Child", environment())
   
 })
 
@@ -87,16 +90,11 @@ test_that("Types can inherit S3 classes", {
   expect_true(Test() == 2)
   expect_true(Test(4, 3) == 3)
   
-  numeric : Test(x = 1, .Data = 2) %type% {
-    .Object
-  }
-  
-  expect_true(Test() == 2)
-  expect_true(Test(4, 3) == 3)
-  
   numeric : Test(x = 1) %type% .Object
   expect_equal(Test()@.Data, numeric())
   expect_true(Test(4, 3) == 3)
+  
+  removeClass("Test", environment())
   
 })
 
@@ -114,45 +112,47 @@ test_that("Type with VIRTUAL", {
   expect_true(inherits(Test(), "Type"))
   expect_error(new("Type"))
   
-  removeClass("Test")
-  removeClass("Type")
+  removeClass("Test", environment())
+  removeClass("Type", environment())
   
 })
 
 test_that("Type with quoted class names", {
   
-  'numeric' : "Test"(names = character()) %type% .Object
-  expect_true(inherits(Test(), "numeric"))
-  expect_is(Test(), "Test")
+  'character' : "Test6"(names = character()) %type% .Object
+  expect_true(inherits(Test6(), "character"))
+  expect_is(Test6(), "Test6")
+  
+  removeClass("Test6", environment())
   
 })
 
 test_that("Type with explicit class names", {
   
-  Test(x ~ numeric, y = list(), z) %type% .Object
+  Test7(x ~ numeric, y = list(), z) %type% .Object
   
-  expect_error(Test(x = 0)) # z is missing
-  expect_true(Test(1, list(), NULL)@x == 1)
-  expect_true(identical(Test(1, list(), NULL)@y, list()))
-  expect_true(typeof(Test(1, list(), NULL)) == "S4")
+  expect_error(Test7(x = 0)) # z is missing
+  expect_true(Test7(1, list(), NULL)@x == 1)
+  expect_true(identical(Test7(1, list(), NULL)@y, list()))
+  expect_true(typeof(Test7(1, list(), NULL)) == "S4")
   
-  removeClass("Test")
+  removeClass("Test7", environment())
   
 })
 
 test_that("Types can deal with class unions", {
   
-  'numeric | character' : Test(
+  'numeric | character' : Test5(
     x ~ 'numeric | character | list'
   ) %type% .Object
   
-  expect_is(Test(1, 2)@x, "numeric")
-  expect_is(Test("", "")@x, "character")
-  expect_is(Test(list())@x, "list")
+  expect_is(Test5(1, 2)@x, "numeric")
+  expect_is(Test5("", "")@x, "character")
+  expect_is(Test5(list())@x, "list")
   
-  removeClass("Test")
-  removeClass("numericORcharacter")
-  removeClass("numericORcharacterORlist")
-  
+  # removeClass("Test", environment())
+  # removeClass("numericORcharacter", environment())
+  # removeClass("numericORcharacterORlist", environment())
+  # 
 })
 
