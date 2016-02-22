@@ -269,6 +269,8 @@ instance$overloaded(1L)
 
 ### More unsorted ideas
 
+#### Public Fields
+
 Something you have to keep in mind is that returned objects are of class *list*.
 If you want to have a public field you have to define get and set methods,
 because you will see a copy of those fields in the object, they behave more like
@@ -328,6 +330,8 @@ sandra$countSiblings()
 sandra
 lisa
 ```
+
+#### Self-contained Method Invocation
 
 These ideas can be combined to construct something object like in S4 with fields
 as slots and methods contained in a list (other patterns can be thought of...):
@@ -399,5 +403,37 @@ inst <- Self(2)
 inst$setX(3)$setX(4)
 inst$getX()
 inst$.x <- 2
+```
+
+#### Syntactic Sugar for Return List
+
+```{r}
+Person <- function(.name) {
+  
+  print <- function(x, ...) {
+    cat(paste0("Hello, my name is ", .name, ".\n"))
+  }
+  
+  retList(c("Person", "Print"))
+  
+}
+
+Employee <- function(.id, ...) {
+  
+  print <- function(x, ...) {
+    cat("Name: ", .name, "\nID:   ", .id)
+  }
+  
+  retList("Employee") %inherit% Person(...)
+  
+}
+
+"%inherit%" <- function(child, parent) {
+  retList(class(child), names(child), super = parent, mergeFun = envCopy, list2env(child))
+}
+
+kalle <- Employee("1", "Kalle")
+str(kalle)
+class(kalle)
 ```
 
