@@ -1,11 +1,3 @@
 devtools::document()
 devtools::build_vignettes()
-devtools::build()
 knitr::knit("README.Rmd", "README.md")
-
-# devtools::install_github("hadley/staticdocs")
-staticdocs::build_site()
-system('git push origin --delete gh-pages')
-system('git add -f inst/web && git commit -m "gh-pages subtree commit"')
-system('git subtree push --prefix inst/web origin gh-pages')
-system('git reset --hard HEAD~1')

@@ -20,26 +20,6 @@ library(devtools)
 install_github("wahani/aoos")
 ```
 
-```{r, echo=FALSE}
-wahaniMiscs::getLocalPackageUpdates("aoos")
-```
-
-## Vignettes
-
-- [Introduction Vignette](http://wahani.github.io/aoos/vignettes/Introduction.html): Is an overview of the things in this package.
-- [retList](http://wahani.github.io/aoos/vignettes/retListClasses.html): Is what I would recommend to use from this package.
-- [Performace Vignette](http://wahani.github.io/aoos/vignettes/performance.html): If this is an issue for you.
-- [aoosClasses Vignette](http://wahani.github.io/aoos/vignettes/aoosClasses.html)
-- [referenceClasses Vignette](http://wahani.github.io/aoos/vignettes/referenceClasses.html)
-
-## Posts
-
-- [Introducing v0.1.0](http://wahani.github.io/2015/01/Introducing-Another-Object-Orientation-System/)
-- [Introducing v0.2.0](http://wahani.github.io/2015/05/Introducing-Another-Object-Orientation-System-2/)
-- [Introducing >v0.3.0](http://wahani.github.io/2015/09/Introducing-Another-Object-Orientation-System-3/)
-- [Lists as Objects](http://wahani.github.io/2015/09/Working-with-lists-as-Objects-in-R/)
-- [Performance](http://wahani.github.io/2015/09/On-Performance-Issues-in-aoos/)
-- [On Reference Classes in R](http://wahani.github.io/2015/05/On-Reference-Classes-in-R-and-aoos/)
 
 ## Examples:
 

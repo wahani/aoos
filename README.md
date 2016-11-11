@@ -21,30 +21,6 @@ install_github("wahani/aoos")
 ```
 
 
-```
-## Version on CRAN: 0.4.0 
-## Development Version: 0.4.0 
-## 
-## Updates in package NEWS-file since last release to CRAN:
-```
-
-## Vignettes
-
-- [Introduction Vignette](http://wahani.github.io/aoos/vignettes/Introduction.html): Is an overview of the things in this package.
-- [retList](http://wahani.github.io/aoos/vignettes/retListClasses.html): Is what I would recommend to use from this package.
-- [Performace Vignette](http://wahani.github.io/aoos/vignettes/performance.html): If this is an issue for you.
-- [aoosClasses Vignette](http://wahani.github.io/aoos/vignettes/aoosClasses.html)
-- [referenceClasses Vignette](http://wahani.github.io/aoos/vignettes/referenceClasses.html)
-
-## Posts
-
-- [Introducing v0.1.0](http://wahani.github.io/2015/01/Introducing-Another-Object-Orientation-System/)
-- [Introducing v0.2.0](http://wahani.github.io/2015/05/Introducing-Another-Object-Orientation-System-2/)
-- [Introducing >v0.3.0](http://wahani.github.io/2015/09/Introducing-Another-Object-Orientation-System-3/)
-- [Lists as Objects](http://wahani.github.io/2015/09/Working-with-lists-as-Objects-in-R/)
-- [Performance](http://wahani.github.io/2015/09/On-Performance-Issues-in-aoos/)
-- [On Reference Classes in R](http://wahani.github.io/2015/05/On-Reference-Classes-in-R-and-aoos/)
-
 ## Examples:
 
 ### retList:
@@ -472,6 +448,8 @@ instance$overloaded(1L)
 
 ### More unsorted ideas
 
+#### Public Fields
+
 Something you have to keep in mind is that returned objects are of class *list*.
 If you want to have a public field you have to define get and set methods,
 because you will see a copy of those fields in the object, they behave more like
@@ -577,6 +555,8 @@ lisa
 ## My name is Lisa Schmidt !
 ```
 
+#### Self-contained Method Invocation
+
 These ideas can be combined to construct something object like in S4 with fields
 as slots and methods contained in a list (other patterns can be thought of...):
 
@@ -677,5 +657,54 @@ inst$.x <- 2
 
 ```
 ## Error in `$<-.Self`(`*tmp*`, ".x", value = 2): This method has been disabled for objects of class 'Self'.
+```
+
+#### Syntactic Sugar for Return List
+
+
+```r
+Person <- function(.name) {
+  
+  print <- function(x, ...) {
+    cat(paste0("Hello, my name is ", .name, ".\n"))
+  }
+  
+  retList(c("Person", "Print"))
+  
+}
+
+Employee <- function(.id, ...) {
+  
+  print <- function(x, ...) {
+    cat("Name: ", .name, "\nID:   ", .id)
+  }
+  
+  retList("Employee") %inherit% Person(...)
+  
+}
+
+"%inherit%" <- function(child, parent) {
+  retList(class(child), names(child), super = parent, mergeFun = envCopy, list2env(child))
+}
+
+kalle <- Employee("1", "Kalle")
+str(kalle)
+```
+
+```
+## List of 1
+##  $ print:function (x, ...)  
+##   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 13 12 15 3 12 3 13 15
+##   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x6c68c20> 
+##  - attr(*, ".self")=<environment: 0x668d730> 
+##  - attr(*, "class")= chr [1:5] "Employee" "list" "Person" "Print" ...
+```
+
+```r
+class(kalle)
+```
+
+```
+## [1] "Employee" "list"     "Person"   "Print"    "list"
 ```
 
