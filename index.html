@@ -1,145 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8">
-<title>Index. aoos 0.4.1</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="">
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-<link href="css/bootstrap.css" rel="stylesheet">
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
-<link href="css/highlight.css" rel="stylesheet">
-<link href="css/staticdocs.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-<!--[if lt IE 9]>
-  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+    <title>aoos by wahani</title>
   </head>
 
   <body>
-    <div class="navbar">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="brand" href="#">aoos 0.4.1</a>
-      <div class="nav">
-        <ul class="nav">
-          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
-        </ul>
+    <header>
+      <div class="inner">
+        <h1>aoos</h1>
+        <h2>Another Object Oriantation System in R</h2>
+        <a href="https://github.com/wahani/aoos" class="button"><small>View project on</small> GitHub</a>
       </div>
-    </div>
-  </div>
-</div>
+    </header>
 
-    <div class="container">
-      <header>
-        
-      </header>
-      
-      <div class="row">
-  <div class="span8">
-    <p><a href="https://travis-ci.org/wahani/aoos"><img src="https://travis-ci.org/wahani/aoos.png?branch=master" alt="Build Status"/></a>
-<a href="http://cran.rstudio.com/web/packages/aoos"><img src="http://www.r-pkg.org/badges/version/aoos" alt="CRAN Version"/></a>
-<img src="http://cranlogs.r-pkg.org/badges/aoos" alt=""/>
-<a href="https://codecov.io/github/wahani/aoos?branch=master"><img src="https://codecov.io/github/wahani/aoos/coverage.svg?branch=master" alt="codecov.io"/></a></p>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p><a href="https://travis-ci.org/wahani/aoos"><img src="https://travis-ci.org/wahani/aoos.png?branch=master" alt="Build Status"></a>
+<a href="http://cran.rstudio.com/web/packages/aoos"><img src="http://www.r-pkg.org/badges/version/aoos" alt="CRAN Version"></a>
+<img src="http://cranlogs.r-pkg.org/badges/aoos" alt="">
+<a href="https://codecov.io/github/wahani/aoos?branch=master"><img src="https://codecov.io/github/wahani/aoos/coverage.svg?branch=master" alt="codecov.io"></a></p>
 
-<h1>Another object orientation system in R</h1>
+<h1>
+<a id="another-object-orientation-system-in-r" class="anchor" href="#another-object-orientation-system-in-r" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Another object orientation system in R</h1>
 
 <p>Another implementation of object-orientation in R. It provides syntactic sugar for the S4 class system and two alternative new implementations. One is an experimental version built around S4 and the other one makes it more convenient to work with lists as objects.</p>
 
-<h2>Installation</h2>
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>To install from CRAN:</p>
 
-<pre><code class="r">install.packages(&quot;aoos&quot;)
-</code></pre>
+<div class="highlight highlight-source-r"><pre>install.packages(<span class="pl-s"><span class="pl-pds">"</span>aoos<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>To install from this repo:</p>
 
-<pre><code class="r">library(devtools)
-install_github(&quot;wahani/aoos&quot;)
-</code></pre>
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">devtools</span>)
+install_github(<span class="pl-s"><span class="pl-pds">"</span>wahani/aoos<span class="pl-pds">"</span></span>)</pre></div>
 
-<pre><code>## Version on CRAN: 0.4.0 
-## Development Version: 0.4.0 
-## 
-## Updates in package NEWS-file since last release to CRAN:
-</code></pre>
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples:</h2>
 
-<h2>Vignettes</h2>
-
-<ul>
-<li><a href="http://wahani.github.io/aoos/vignettes/Introduction.html">Introduction Vignette</a>: Is an overview of the things in this package.</li>
-<li><a href="http://wahani.github.io/aoos/vignettes/retListClasses.html">retList</a>: Is what I would recommend to use from this package.</li>
-<li><a href="http://wahani.github.io/aoos/vignettes/performance.html">Performace Vignette</a>: If this is an issue for you.</li>
-<li><a href="http://wahani.github.io/aoos/vignettes/aoosClasses.html">aoosClasses Vignette</a></li>
-<li><a href="http://wahani.github.io/aoos/vignettes/referenceClasses.html">referenceClasses Vignette</a></li>
-</ul>
-
-<h2>Posts</h2>
-
-<ul>
-<li><a href="http://wahani.github.io/2015/01/Introducing-Another-Object-Orientation-System/">Introducing v0.1.0</a></li>
-<li><a href="http://wahani.github.io/2015/05/Introducing-Another-Object-Orientation-System-2/">Introducing v0.2.0</a></li>
-<li><a href="http://wahani.github.io/2015/09/Introducing-Another-Object-Orientation-System-3/">Introducing &gt;v0.3.0</a></li>
-<li><a href="http://wahani.github.io/2015/09/Working-with-lists-as-Objects-in-R/">Lists as Objects</a></li>
-<li><a href="http://wahani.github.io/2015/09/On-Performance-Issues-in-aoos/">Performance</a></li>
-<li><a href="http://wahani.github.io/2015/05/On-Reference-Classes-in-R-and-aoos/">On Reference Classes in R</a></li>
-</ul>
-
-<h2>Examples:</h2>
-
-<h3>retList:</h3>
+<h3>
+<a id="retlist" class="anchor" href="#retlist" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>retList:</h3>
 
 <p>Basically you define constructor functions. There is no <em>formal</em> class
 definition. The function body will define what members an object will have. You
 quit the function defining the return value using <code>retList</code> which is a <em>generic</em>
 constructor function. By default it will look at the environment from which it
 is called and convert that environment into a list. That list is returned and is
-an object. Names with a &ldquo;.&rdquo; are not part of the constructed <em>list</em> (by default).</p>
+an object. Names with a "." are not part of the constructed <em>list</em> (by default).</p>
 
-<pre><code class="r">library(&quot;aoos&quot;)
-Employee &lt;- function(.name, .salary) {
-  &quot;Common base class for all employees&quot;
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-s"><span class="pl-pds">"</span>aoos<span class="pl-pds">"</span></span>)
+<span class="pl-en">Employee</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(.<span class="pl-smi">name</span>, .<span class="pl-smi">salary</span>) {
+  <span class="pl-s"><span class="pl-pds">"</span>Common base class for all employees<span class="pl-pds">"</span></span>
 
-  print &lt;- function(x, ...) {
-    cat(&quot;Name  : &quot;, .self$.name, &quot;\nSalary: &quot;, .self$.salary)
+  <span class="pl-en">print</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>, <span class="pl-k">...</span>) {
+    cat(<span class="pl-s"><span class="pl-pds">"</span>Name  : <span class="pl-pds">"</span></span>, .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">name</span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\n</span>Salary: <span class="pl-pds">"</span></span>, .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">salary</span>)
   }
 
-  getName &lt;- function() .name
-  getSalary &lt;- function() .self$.salary
+  <span class="pl-en">getName</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>() .<span class="pl-smi">name</span>
+  <span class="pl-en">getSalary</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>() .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">salary</span>
 
-  retList(c(&quot;Employee&quot;, &quot;Print&quot;))
+  retList(c(<span class="pl-s"><span class="pl-pds">"</span>Employee<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Print<span class="pl-pds">"</span></span>))
 
 }
 
-peter &lt;- Employee(&quot;Peter&quot;, 5)
-peter
-</code></pre>
+<span class="pl-smi">peter</span> <span class="pl-k">&lt;-</span> Employee(<span class="pl-s"><span class="pl-pds">"</span>Peter<span class="pl-pds">"</span></span>, <span class="pl-c1">5</span>)
+<span class="pl-smi">peter</span></pre></div>
 
 <pre><code>## Name  :  Peter 
 ## Salary:  5
 </code></pre>
 
-<pre><code class="r">peter$getName()
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">peter</span><span class="pl-k">$</span>getName()</pre></div>
+
+<pre><code>## [1] "Peter"
 </code></pre>
 
-<pre><code>## [1] &quot;Peter&quot;
-</code></pre>
-
-<pre><code class="r">peter$getSalary()
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">peter</span><span class="pl-k">$</span>getSalary()</pre></div>
 
 <pre><code>## [1] 5
 </code></pre>
@@ -148,97 +99,91 @@ peter
 This enables us to define the print method in the functions body and is
 equivalent to invoking the print method directly:</p>
 
-<pre><code class="r">peter
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">peter</span></pre></div>
 
 <pre><code>## Name  :  Peter 
 ## Salary:  5
 </code></pre>
 
-<pre><code class="r">peter$print()
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">peter</span><span class="pl-k">$</span>print()</pre></div>
 
 <pre><code>## Name  :  Peter 
 ## Salary:  5
 </code></pre>
 
-<h3>retList + Inheritance:</h3>
+<h3>
+<a id="retlist--inheritance" class="anchor" href="#retlist--inheritance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>retList + Inheritance:</h3>
 
 <p>You can inherit methods and fields from a super class, or rather an instance,
 because there is no <em>formal</em> class definition. Methods and fields can be
 replaced in the child, all member from the parent are also available for the
 methods of the child.</p>
 
-<pre><code class="r">Manager &lt;- function(.name, .salary, .bonus) {
-  &quot;Extending the Employee class&quot;
+<div class="highlight highlight-source-r"><pre><span class="pl-en">Manager</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(.<span class="pl-smi">name</span>, .<span class="pl-smi">salary</span>, .<span class="pl-smi">bonus</span>) {
+  <span class="pl-s"><span class="pl-pds">"</span>Extending the Employee class<span class="pl-pds">"</span></span>
 
-  bonus &lt;- function(x) {
-    if (!missing(x)) .self$.bonus &lt;- x
-    .self$.bonus
+  <span class="pl-en">bonus</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>) {
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>missing(<span class="pl-smi">x</span>)) .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">bonus</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">x</span>
+    .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">bonus</span>
   }
 
-  print &lt;- function(x, ...) {
-    cat(&quot;Name  : &quot;, .self$.name, &quot;\nSalary: &quot;, .self$.salary, 
-        &quot;\nBonus:&quot;, .self$.bonus)
+  <span class="pl-en">print</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>, <span class="pl-k">...</span>) {
+    cat(<span class="pl-s"><span class="pl-pds">"</span>Name  : <span class="pl-pds">"</span></span>, .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">name</span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\n</span>Salary: <span class="pl-pds">"</span></span>, .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">salary</span>, 
+        <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\n</span>Bonus:<span class="pl-pds">"</span></span>, .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">bonus</span>)
   }
 
-  retList(&quot;Manager&quot;, super = Employee(.name, .salary))
+  retList(<span class="pl-s"><span class="pl-pds">"</span>Manager<span class="pl-pds">"</span></span>, <span class="pl-v">super</span> <span class="pl-k">=</span> Employee(.<span class="pl-smi">name</span>, .<span class="pl-smi">salary</span>))
 
 }
 
-julia &lt;- Manager(&quot;Julia&quot;, 5, 5 * 1e6)
-julia
-</code></pre>
+<span class="pl-smi">julia</span> <span class="pl-k">&lt;-</span> Manager(<span class="pl-s"><span class="pl-pds">"</span>Julia<span class="pl-pds">"</span></span>, <span class="pl-c1">5</span>, <span class="pl-c1">5</span> <span class="pl-k">*</span> <span class="pl-c1">1e6</span>)
+<span class="pl-smi">julia</span></pre></div>
 
 <pre><code>## Name  :  Julia 
 ## Salary:  5 
 ## Bonus: 5e+06
 </code></pre>
 
-<pre><code class="r">julia$getSalary()
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">julia</span><span class="pl-k">$</span>getSalary()</pre></div>
 
 <pre><code>## [1] 5
 </code></pre>
 
-<pre><code class="r">julia$bonus(10)
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">julia</span><span class="pl-k">$</span>bonus(<span class="pl-c1">10</span>)</pre></div>
 
 <pre><code>## [1] 10
 </code></pre>
 
-<pre><code class="r">julia
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">julia</span></pre></div>
 
 <pre><code>## Name  :  Julia 
 ## Salary:  5 
 ## Bonus: 10
 </code></pre>
 
-<h3>S4 generics</h3>
+<h3>
+<a id="s4-generics" class="anchor" href="#s4-generics" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>S4 generics</h3>
 
 <p>As of version 0.3.1 there exist two binary operators, <code>%g%</code> and <code>%m%</code>, which
 link to the S4 system for generic functions. They provide (hopefully) concise
 alternatives to <code>methods::setGeneric</code> and <code>methods::setMethod</code>:</p>
 
-<pre><code class="r"># Standard definition for a generic without default:
-numeric : strLength(x, ...) %g% standardGeneric(&quot;strLength&quot;)
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># Standard definition for a generic without default:</span>
+<span class="pl-smi">numeric</span> <span class="pl-k">:</span> strLength(<span class="pl-smi">x</span>, <span class="pl-k">...</span>) %<span class="pl-smi">g</span>% standardGeneric(<span class="pl-s"><span class="pl-pds">"</span>strLength<span class="pl-pds">"</span></span>)
 
-# A method for x:character
-strLength(x ~ character, ...) %m% { nchar(x) }
+<span class="pl-c"># A method for x:character</span>
+strLength(<span class="pl-smi">x</span> <span class="pl-k">~</span> <span class="pl-smi">character</span>, <span class="pl-k">...</span>) %<span class="pl-smi">m</span>% { nchar(<span class="pl-smi">x</span>) }
 
-# Kind of the default method for x:ANY
-strLength(x ~ ANY, ...) %m% { strLength(as.character(x)) }
+<span class="pl-c"># Kind of the default method for x:ANY</span>
+strLength(<span class="pl-smi">x</span> <span class="pl-k">~</span> <span class="pl-smi">ANY</span>, <span class="pl-k">...</span>) %<span class="pl-smi">m</span>% { strLength(as.character(<span class="pl-smi">x</span>)) }
 
-# Check that it works:
-strLength(123)
-</code></pre>
+<span class="pl-c"># Check that it works:</span>
+strLength(<span class="pl-c1">123</span>)</pre></div>
 
 <pre><code>## [1] 3
 </code></pre>
 
-<pre><code class="r">strLength(&quot;ab&quot;)
-</code></pre>
+<div class="highlight highlight-source-r"><pre>strLength(<span class="pl-s"><span class="pl-pds">"</span>ab<span class="pl-pds">"</span></span>)</pre></div>
 
 <pre><code>## [1] 2
 </code></pre>
@@ -254,7 +199,8 @@ arguments than its generic you can define defaults for them. For the <em>shared<
 argument names provide a class name. One exception to the rule is <code>...</code> which
 can have no type. </p>
 
-<h3>S4 Types</h3>
+<h3>
+<a id="s4-types" class="anchor" href="#s4-types" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>S4 Types</h3>
 
 <p>The following presents the function <code>%type%</code> which is a link to S4s <code>setClass</code>. 
 <code>%type%</code> tries to abstract a typical scenario of using <code>setClass</code>. </p>
@@ -268,34 +214,32 @@ you state the class explicitly using <code>~</code>.</p>
 also two fields, <em>x</em> and <em>y</em>, and in addition we say it inherits from type
 <em>character</em>. So <em>Child</em> is basically a character vector with two attributes:</p>
 
-<pre><code class="r">Test(x ~ numeric, y = list()) %type% {
-  stopifnot(length(.Object@x) == 1)
-  stopifnot(.Object@x &gt; 0)
-  .Object
+<div class="highlight highlight-source-r"><pre>Test(<span class="pl-smi">x</span> <span class="pl-k">~</span> <span class="pl-smi">numeric</span>, <span class="pl-v">y</span> <span class="pl-k">=</span> <span class="pl-k">list</span>()) %<span class="pl-smi">type</span>% {
+  stopifnot(length(.<span class="pl-smi">Object</span><span class="pl-k">@</span><span class="pl-smi">x</span>) <span class="pl-k">==</span> <span class="pl-c1">1</span>)
+  stopifnot(.<span class="pl-smi">Object</span><span class="pl-k">@</span><span class="pl-smi">x</span> <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>)
+  .<span class="pl-smi">Object</span>
 }
 
-Test : character : Child() %type% .Object
+<span class="pl-smi">Test</span> <span class="pl-k">:</span> <span class="pl-smi">character</span> <span class="pl-k">:</span> Child() %<span class="pl-smi">type</span>% .<span class="pl-smi">Object</span>
 
-Test(2)
-</code></pre>
+Test(<span class="pl-c1">2</span>)</pre></div>
 
-<pre><code>## An object of class &quot;Test&quot;
-## Slot &quot;x&quot;:
+<pre><code>## An object of class "Test"
+## Slot "x":
 ## [1] 2
 ## 
-## Slot &quot;y&quot;:
+## Slot "y":
 ## list()
 </code></pre>
 
-<pre><code class="r">Child(&quot;Hej&quot;, x = 2)
-</code></pre>
+<div class="highlight highlight-source-r"><pre>Child(<span class="pl-s"><span class="pl-pds">"</span>Hej<span class="pl-pds">"</span></span>, <span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-c1">2</span>)</pre></div>
 
-<pre><code>## An object of class &quot;Child&quot;
-## [1] &quot;Hej&quot;
-## Slot &quot;x&quot;:
+<pre><code>## An object of class "Child"
+## [1] "Hej"
+## Slot "x":
 ## [1] 2
 ## 
-## Slot &quot;y&quot;:
+## Slot "y":
 ## list()
 </code></pre>
 
@@ -305,184 +249,176 @@ init, in the above example we formulate some assertions (x &gt; 0 and scalar). T
 init method for type <em>Child</em> just returns the object itself named <code>.Object</code>
 (see the help page for <code>methods::initialize</code> to understand the naming).</p>
 
-<h3>S4 Type Unions</h3>
+<h3>
+<a id="s4-type-unions" class="anchor" href="#s4-type-unions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>S4 Type Unions</h3>
 
 <p>S4 provides also the possibility to construct type unions which are useful to
 allow a type to inherit from different types at the same time, e.g. a type which
 can either be a <em>numeric</em> or <em>character</em>. This feature is not yet complete, but
 here are some ways you can use it. For the definition of a type:</p>
 
-<pre><code class="r">&#39;numeric | character&#39; : Either() %type% .Object
-Either(1)
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-s"><span class="pl-pds">'</span>numeric | character<span class="pl-pds">'</span></span> <span class="pl-k">:</span> Either() %<span class="pl-smi">type</span>% .<span class="pl-smi">Object</span>
+Either(<span class="pl-c1">1</span>)</pre></div>
 
-<pre><code>## An object of class &quot;Either&quot;
+<pre><code>## An object of class "Either"
 ## [1] 1
 </code></pre>
 
-<pre><code class="r">Either(&quot;Hello World!&quot;)
-</code></pre>
+<div class="highlight highlight-source-r"><pre>Either(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>)</pre></div>
 
-<pre><code>## An object of class &quot;Either&quot;
-## [1] &quot;Hello World!&quot;
+<pre><code>## An object of class "Either"
+## [1] "Hello World!"
 </code></pre>
 
 <p>In the definition of a field:</p>
 
-<pre><code class="r">Either(x ~ numeric | character) %type% .Object
-Either(1)
-</code></pre>
+<div class="highlight highlight-source-r"><pre>Either(<span class="pl-smi">x</span> <span class="pl-k">~</span> <span class="pl-smi">numeric</span> <span class="pl-k">|</span> <span class="pl-smi">character</span>) %<span class="pl-smi">type</span>% .<span class="pl-smi">Object</span>
+Either(<span class="pl-c1">1</span>)</pre></div>
 
-<pre><code>## An object of class &quot;Either&quot;
-## Slot &quot;x&quot;:
+<pre><code>## An object of class "Either"
+## Slot "x":
 ## [1] 1
 </code></pre>
 
-<pre><code class="r">Either(&quot;Hello World!&quot;)
-</code></pre>
+<div class="highlight highlight-source-r"><pre>Either(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>)</pre></div>
 
-<pre><code>## An object of class &quot;Either&quot;
-## Slot &quot;x&quot;:
-## [1] &quot;Hello World!&quot;
+<pre><code>## An object of class "Either"
+## Slot "x":
+## [1] "Hello World!"
 </code></pre>
 
 <p>In the definition of a generic or method:</p>
 
-<pre><code class="r">&#39;numeric | character&#39; : complicatedFunction(x = 1) %g% as.character(x)
-complicatedFunction(x ~ character | integer) %m% as.numeric(x)
-complicatedFunction()
+<div class="highlight highlight-source-r"><pre><span class="pl-s"><span class="pl-pds">'</span>numeric | character<span class="pl-pds">'</span></span> <span class="pl-k">:</span> complicatedFunction(<span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-c1">1</span>) %<span class="pl-smi">g</span>% as.character(<span class="pl-smi">x</span>)
+complicatedFunction(<span class="pl-smi">x</span> <span class="pl-k">~</span> <span class="pl-smi">character</span> <span class="pl-k">|</span> <span class="pl-smi">integer</span>) %<span class="pl-smi">m</span>% as.numeric(<span class="pl-smi">x</span>)
+complicatedFunction()</pre></div>
+
+<pre><code>## [1] "1"
 </code></pre>
 
-<pre><code>## [1] &quot;1&quot;
-</code></pre>
-
-<pre><code class="r">complicatedFunction(&quot;1&quot;)
-</code></pre>
+<div class="highlight highlight-source-r"><pre>complicatedFunction(<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>)</pre></div>
 
 <pre><code>## [1] 1
 </code></pre>
 
-<pre><code class="r">complicatedFunction(1L)
-</code></pre>
+<div class="highlight highlight-source-r"><pre>complicatedFunction(<span class="pl-c1">1L</span>)</pre></div>
 
 <pre><code>## [1] 1
 </code></pre>
 
-<h3>Polymorphic Methods in Objects</h3>
+<h3>
+<a id="polymorphic-methods-in-objects" class="anchor" href="#polymorphic-methods-in-objects" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Polymorphic Methods in Objects</h3>
 
 <p>In contrast to the defaults in S4, <code>%g%</code> and <code>%m%</code> have side effects in the
 environment they are called in. That means you can define generics which are 
 local to a function or closure. Nice all by itself but it also extends the
 <code>retList</code>-idea of representing objects in <em>R</em> as demonstrated here:</p>
 
-<pre><code class="r">Class &lt;- function() {
+<div class="highlight highlight-source-r"><pre><span class="pl-en">Class</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>() {
 
-  overloaded(x) %g% { 
-    cat(&quot;This is the default ... \n&quot;)
-    x 
+  overloaded(<span class="pl-smi">x</span>) %<span class="pl-smi">g</span>% { 
+    cat(<span class="pl-s"><span class="pl-pds">"</span>This is the default ... <span class="pl-cce">\n</span><span class="pl-pds">"</span></span>)
+    <span class="pl-smi">x</span> 
   } 
 
-  overloaded(x ~ numeric) %m% {
-    cat(&quot;This is the method for &#39;numeric&#39; values ... \n&quot;)
-    x
+  overloaded(<span class="pl-smi">x</span> <span class="pl-k">~</span> <span class="pl-smi">numeric</span>) %<span class="pl-smi">m</span>% {
+    cat(<span class="pl-s"><span class="pl-pds">"</span>This is the method for 'numeric' values ... <span class="pl-cce">\n</span><span class="pl-pds">"</span></span>)
+    <span class="pl-smi">x</span>
   }
 
-  retList(&quot;Class&quot;)
+  retList(<span class="pl-s"><span class="pl-pds">"</span>Class<span class="pl-pds">"</span></span>)
 }
 
-instance &lt;- Class()
-instance$overloaded(1)
-</code></pre>
+<span class="pl-smi">instance</span> <span class="pl-k">&lt;-</span> Class()
+<span class="pl-smi">instance</span><span class="pl-k">$</span>overloaded(<span class="pl-c1">1</span>)</pre></div>
 
-<pre><code>## This is the method for &#39;numeric&#39; values ...
+<pre><code>## This is the method for 'numeric' values ...
 </code></pre>
 
 <pre><code>## [1] 1
 </code></pre>
 
-<pre><code class="r">instance$overloaded(&quot;a&quot;)
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">instance</span><span class="pl-k">$</span>overloaded(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>)</pre></div>
 
 <pre><code>## This is the default ...
 </code></pre>
 
-<pre><code>## [1] &quot;a&quot;
+<pre><code>## [1] "a"
 </code></pre>
 
 <p>The next question is how to inherit or extend an existing generic which is a
 member of a class? I am not entirely happy with how this works at the moment,
-but this is one way to approach it (which works&hellip;):</p>
+but this is one way to approach it (which works...):</p>
 
-<pre><code class="r">Child &lt;- function() {
+<div class="highlight highlight-source-r"><pre><span class="pl-en">Child</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>() {
 
-  # Normally you would make the call to the parents constructor in the call
-  # to retList. But here we need to access the elements directly during init...
-  .super &lt;- Class()
+  <span class="pl-c"># Normally you would make the call to the parents constructor in the call</span>
+  <span class="pl-c"># to retList. But here we need to access the elements directly during init...</span>
+  .<span class="pl-smi">super</span> <span class="pl-k">&lt;-</span> Class()
 
-  # This points %m% to the generic (in .super) which should be extended:
-  .super$overloaded(x ~ integer) %m% {
-    cat(&quot;This is the method for &#39;integer&#39; values ... \n&quot;)
-    x
+  <span class="pl-c"># This points %m% to the generic (in .super) which should be extended:</span>
+  .<span class="pl-smi">super</span><span class="pl-k">$</span>overloaded(<span class="pl-smi">x</span> <span class="pl-k">~</span> <span class="pl-smi">integer</span>) %<span class="pl-smi">m</span>% {
+    cat(<span class="pl-s"><span class="pl-pds">"</span>This is the method for 'integer' values ... <span class="pl-cce">\n</span><span class="pl-pds">"</span></span>)
+    <span class="pl-smi">x</span>
   }
 
-  retList(&quot;Child&quot;, super = .super)
+  retList(<span class="pl-s"><span class="pl-pds">"</span>Child<span class="pl-pds">"</span></span>, <span class="pl-v">super</span> <span class="pl-k">=</span> .<span class="pl-smi">super</span>)
 
 }
 
-instance &lt;- Child()
-instance$overloaded(1)
-</code></pre>
+<span class="pl-smi">instance</span> <span class="pl-k">&lt;-</span> Child()
+<span class="pl-smi">instance</span><span class="pl-k">$</span>overloaded(<span class="pl-c1">1</span>)</pre></div>
 
-<pre><code>## This is the method for &#39;numeric&#39; values ...
+<pre><code>## This is the method for 'numeric' values ...
 </code></pre>
 
 <pre><code>## [1] 1
 </code></pre>
 
-<pre><code class="r">instance$overloaded(&quot;a&quot;)
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">instance</span><span class="pl-k">$</span>overloaded(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>)</pre></div>
 
 <pre><code>## This is the default ...
 </code></pre>
 
-<pre><code>## [1] &quot;a&quot;
+<pre><code>## [1] "a"
 </code></pre>
 
-<pre><code class="r">instance$overloaded(1L)
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">instance</span><span class="pl-k">$</span>overloaded(<span class="pl-c1">1L</span>)</pre></div>
 
-<pre><code>## This is the method for &#39;integer&#39; values ...
+<pre><code>## This is the method for 'integer' values ...
 </code></pre>
 
 <pre><code>## [1] 1
 </code></pre>
 
-<h3>More unsorted ideas</h3>
+<h3>
+<a id="more-unsorted-ideas" class="anchor" href="#more-unsorted-ideas" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>More unsorted ideas</h3>
+
+<h4>
+<a id="public-fields" class="anchor" href="#public-fields" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Public Fields</h4>
 
 <p>Something you have to keep in mind is that returned objects are of class <em>list</em>.
 If you want to have a public field you have to define get and set methods,
 because you will see a copy of those fields in the object, they behave more like
 an attribute.</p>
 
-<pre><code class="r">ObjectWithField &lt;- function(name) {
-  getName &lt;- function() {
-    name
+<div class="highlight highlight-source-r"><pre><span class="pl-en">ObjectWithField</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">name</span>) {
+  <span class="pl-en">getName</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>() {
+    <span class="pl-smi">name</span>
   }
   retList()
 } 
 
-obj &lt;- ObjectWithField(&quot;Alexander&quot;)
-obj$name &lt;- &quot;Noah&quot;
-obj$getName()
+<span class="pl-smi">obj</span> <span class="pl-k">&lt;-</span> ObjectWithField(<span class="pl-s"><span class="pl-pds">"</span>Alexander<span class="pl-pds">"</span></span>)
+<span class="pl-smi">obj</span><span class="pl-k">$</span><span class="pl-smi">name</span> <span class="pl-k">&lt;-</span> <span class="pl-s"><span class="pl-pds">"</span>Noah<span class="pl-pds">"</span></span>
+<span class="pl-smi">obj</span><span class="pl-k">$</span>getName()</pre></div>
+
+<pre><code>## [1] "Alexander"
 </code></pre>
 
-<pre><code>## [1] &quot;Alexander&quot;
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">obj</span><span class="pl-k">$</span><span class="pl-smi">name</span></pre></div>
 
-<pre><code class="r">obj$name
-</code></pre>
-
-<pre><code>## [1] &quot;Noah&quot;
+<pre><code>## [1] "Noah"
 </code></pre>
 
 <p>We can do more abstract representations of <em>things</em>. In this example I want to
@@ -490,240 +426,208 @@ create a constructor object which keeps track of how many instances it created.
 Also every instance should know how many siblings it has, or in other words all
 instances share a reference to a field accessible by all of them.</p>
 
-<pre><code class="r">initFamily &lt;- function(.familyName) {
+<div class="highlight highlight-source-r"><pre><span class="pl-en">initFamily</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(.<span class="pl-smi">familyName</span>) {
 
-  .superEnv &lt;- environment()
-  .count &lt;- 0
+  .<span class="pl-smi">superEnv</span> <span class="pl-k">&lt;-</span> environment()
+  .<span class="pl-smi">count</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">0</span>
 
-  getCount &lt;- function() {
-    cat(&quot;There are&quot;, .self$.count, paste0(.familyName, &quot;s&quot;), &quot;out there.&quot;)
+  <span class="pl-en">getCount</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>() {
+    cat(<span class="pl-s"><span class="pl-pds">"</span>There are<span class="pl-pds">"</span></span>, .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">count</span>, paste0(.<span class="pl-smi">familyName</span>, <span class="pl-s"><span class="pl-pds">"</span>s<span class="pl-pds">"</span></span>), <span class="pl-s"><span class="pl-pds">"</span>out there.<span class="pl-pds">"</span></span>)
   }
 
-  new &lt;- function(.name) {
-    # happens on init
-    .count &lt;&lt;- .count + 1
+  <span class="pl-en">new</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(.<span class="pl-smi">name</span>) {
+    <span class="pl-c"># happens on init</span>
+    .<span class="pl-smi">count</span> <span class="pl-k">&lt;&lt;-</span> .<span class="pl-smi">count</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>
 
-    print &lt;- function(x, ...) cat(&quot;My name is&quot;, .self$.name, .familyName, &quot;!&quot;)
-    countSiblings &lt;- function() cat(&quot;I have&quot;, .count, &quot;siblings!&quot;)
+    <span class="pl-en">print</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>, <span class="pl-k">...</span>) cat(<span class="pl-s"><span class="pl-pds">"</span>My name is<span class="pl-pds">"</span></span>, .<span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">name</span>, .<span class="pl-smi">familyName</span>, <span class="pl-s"><span class="pl-pds">"</span>!<span class="pl-pds">"</span></span>)
+    <span class="pl-en">countSiblings</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>() cat(<span class="pl-s"><span class="pl-pds">"</span>I have<span class="pl-pds">"</span></span>, .<span class="pl-smi">count</span>, <span class="pl-s"><span class="pl-pds">"</span>siblings!<span class="pl-pds">"</span></span>)
 
-    # So every instance knows about .count and .familyName:
-    retList(c(&quot;Person&quot;, &quot;Print&quot;), superEnv = new.env(parent = .superEnv))
+    <span class="pl-c"># So every instance knows about .count and .familyName:</span>
+    retList(c(<span class="pl-s"><span class="pl-pds">"</span>Person<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Print<span class="pl-pds">"</span></span>), <span class="pl-v">superEnv</span> <span class="pl-k">=</span> new.env(<span class="pl-v">parent</span> <span class="pl-k">=</span> .<span class="pl-smi">superEnv</span>))
   }
 
-  retList(&quot;ConstructorPerson&quot;)
+  retList(<span class="pl-s"><span class="pl-pds">"</span>ConstructorPerson<span class="pl-pds">"</span></span>)
 
 }
 
-schmidt &lt;- initFamily(&quot;Schmidt&quot;)
-schmidt$getCount()
-</code></pre>
+<span class="pl-smi">schmidt</span> <span class="pl-k">&lt;-</span> initFamily(<span class="pl-s"><span class="pl-pds">"</span>Schmidt<span class="pl-pds">"</span></span>)
+<span class="pl-smi">schmidt</span><span class="pl-k">$</span>getCount()</pre></div>
 
 <pre><code>## There are 0 Schmidts out there.
 </code></pre>
 
-<pre><code class="r">lisa &lt;- schmidt$new(&quot;Lisa&quot;)
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">lisa</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">schmidt</span><span class="pl-k">$</span>new(<span class="pl-s"><span class="pl-pds">"</span>Lisa<span class="pl-pds">"</span></span>)
 
-sandra &lt;- schmidt$new(&quot;Sandra&quot;)
-schmidt$getCount()
-</code></pre>
+<span class="pl-smi">sandra</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">schmidt</span><span class="pl-k">$</span>new(<span class="pl-s"><span class="pl-pds">"</span>Sandra<span class="pl-pds">"</span></span>)
+<span class="pl-smi">schmidt</span><span class="pl-k">$</span>getCount()</pre></div>
 
 <pre><code>## There are 2 Schmidts out there.
 </code></pre>
 
-<pre><code class="r">sandra$countSiblings()
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">sandra</span><span class="pl-k">$</span>countSiblings()</pre></div>
 
 <pre><code>## I have 2 siblings!
 </code></pre>
 
-<pre><code class="r">sandra
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">sandra</span></pre></div>
 
 <pre><code>## My name is Sandra Schmidt !
 </code></pre>
 
-<pre><code class="r">lisa
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">lisa</span></pre></div>
 
 <pre><code>## My name is Lisa Schmidt !
 </code></pre>
 
+<h4>
+<a id="self-contained-method-invocation" class="anchor" href="#self-contained-method-invocation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Self-contained Method Invocation</h4>
+
 <p>These ideas can be combined to construct something object like in S4 with fields
-as slots and methods contained in a list (other patterns can be thought of&hellip;):</p>
+as slots and methods contained in a list (other patterns can be thought of...):</p>
 
-<pre><code class="r"># Some extra stuff to make the instance on which a method is invoked available
-# during the call.
-setClass(&quot;Self&quot;, contains = &quot;VIRTUAL&quot;)
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># Some extra stuff to make the instance on which a method is invoked available</span>
+<span class="pl-c"># during the call.</span>
+<span class="pl-ent">setClass</span>("<span class="pl-en">Self</span>", contains = "VIRTUAL")
 
-setMethod(&quot;$&quot;, &quot;Self&quot;, function(x, name) {
-  function(...) x[[name]](.Object = x, ...)
-})
+<span class="pl-ent">setMethod</span>("<span class="pl-en">$</span>", "Self", function(x, name) {
+  <span class="pl-k">function</span>(<span class="pl-k">...</span>) <span class="pl-smi">x</span>[[<span class="pl-smi">name</span>]](<span class="pl-v">.Object</span> <span class="pl-k">=</span> <span class="pl-smi">x</span>, <span class="pl-k">...</span>)
+})</pre></div>
+
+<pre><code>## [1] "$"
 </code></pre>
 
-<pre><code>## [1] &quot;$&quot;
-</code></pre>
-
-<pre><code class="r">Self : Show : Test : list : Super() %type% {
-  method &lt;- function(.Object) .Object@x * 2
-  show &lt;- function(.Object) cat(&quot;Value for x:&quot;, .Object@x)
-  S3Part(.Object) &lt;- retList(super = .Object)
-  .Object
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">Self</span> <span class="pl-k">:</span> <span class="pl-smi">Show</span> <span class="pl-k">:</span> <span class="pl-smi">Test</span> <span class="pl-k">:</span> <span class="pl-smi">list</span> <span class="pl-k">:</span> Super() %<span class="pl-smi">type</span>% {
+  <span class="pl-en">method</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(.<span class="pl-smi">Object</span>) .<span class="pl-smi">Object</span><span class="pl-k">@</span><span class="pl-smi">x</span> <span class="pl-k">*</span> <span class="pl-c1">2</span>
+  <span class="pl-en">show</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(.<span class="pl-smi">Object</span>) cat(<span class="pl-s"><span class="pl-pds">"</span>Value for x:<span class="pl-pds">"</span></span>, .<span class="pl-smi">Object</span><span class="pl-k">@</span><span class="pl-smi">x</span>)
+  S3Part(.<span class="pl-smi">Object</span>) <span class="pl-k">&lt;-</span> retList(<span class="pl-v">super</span> <span class="pl-k">=</span> .<span class="pl-smi">Object</span>)
+  .<span class="pl-smi">Object</span>
 }
 
-x &lt;- Super(x = 2)
-x
-</code></pre>
+<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> Super(<span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-c1">2</span>)
+<span class="pl-smi">x</span></pre></div>
 
 <pre><code>## Value for x: 2
 </code></pre>
 
-<pre><code class="r">x$method()
-</code></pre>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">x</span><span class="pl-k">$</span>method()</pre></div>
 
 <pre><code>## [1] 4
 </code></pre>
 
 <p>And for the S3 retList thing:</p>
 
-<pre><code class="r">&quot;$.Self&quot; &lt;- function(x, name) {
-  callIsLocal &lt;- any(sapply(aoos:::envirSearch(list(parent.frame())), 
-                            identical, y = attr(x, &quot;.self&quot;)))
-  if (callIsLocal) {
-    obj &lt;- attr(x, &quot;.self&quot;)[[name]]
-    if (inherits(obj, &quot;function&quot;)) function(...) obj(self = x, ...)
-    else obj
+<div class="highlight highlight-source-r"><pre><span class="pl-s"><span class="pl-pds">"</span>$.Self<span class="pl-pds">"</span></span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>, <span class="pl-smi">name</span>) {
+  <span class="pl-smi">callIsLocal</span> <span class="pl-k">&lt;-</span> any(sapply(<span class="pl-e">aoos</span><span class="pl-k">:::</span>envirSearch(<span class="pl-k">list</span>(parent.frame())), 
+                            <span class="pl-smi">identical</span>, <span class="pl-v">y</span> <span class="pl-k">=</span> attr(<span class="pl-smi">x</span>, <span class="pl-s"><span class="pl-pds">"</span>.self<span class="pl-pds">"</span></span>)))
+  <span class="pl-k">if</span> (<span class="pl-smi">callIsLocal</span>) {
+    <span class="pl-smi">obj</span> <span class="pl-k">&lt;-</span> attr(<span class="pl-smi">x</span>, <span class="pl-s"><span class="pl-pds">"</span>.self<span class="pl-pds">"</span></span>)[[<span class="pl-smi">name</span>]]
+    <span class="pl-k">if</span> (inherits(<span class="pl-smi">obj</span>, <span class="pl-s"><span class="pl-pds">"</span>function<span class="pl-pds">"</span></span>)) <span class="pl-k">function</span>(<span class="pl-k">...</span>) obj(<span class="pl-v">self</span> <span class="pl-k">=</span> <span class="pl-smi">x</span>, <span class="pl-k">...</span>)
+    <span class="pl-k">else</span> <span class="pl-smi">obj</span>
   }
-  else function(...) x[[name]](self = x, ...)
+  <span class="pl-k">else</span> <span class="pl-k">function</span>(<span class="pl-k">...</span>) <span class="pl-smi">x</span>[[<span class="pl-smi">name</span>]](<span class="pl-v">self</span> <span class="pl-k">=</span> <span class="pl-smi">x</span>, <span class="pl-k">...</span>)
 }
 
-&quot;$&lt;-.Self&quot; &lt;- function(x, name, value) {
-  callIsLocal &lt;- any(sapply(aoos:::envirSearch(list(parent.frame())), 
-                            identical, y = attr(x, &quot;.self&quot;)))
+<span class="pl-s"><span class="pl-pds">"</span>$&lt;-.Self<span class="pl-pds">"</span></span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>, <span class="pl-smi">name</span>, <span class="pl-smi">value</span>) {
+  <span class="pl-smi">callIsLocal</span> <span class="pl-k">&lt;-</span> any(sapply(<span class="pl-e">aoos</span><span class="pl-k">:::</span>envirSearch(<span class="pl-k">list</span>(parent.frame())), 
+                            <span class="pl-smi">identical</span>, <span class="pl-v">y</span> <span class="pl-k">=</span> attr(<span class="pl-smi">x</span>, <span class="pl-s"><span class="pl-pds">"</span>.self<span class="pl-pds">"</span></span>)))
 
-  if (callIsLocal) {
-    assign(name, value = value, envir = attr(x, &quot;.self&quot;))
-  } else {
-    stop(&quot;This method has been disabled for objects of class &#39;Self&#39;.&quot;)
+  <span class="pl-k">if</span> (<span class="pl-smi">callIsLocal</span>) {
+    assign(<span class="pl-smi">name</span>, <span class="pl-v">value</span> <span class="pl-k">=</span> <span class="pl-smi">value</span>, <span class="pl-v">envir</span> <span class="pl-k">=</span> attr(<span class="pl-smi">x</span>, <span class="pl-s"><span class="pl-pds">"</span>.self<span class="pl-pds">"</span></span>))
+  } <span class="pl-k">else</span> {
+    stop(<span class="pl-s"><span class="pl-pds">"</span>This method has been disabled for objects of class 'Self'.<span class="pl-pds">"</span></span>)
   }
 
-  x
+  <span class="pl-smi">x</span>
 }
 
-Self &lt;- function(.x) {
+<span class="pl-en">Self</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(.<span class="pl-smi">x</span>) {
 
-  setX &lt;- function(self, val) {
-    self$.x &lt;- val 
-    invisible(self)
+  <span class="pl-en">setX</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">self</span>, <span class="pl-smi">val</span>) {
+    <span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">val</span> 
+    <span class="pl-k">invisible</span>(<span class="pl-smi">self</span>)
   }
 
-  getX &lt;- function(self) {
-    self$.x
+  <span class="pl-en">getX</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">self</span>) {
+    <span class="pl-smi">self</span><span class="pl-k">$</span>.<span class="pl-smi">x</span>
   }
 
-  retList(c(&quot;Self&quot;))
+  retList(c(<span class="pl-s"><span class="pl-pds">"</span>Self<span class="pl-pds">"</span></span>))
 
 }
 
-inst &lt;- Self(2)
-inst$setX(3)$setX(4)
-inst$getX()
-</code></pre>
+<span class="pl-smi">inst</span> <span class="pl-k">&lt;-</span> Self(<span class="pl-c1">2</span>)
+<span class="pl-smi">inst</span><span class="pl-k">$</span>setX(<span class="pl-c1">3</span>)<span class="pl-k">$</span>setX(<span class="pl-c1">4</span>)
+<span class="pl-smi">inst</span><span class="pl-k">$</span>getX()</pre></div>
 
 <pre><code>## [1] 4
 </code></pre>
 
-<pre><code class="r">inst$.x &lt;- 2
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">inst</span><span class="pl-k">$</span>.<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> <span class="pl-c1">2</span></pre></div>
+
+<pre><code>## Error in `$&lt;-.Self`(`*tmp*`, ".x", value = 2): This method has been disabled for objects of class 'Self'.
 </code></pre>
 
-<pre><code>## Error in `$&lt;-.Self`(`*tmp*`, &quot;.x&quot;, value = 2): This method has been disabled for objects of class &#39;Self&#39;.
+<h4>
+<a id="syntactic-sugar-for-return-list" class="anchor" href="#syntactic-sugar-for-return-list" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Syntactic Sugar for Return List</h4>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-en">Person</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(.<span class="pl-smi">name</span>) {
+
+  <span class="pl-en">print</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>, <span class="pl-k">...</span>) {
+    cat(paste0(<span class="pl-s"><span class="pl-pds">"</span>Hello, my name is <span class="pl-pds">"</span></span>, .<span class="pl-smi">name</span>, <span class="pl-s"><span class="pl-pds">"</span>.<span class="pl-cce">\n</span><span class="pl-pds">"</span></span>))
+  }
+
+  retList(c(<span class="pl-s"><span class="pl-pds">"</span>Person<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Print<span class="pl-pds">"</span></span>))
+
+}
+
+<span class="pl-en">Employee</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(.<span class="pl-smi">id</span>, <span class="pl-k">...</span>) {
+
+  <span class="pl-en">print</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>, <span class="pl-k">...</span>) {
+    cat(<span class="pl-s"><span class="pl-pds">"</span>Name: <span class="pl-pds">"</span></span>, .<span class="pl-smi">name</span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\n</span>ID:   <span class="pl-pds">"</span></span>, .<span class="pl-smi">id</span>)
+  }
+
+  retList(<span class="pl-s"><span class="pl-pds">"</span>Employee<span class="pl-pds">"</span></span>) %<span class="pl-smi">inherit</span>% Person(<span class="pl-k">...</span>)
+
+}
+
+<span class="pl-s"><span class="pl-pds">"</span>%inherit%<span class="pl-pds">"</span></span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">child</span>, <span class="pl-smi">parent</span>) {
+  retList(class(<span class="pl-smi">child</span>), names(<span class="pl-smi">child</span>), <span class="pl-v">super</span> <span class="pl-k">=</span> <span class="pl-smi">parent</span>, <span class="pl-v">mergeFun</span> <span class="pl-k">=</span> <span class="pl-smi">envCopy</span>, list2env(<span class="pl-smi">child</span>))
+}
+
+<span class="pl-smi">kalle</span> <span class="pl-k">&lt;-</span> Employee(<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Kalle<span class="pl-pds">"</span></span>)
+str(<span class="pl-smi">kalle</span>)</pre></div>
+
+<pre><code>## List of 1
+##  $ print:function (x, ...)  
+##   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 13 12 15 3 12 3 13 15
+##   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' &lt;environment: 0x6c68c20&gt; 
+##  - attr(*, ".self")=&lt;environment: 0x668d730&gt; 
+##  - attr(*, "class")= chr [1:5] "Employee" "list" "Person" "Print" ...
 </code></pre>
 
+<div class="highlight highlight-source-r"><pre>class(<span class="pl-smi">kalle</span>)</pre></div>
 
-    <h2>Help topics</h2>
+<pre><code>## [1] "Employee" "list"     "Person"   "Print"    "list"
+</code></pre>
+        </section>
 
-    <h3></h3>
-    
-    
-    <ul class="index">
-        
-      <li>
-        <code><a href="Accessor.html">Accessor-class</a></code>($,Accessor-method, $&lt;-,Accessor-method)<br />Accessor class</li>
-            
-      <li>
-        <code><a href="aoos.html">aoos-class</a></code>($,aoos-method, $&lt;-,aoos-method, as.environment,aoos-method, show,aoos-method, summary.aoos)<br />Class aoos</li>
-            
-      <li>
-        <code><a href="Binary.html">Binary-class</a></code><br />Binary-class</li>
-            
-      <li>
-        <code><a href="defineClass.html">defineClass</a></code>(private, private,public-method, public, public,function-method, public,private-method, public,public-method)<br />Define a new class</li>
-            
-      <li>
-        <code><a href="defineRefClass.html">defineRefClass</a></code><br />Define a Reference Class</li>
-            
-      <li>
-        <code><a href="envHelper.html">envCopy</a></code>(envMerge)<br />Helpers for environments</li>
-            
-      <li>
-        <code><a href="S4generics.html">%g%</a></code>(%m%)<br />Wrapper for writing S4 generics and methods</li>
-            
-      <li>
-        <code><a href="genericTest.html">.genericTest</a></code>(.genericTest,numeric-method)<br />Generic Test</li>
-            
-      <li>
-        <code><a href="parser.html">parser_%m%</a></code>(parser_%g%, parser_%type%)<br />Parser for roxygen documentation</li>
-            
-      <li>
-        <code><a href="Infix.html">print.Print</a></code>(!.Infix, &amp;.Infix, +.Infix, -.Infix, /.Infix, &lt;.Infix, &lt;=.Infix, ==.Infix, &gt;.Infix, &gt;=.Infix, %%.Infix, ^.Infix, as.environment.Infix)<br />S3 helper classes</li>
-            
-      <li>
-        <code><a href="Private.html">Private-class</a></code>($,Private-method, $&lt;-,Private-method, [[,Private-method, [[&lt;-,Private-method)<br />Private class</li>
-            
-      <li>
-        <code><a href="publicInterface.html">publicFunction</a></code>($,publicEnv-method, publicValue)<br />Constructors for public members</li>
-            
-      <li>
-        <code><a href="retList.html">retList</a></code>(asEnv, funNames, stripSelf)<br />Generic constructor function</li>
-            
-      <li>
-        <code><a href="Show.html">Show-class</a></code>(show,Show-method)<br />Show class</li>
-            
-      <li>
-        <code><a href="grapes-type-grapes.html">%type%</a></code><br />Types</li>
-    
-    </ul>
-  </div>
-  
-  <div class="span3 offset1">
-    <h2>Vignettes</h2>
-    <ul>
-      <li><a href="vignettes/aoosClasses.html">aoosClasses</a></li>
-      <li><a href="vignettes/Introduction.html">Introduction</a></li>
-      <li><a href="vignettes/performance.html">performance</a></li>
-      <li><a href="vignettes/referenceClasses.html">referenceClasses</a></li>
-      <li><a href="vignettes/retListClasses.html">retListClasses</a></li>
-      <li><a href="vignettes/S4SyntacticSugar.html">S4SyntacticSugar</a></li>
-    </ul>
-        
-    <h2>Dependencies</h2>
-    <ul>
-      <li><strong>Depends</strong>: methods</li>
-      <li><strong>Imports</strong>: magrittr, utils, roxygen2</li>
-      <li><strong>Suggests</strong>: testthat, knitr, microbenchmark, R6</li>
-      
-    </ul>
-    <h2>Authors</h2>
-    <ul>
-      <li><a href="mailto:wahani@gmail.com">Sebastian Warnholz</a> [aut, cre]</li>
-    </ul>
+        <aside id="sidebar">
+          <a href="https://github.com/wahani/aoos/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/wahani/aoos/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
 
-  </div>
-</div>
-      
-      <footer>
-      <p class="pull-right"><a href="#">Back to top</a></p>
-<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
-      </footer>
+          <p class="repo-owner"><a href="https://github.com/wahani/aoos"></a> is maintained by <a href="https://github.com/wahani">wahani</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
+
+  
   </body>
 </html>
