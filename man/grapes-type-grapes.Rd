@@ -75,4 +75,3 @@ Anything(x, y ~ ANY, z = NULL) \%type\% .Object
 Either("", 1)
 
 }
-

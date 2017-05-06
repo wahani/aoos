@@ -58,4 +58,3 @@ generic(1)
 generic("")
 
 }
-

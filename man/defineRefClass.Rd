@@ -55,4 +55,3 @@ stopifnot(inherits(try(instance$.y <- 2), "try-error"))
 \seealso{
 \link{Private-class}
 }
-

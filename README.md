@@ -4,7 +4,10 @@
 [![codecov.io](https://codecov.io/github/wahani/aoos/coverage.svg?branch=master)](https://codecov.io/github/wahani/aoos?branch=master)
 
 # Another object orientation system in R
-Another implementation of object-orientation in R. It provides syntactic sugar for the S4 class system and two alternative new implementations. One is an experimental version built around S4 and the other one makes it more convenient to work with lists as objects.
+Another implementation of object-orientation in R. It provides
+syntactic sugar for the S4 class system and two alternative new
+implementations. One is an experimental version built around S4
+and the other one makes it more convenient to work with lists as objects.
 
 ## Installation
 To install from CRAN:
@@ -695,8 +698,8 @@ str(kalle)
 ## List of 1
 ##  $ print:function (x, ...)  
 ##   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 13 12 15 3 12 3 13 15
-##   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x6c68c20> 
-##  - attr(*, ".self")=<environment: 0x668d730> 
+##   .. .. ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x3389470> 
+##  - attr(*, ".self")=<environment: 0x5c3ac68> 
 ##  - attr(*, "class")= chr [1:5] "Employee" "list" "Person" "Print" ...
 ```
 

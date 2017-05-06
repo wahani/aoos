@@ -2,9 +2,9 @@
 % Please edit documentation in R/S4RC-Accessor.R
 \docType{class}
 \name{Accessor-class}
+\alias{Accessor-class}
 \alias{$,Accessor-method}
 \alias{$<-,Accessor-method}
-\alias{Accessor-class}
 \title{Accessor class}
 \usage{
 \S4method{$}{Accessor}(x, name)
@@ -21,4 +21,3 @@
 \description{
 This is a virtual class to be contained in other class definitions. It overrides the default accessor \code{$} and is intended to be used with the aoos class system (\code{\link{defineClass}}). Inherit from this class if you want to access public fields in the same way you access lists.
 }
-

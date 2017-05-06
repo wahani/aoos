@@ -1,8 +1,8 @@
 Package: aoos
 Type: Package
 Title: Another Object Orientation System
-Version: 0.4.1
-Date: 2015-10-11
+Version: 0.5.0
+Date: 2017-05-06
 Authors@R: person("Sebastian", "Warnholz", role = c("aut", "cre"),
                   email = "wahani@gmail.com")
 BugReports: https://github.com/wahani/aoos/issues
@@ -18,11 +18,11 @@ Imports:
     magrittr,
     utils,
     roxygen2
-License: GPL-3 | file LICENSE
+License: MIT + file LICENSE
 Suggests:
     testthat,
     knitr,
-    microbenchmark,
+    rbenchmark,
     R6,
     rmarkdown
 Encoding: UTF-8
@@ -46,4 +46,4 @@ Collate:
     'S4RC-Accessor.R'
     'S4RC-Private.R'
     'S4RC-defineRefClass.R'
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

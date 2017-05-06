@@ -1,7 +1,7 @@
 ## ------------------------------------------------------------------------
 library("R6")
 library("aoos")
-library("microbenchmark")
+library("rbenchmark")
 
 R6 <- R6Class("R6",
               public = list(
@@ -51,23 +51,19 @@ RLChild <- function(...) {
 DCChild <- defineClass("DCChild", contains = "DC", {})
 
 ## ------------------------------------------------------------------------
-benchmark1 <- microbenchmark(
+benchmark(
   DC(),
   RC$new(),
   R6$new(),
   RL(),
   RList()
-) 
-
-print(benchmark1, digits = 2)
+)
 
 ## ------------------------------------------------------------------------
-benchmark2 <- microbenchmark(
+benchmark(
   DCChild(),
   RCChild$new(),
   R6Child$new(),
   RLChild()
 )
-
-print(benchmark2, digits = 2)
 

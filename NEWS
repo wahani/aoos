@@ -1,3 +1,7 @@
+Version 0.5.0
+- CRAN release
+- Replacing microbenchmark with rbenchmark package in vignette.
+
 Version 0.4.0
 - CRAN release
 

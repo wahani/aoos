@@ -50,4 +50,3 @@ rational + rational
 rational$neg()
 rational - rational
 }
-

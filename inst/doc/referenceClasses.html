@@ -4,14 +4,14 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2016-11-11" />
+<meta name="date" content="2017-05-06" />
 
 <title>referenceClasses</title>
 
@@ -68,13 +68,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">referenceClasses</h1>
-<h4 class="date"><em>2016-11-11</em></h4>
+<h4 class="date"><em>2017-05-06</em></h4>
 
 
 
 <div id="reference-classes" class="section level2">
-<h2>reference classes</h2>
-<p>To the best of my knowledge using <code>Class</code> instead of <code>setRefClass</code> only changes the appearance, all features are preserved and the outcome is identical to using <code>setRefClass</code>.</p>
+<h2>Reference Classes</h2>
+<p>This package provides a thin wrapper around <code>methods::setRefClass</code>. I implemented no new features to this notion of OO. The aim here is to provide a way to avoid method (function) defenitions inside the list constructor as required by <code>setRefClass</code>. For those who care, this may lead to code which is easier to the eye. To the best of my knowledge using <code>defineRefClass</code> instead of <code>setRefClass</code> only changes the appearance, all features are preserved and the outcome is identical to using <code>setRefClass</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(aoos)
 
 Person &lt;-<span class="st"> </span><span class="kw">defineRefClass</span>({
@@ -104,7 +104,7 @@ ann &lt;-<span class="st"> </span><span class="kw">Person</span>(<span class="st
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ann$personName &lt;-<span class="st"> &quot;not Ann&quot;</span>
 ann$<span class="kw">greet</span>()</code></pre></div>
 <pre><code>## Hello, my name is not Ann.</code></pre>
-<p>Independently of the usage of <code>Class</code> you can use the class <code>Private</code> to add a notion of privacy to your reference class. This <em>feature</em> will make all fields with a leading dot inaccessible with the standard <code>$</code> function.</p>
+<p>Independently of the usage of <code>defineRefClass</code> you can use the class <code>Private</code> to add a notion of privacy to your reference class. This <em>feature</em> will make all fields with a leading dot inaccessible with the standard <code>$</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PrivatePerson &lt;-<span class="st"> </span><span class="kw">defineRefClass</span>({
   Class &lt;-<span class="st"> &quot;PrivatePerson&quot;</span>
   contains &lt;-<span class="st"> &quot;Private&quot;</span> <span class="co"># also just passed as argument to setRefClass</span>

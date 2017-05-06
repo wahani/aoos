@@ -2,12 +2,12 @@
 % Please edit documentation in R/DC-aoos.R
 \docType{class}
 \name{aoos-class}
+\alias{aoos-class}
+\alias{show,aoos-method}
 \alias{$,aoos-method}
 \alias{$<-,aoos-method}
-\alias{aoos-class}
-\alias{as.environment,aoos-method}
-\alias{show,aoos-method}
 \alias{summary.aoos}
+\alias{as.environment,aoos-method}
 \title{Class aoos}
 \usage{
 \S4method{show}{aoos}(object)
@@ -34,4 +34,3 @@
 \description{
 This is an environment with some methods. Every class defined by \code{defineClass} will inherit from aoos. Summary will show a list of public and private members with approximated memory usage.
 }
-

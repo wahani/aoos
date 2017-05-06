@@ -8,7 +8,11 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-All this is taken from [the R6 performance documentation](http://rpubs.com/wch/17459).
+These performance tests are adapted
+from [the R6 performance documentation](http://rpubs.com/wch/17459). I was
+curious how the implementations in this package would compare to R6 since one of
+the main design goals of R6 was to solve some performance issues with the
+reference classes from the methods package.
 
 
 ## Definitions
@@ -16,7 +20,7 @@ All this is taken from [the R6 performance documentation](http://rpubs.com/wch/1
 ```{r}
 library("R6")
 library("aoos")
-library("microbenchmark")
+library("rbenchmark")
 
 R6 <- R6Class("R6",
               public = list(
@@ -69,24 +73,20 @@ DCChild <- defineClass("DCChild", contains = "DC", {})
 ## Results
 
 ```{r}
-benchmark1 <- microbenchmark(
+benchmark(
   DC(),
   RC$new(),
   R6$new(),
   RL(),
   RList()
-) 
-
-print(benchmark1, digits = 2)
+)
 ```
 
 ```{r}
-benchmark2 <- microbenchmark(
+benchmark(
   DCChild(),
   RCChild$new(),
   R6Child$new(),
   RLChild()
 )
-
-print(benchmark2, digits = 2)
 ```

@@ -29,4 +29,3 @@ Functions to help working with environments.
 \seealso{
 \link{retList} where these are relevant.
 }
-

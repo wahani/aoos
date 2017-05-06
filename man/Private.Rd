@@ -2,9 +2,9 @@
 % Please edit documentation in R/S4RC-Private.R
 \docType{class}
 \name{Private-class}
+\alias{Private-class}
 \alias{$,Private-method}
 \alias{$<-,Private-method}
-\alias{Private-class}
 \alias{[[,Private-method}
 \alias{[[<-,Private-method}
 \title{Private class}
@@ -33,6 +33,7 @@
 \description{
 This is a virtual class to be contained in other class definitions. It overrides the default subset functions \code{$} and \code{[[} such that private member of a class can not be accessed. Private is every object which has a name with a leading "." (\code{grepl("^\\\\.", name)}). After this check the standard method for class 'envRefClass' is called or an error is reported.
 }
+
 \examples{
 ClassWithPrivateField <- defineRefClass({
   Class <- "ClassWithPrivateField"
@@ -53,4 +54,3 @@ stopifnot(inherits(try(test[[".p"]] <- 2), "try-error"))
 \seealso{
 \link{defineRefClass}
 }
-

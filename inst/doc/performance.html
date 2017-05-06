@@ -4,14 +4,14 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<meta name="date" content="2016-11-11" />
+<meta name="date" content="2017-05-06" />
 
 <title>Performance benchmarks</title>
 
@@ -68,16 +68,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">Performance benchmarks</h1>
-<h4 class="date"><em>2016-11-11</em></h4>
+<h4 class="date"><em>2017-05-06</em></h4>
 
 
 
-<p>All this is taken from <a href="http://rpubs.com/wch/17459">the R6 performance documentation</a>.</p>
+<p>These performance tests are adapted from <a href="http://rpubs.com/wch/17459">the R6 performance documentation</a>. I was curious how the implementations in this package would compare to R6 since one of the main design goals of R6 was to solve some performance issues with the reference classes from the methods package.</p>
 <div id="definitions" class="section level2">
 <h2>Definitions</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;R6&quot;</span>)
 <span class="kw">library</span>(<span class="st">&quot;aoos&quot;</span>)
-<span class="kw">library</span>(<span class="st">&quot;microbenchmark&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;rbenchmark&quot;</span>)
 
 R6 &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;R6&quot;</span>,
               <span class="dt">public =</span> <span class="kw">list</span>(
@@ -128,36 +128,41 @@ DCChild &lt;-<span class="st"> </span><span class="kw">defineClass</span>(<span 
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">benchmark1 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">benchmark</span>(
   <span class="kw">DC</span>(),
   RC$<span class="kw">new</span>(),
   R6$<span class="kw">new</span>(),
   <span class="kw">RL</span>(),
   <span class="kw">RList</span>()
-) 
-
-<span class="kw">print</span>(benchmark1, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre></div>
-<pre><code>## Unit: microseconds
-##      expr    min     lq   mean median     uq  max neval
-##      DC() 1537.9 1577.5 1756.2 1647.9 1760.4 4704   100
-##  RC$new()  293.7  314.6  364.5  334.1  365.4 2001   100
-##  R6$new()   55.1   64.2  136.0   72.9   79.9 6157   100
-##      RL()   21.1   29.9   35.2   33.6   39.2   73   100
-##   RList()    2.9    4.5    5.7    5.6    6.5   25   100</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">benchmark2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(
+)</code></pre></div>
+<pre><code>##       test replications elapsed relative user.self sys.self user.child
+## 1     DC()          100   0.178      178     0.180        0          0
+## 3 R6$new()          100   0.007        7     0.004        0          0
+## 2 RC$new()          100   0.031       31     0.032        0          0
+## 4     RL()          100   0.003        3     0.004        0          0
+## 5  RList()          100   0.001        1     0.000        0          0
+##   sys.child
+## 1         0
+## 3         0
+## 2         0
+## 4         0
+## 5         0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">benchmark</span>(
   <span class="kw">DCChild</span>(),
   RCChild$<span class="kw">new</span>(),
   R6Child$<span class="kw">new</span>(),
   <span class="kw">RLChild</span>()
-)
-
-<span class="kw">print</span>(benchmark2, <span class="dt">digits =</span> <span class="dv">2</span>)</code></pre></div>
-<pre><code>## Unit: microseconds
-##           expr  min   lq mean median   uq  max neval
-##      DCChild() 3084 3191 3401   3225 3340 6256   100
-##  RCChild$new()  287  304  407    334  390 3123   100
-##  R6Child$new()  206  228  258    257  289  350   100
-##      RLChild()   92  106  122    122  135  190   100</code></pre>
+)</code></pre></div>
+<pre><code>##            test replications elapsed relative user.self sys.self
+## 1     DCChild()          100   0.378   34.364     0.380        0
+## 3 R6Child$new()          100   0.024    2.182     0.024        0
+## 2 RCChild$new()          100   0.032    2.909     0.032        0
+## 4     RLChild()          100   0.011    1.000     0.008        0
+##   user.child sys.child
+## 1          0         0
+## 3          0         0
+## 2          0         0
+## 4          0         0</code></pre>
 </div>
 
 

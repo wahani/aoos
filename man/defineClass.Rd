@@ -75,4 +75,3 @@ instance$refObj$x()
 \seealso{
 \code{\link{Accessor-class}}, \code{\link{Binary-class}}, \code{\link{Show-class}}
 }
-

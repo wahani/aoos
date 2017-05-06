@@ -2,9 +2,9 @@
 % Please edit documentation in R/DC-public-interfaces.R
 \docType{methods}
 \name{publicFunction}
-\alias{$,publicEnv-method}
 \alias{publicFunction}
 \alias{publicValue}
+\alias{$,publicEnv-method}
 \title{Constructors for public members}
 \usage{
 publicFunction(fun)
@@ -25,4 +25,3 @@ publicValue(x = NULL, validity = function(x) TRUE)
 \description{
 These functions are used internally. You should not rely on them. Use \code{\link{public}} instead.
 }
-

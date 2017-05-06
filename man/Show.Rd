@@ -24,4 +24,3 @@ ClassWithShowMethod()
 \seealso{
 \link{defineClass}
 }
-

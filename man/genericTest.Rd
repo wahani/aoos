@@ -21,4 +21,3 @@
 This generic function only exists to test that the rexygen2 parser work
 correctly. Just ignore it.
 }
-

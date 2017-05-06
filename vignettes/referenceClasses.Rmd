@@ -8,9 +8,15 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-## reference classes
+## Reference Classes
 
-To the best of my knowledge using `Class` instead of `setRefClass` only changes the appearance, all features are preserved and the outcome is identical to using `setRefClass`. 
+This package provides a thin wrapper around `methods::setRefClass`. I
+implemented no new features to this notion of OO. The aim here is to provide a
+way to avoid method (function) defenitions inside the list constructor as
+required by `setRefClass`. For those who care, this may lead to code which is
+easier to the eye. To the best of my knowledge using `defineRefClass` instead of
+`setRefClass` only changes the appearance, all features are preserved and the
+outcome is identical to using `setRefClass`.
 
 ```{r}
 library(aoos)
@@ -38,7 +44,9 @@ ann$personName <- "not Ann"
 ann$greet()
 ```
 
-Independently of the usage of `Class` you can use the class `Private` to add a notion of privacy to your reference class. This *feature* will make all fields with a leading dot inaccessible with the standard `$` function.
+Independently of the usage of `defineRefClass` you can use the class `Private`
+to add a notion of privacy to your reference class. This *feature* will make all
+fields with a leading dot inaccessible with the standard `$` function.
 
 ```{r}
 PrivatePerson <- defineRefClass({
@@ -64,7 +72,8 @@ stopifnot(inherits(try(ann$.personName, silent = TRUE), "try-error"))
 ann$greet()
 ```
 
-There is really not much more to this but for illustration consider the class definition using setRefClass:
+There is really not much more to this but for illustration consider the class
+definition using setRefClass:
 
 ```{r}
 removeClass("PrivatePerson")
